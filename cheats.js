@@ -653,11 +653,11 @@ setInterval(() => {
         // ===== [BOTÃO ADQUIRIR SENHA - ADICIONE AQUI] ===== //
     // Botão para adquirir senha
     const btnAdquirirSenha = document.createElement('button');
-    btnAdquirirSenha.textContent = 'Adquirir Senha';
+    btnAdquirirSenha.textContent = 'Canal No Youtube';
     aplicarEstiloBotao(btnAdquirirSenha);
     btnAdquirirSenha.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
     btnAdquirirSenha.onclick = () => {
-        window.open('https://chat.whatsapp.com/FK6sosUXDZAD1cRhniTu0m?mode=ems_copy_t', '_blank');
+        window.open('https://youtube.com/@mlkmau5960?si=K20r4A1J9cDFwi72', '_blank');
     };
 
     // Container para os botões
