@@ -128,7 +128,7 @@ loadToastify();
         aplicarEstiloTexto(titulo, '20px');
         
         const insta = document.createElement('div');
-        insta.textContent = 'VERSÃO 1.0';
+        insta.textContent = 'VERSÃO 1.1';
         aplicarEstiloTexto(insta);
         
         const info = document.createElement('div');
@@ -369,48 +369,12 @@ loadToastify();
                                 sendToast('❌ Erro ao carregar script. Verifique o console.', 3000);
                             });
                     }
-                },
-                {
-                    nome: '❌',
-                    func: () => {
-                        const scriptURL = "https://raw.githubusercontent.com/auxpainel/2050/refs/heads/main/quizziz.js" + Date.now();
-                        fetch(scriptURL)
-                            .then(response => response.text())
-                            .then(scriptContent => {
-                                const script = document.createElement('script');
-                                script.textContent = scriptContent;
-                                document.head.appendChild(script);
-                                sendToast('❌ Nada ativo pois não existe script neste repositório!', 3000);
-                            })
-                            .catch(error => {
-                                console.error('Erro ao carregar script:', error);
-                                sendToast('❌ Erro ao carregar script. Verifique o console.', 3000);
-                            });
-                    }
-                },
-                {
-                    nome: '❌',
-                    func: () => {
-                        const scriptURL = "https://raw.githubusercontent.com/auxpainel/2050/main/kahoot.js?" + Date.now();
-                        fetch(scriptURL)
-                            .then(response => response.text())
-                            .then(scriptContent => {
-                                const script = document.createElement('script');
-                                script.textContent = scriptContent;
-                                document.head.appendChild(script);
-                                sendToast('Nada Carregado!', 3000);
-                            })
-                            .catch(error => {
-                                console.error('Erro ao carregar Kahoot script:', error);
-                                sendToast('❌ Erro ao carregar o Kahoot script. Verifique o console.', 3000);
-                            });
-                    }
                 }
             ],
             textos: [
-                { nome: '😶‍🌫️ Digitador Auto', func: () => { fundo.remove(); iniciarMod(); } },
+                { nome: 'Digitador v1', func: () => { fundo.remove(); iniciarMod(); } },
                 {
-                    nome: 'v2 dig',
+                    nome: 'Digitador v2',
                     func: () => {
                         fundo.remove();
                         criarBotaoFlutuante();
@@ -654,7 +618,7 @@ setInterval(() => {
     const btnAdquirirSenha = document.createElement('button');
     btnAdquirirSenha.textContent = 'Canal No Youtube';
     aplicarEstiloBotao(btnAdquirirSenha);
-    btnAdquirirSenha.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
+    btnAdquirirSenha.style.background = 'linear-gradient(135deg, #c42b2b, #782b2b)';
     btnAdquirirSenha.onclick = () => {
         window.open('https://youtube.com/@mlkmau5960?si=K20r4A1J9cDFwi72', '_blank');
     };
