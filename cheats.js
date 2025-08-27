@@ -626,8 +626,7 @@ loadToastify();
 let hue = 0;
 setInterval(() => {
     const corAtual = `hsl(${hue % 360}, 100%, 60%)`;
-    textoCima.style.color = corAtual;  // Agora o texto superior também muda de cor
-    textoBaixo.style.color = corAtual; // Texto inferior continua animado
+    textoBaixo.style.color = corAtual; // só o texto inferior anima
     hue++;
 }, 30);
 
