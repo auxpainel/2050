@@ -209,7 +209,7 @@
     }
     document.getElementById('digitadorV2-progresso')?.remove();
 
-    el.focus();
+    // el.focus();  <- REMOVER esta linha para não abrir teclado no celular
     let i = 0;
 
     const progresso = document.createElement('div');
@@ -239,7 +239,7 @@
         clearInterval(intervalId);
         window[NS].typingIntervalId = null;
         progresso.remove();
-        el.blur();
+        // el.blur();  <- Também pode ser removido se não quiser foco no final
         // Garante que frameworks reajam
         el.dispatchEvent(new Event('input', { bubbles: true }));
         el.dispatchEvent(new Event('change', { bubbles: true }));
@@ -249,7 +249,7 @@
     }, velocidade);
 
     window[NS].typingIntervalId = intervalId;
-  }
+}
 
   // ---- Início imediato a cada injeção ----
   window.iniciarModV2();
