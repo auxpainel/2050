@@ -586,17 +586,24 @@ nome.appendChild(textoCriador); // fica no meio
 nome.appendChild(textoBaixo);
 
 // ===== Animação =====
-let hue = 0;
-setInterval(() => {
-    // RGB roxo no texto "Criador: Mlk Mau"
+let hue = 260; // começa no roxo
+function animarCriador() {
+    // faixa entre 260° e 300° (tons de roxo/rosa)
     const corRoxa = `hsl(${260 + (hue % 40)}, 100%, 65%)`;
     textoCriador.style.color = corRoxa;
 
-    // RGB completo no texto inferior
-    const corAtual = `hsl(${hue % 360}, 100%, 60%)`;
-    textoBaixo.style.color = corAtual;
+    hue += 0.5; // velocidade suave
 
-    hue++;
+    requestAnimationFrame(animarCriador); // 60fps fluido
+}
+animarCriador();
+
+// Mantém animação do texto inferior como estava
+let hueBaixo = 0;
+setInterval(() => {
+    const corAtual = `hsl(${hueBaixo % 360}, 100%, 60%)`;
+    textoBaixo.style.color = corAtual;
+    hueBaixo++;
 }, 30);
 
         const input = document.createElement('input');
