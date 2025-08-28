@@ -634,7 +634,7 @@ btnmenor.innerHTML = `
         12s0-2.054.782-5.201C1.24 5.011 2.597 3.64 4.385 
         3.184 7.532 2.4 12 2.4 12 2.4s5.468 0 7.615.784zM9.545 
         8.568v6.864L15.818 12 9.545 8.568z"/>
-    </svg> Canal Manorick
+    </svg> Manorick
 `;
 aplicarEstiloBotao(btnmenor);
 btnmenor.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
@@ -653,7 +653,7 @@ btncriadorpainel.innerHTML = `
         12s0-2.054.782-5.201C1.24 5.011 2.597 3.64 4.385 
         3.184 7.532 2.4 12 2.4 12 2.4s5.468 0 7.615.784zM9.545 
         8.568v6.864L15.818 12 9.545 8.568z"/>
-    </svg> Criador Mlk Mau
+    </svg> Mlk Mau
 `;
 aplicarEstiloBotao(btncriadorpainel);
 btncriadorpainel.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
