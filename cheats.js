@@ -1,37 +1,37 @@
 // ===== [SISTEMA DE TOAST NOTIFICATIONS] ===== //
-function sendToast(text, duration = 5000, gravity = 'bottom') {
-    // Verificar se o Toastify está disponível, se não, carregar dinamicamente
-    if (typeof Toastify === 'undefined') {
-        loadToastify();
-        // Tentar novamente após um breve delay
-        setTimeout(() => sendToast(text, duration, gravity), 300);
-        return;
-    }
-    
-    Toastify({
-        text,
-        duration,
-        gravity,
-        position: "center",
-        stopOnFocus: true,
-        style: { background: "#000000" }
-    }).showToast();
+async function loadToastify() {
+    if (typeof Toastify !== 'undefined') return Promise.resolve();
+
+    return new Promise((resolve, reject) => {
+        // Carregar CSS do Toastify
+        const cssLink = document.createElement('link');
+        cssLink.rel = 'stylesheet';
+        cssLink.href = 'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css';
+        document.head.appendChild(cssLink);
+
+        // Carregar JS do Toastify
+        const jsScript = document.createElement('script');
+        jsScript.src = 'https://cdn.jsdelivr.net/npm/toastify-js';
+        jsScript.onload = resolve;
+        jsScript.onerror = reject;
+        document.head.appendChild(jsScript);
+    });
 }
 
-function loadToastify() {
-    // Verificar se já está carregado
-    if (typeof Toastify !== 'undefined') return;
-    
-    // Carregar CSS do Toastify
-    const cssLink = document.createElement('link');
-    cssLink.rel = 'stylesheet';
-    cssLink.href = 'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css';
-    document.head.appendChild(cssLink);
-    
-    // Carregar JS do Toastify
-    const jsScript = document.createElement('script');
-    jsScript.src = 'https://cdn.jsdelivr.net/npm/toastify-js';
-    document.head.appendChild(jsScript);
+async function sendToast(text, duration = 5000, gravity = 'bottom') {
+    try {
+        await loadToastify();
+        Toastify({
+            text,
+            duration,
+            gravity,
+            position: "center",
+            stopOnFocus: true,
+            style: { background: "#000000" }
+        }).showToast();
+    } catch (error) {
+        console.error('Erro ao carregar Toastify:', error);
+    }
 }
 
 function showWelcomeToasts() {
@@ -46,11 +46,11 @@ function showWelcomeToasts() {
     }, 1000);
 }
 
-// Carregar Toastify quando o script for executado
-loadToastify();
-
-// ===== [SEU CÓDIGO ORIGINAL A PARTIR DAQUI] ===== //
-(function(){
+// ===== [CÓDIGO PRINCIPAL] ===== //
+(async function(){
+    // Carregar Toastify quando o script for executado
+    await loadToastify();
+    
     // Mostrar toasts de boas-vindas após um breve delay
     setTimeout(showWelcomeToasts, 500);
     
@@ -111,12 +111,10 @@ loadToastify();
     };
 
     const mostrarInfoDono = () => {
-        // Fecha o menu atual antes de abrir o novo elemento
         if (fundo) fundo.remove();
         
         const container = document.createElement('div');
         aplicarEstiloContainer(container);
-        // Garante que o elemento apareça acima de tudo
         container.style.zIndex = '1000001';
         container.style.position = 'fixed';
         container.style.top = '50%';
@@ -148,14 +146,12 @@ loadToastify();
     };
 
     const trocarCorBotao = () => {
-        // Fecha o menu atual antes de abrir o novo elemento
         if (fundo) fundo.remove();
         
         let novaCorTemp = corBotao;
 
         const container = document.createElement('div');
         aplicarEstiloContainer(container);
-        // Garante que o elemento apareça acima de tudo
         container.style.zIndex = '1000001';
         container.style.position = 'fixed';
         container.style.top = '50%';
@@ -178,7 +174,6 @@ loadToastify();
             margin: '15px 0'
         });
 
-        // Atualizar a cor temporária quando o seletor muda
         seletor.addEventListener("input", (e) => {
             novaCorTemp = e.target.value;
         });
@@ -203,7 +198,6 @@ loadToastify();
             });
             container.remove();
             
-            // Adicionar feedback visual usando toast
             sendToast('✅ Cor alterada com sucesso!', 2000);
             setTimeout(() => criarMenu(), 2000);
         };
@@ -234,7 +228,6 @@ loadToastify();
         return { pergunta, alternativas };
     };
 
-    // Função modificada para carregar o script do GitHub
     const encontrarRespostaColar = () => {
         sendToast('⏳ Carregando script...', 3000);
 
@@ -586,13 +579,13 @@ loadToastify();
         nome.appendChild(textoCima);
         nome.appendChild(textoBaixo);
 
-        // Mantém a animação de cores nos dois textos
-let hue = 0;
-setInterval(() => {
-    const corAtual = `hsl(${hue % 360}, 100%, 60%)`;
-    textoBaixo.style.color = corAtual; // só o texto inferior anima
-    hue++;
-}, 30);
+        // Animação de cores apenas no texto inferior
+        let hue = 0;
+        setInterval(() => {
+            const corAtual = `hsl(${hue % 360}, 100%, 60%)`;
+            textoBaixo.style.color = corAtual;
+            hue++;
+        }, 30);
 
         const input = document.createElement('input');
         Object.assign(input.style, {
@@ -609,34 +602,52 @@ setInterval(() => {
         input.type = 'password';
         input.placeholder = 'Digite a senha';
 
-        const botao = document.createElement('button');
-        botao.textContent = 'Acessar';
-        aplicarEstiloBotao(botao, true);
-        
-        // ===== [BOTÃO ADQUIRIR SENHA - ADICIONE AQUI] ===== //
-    // Botão para adquirir senha
-    const btnAdquirirSenha = document.createElement('button');
-    btnAdquirirSenha.textContent = 'Canal No Youtube';
-    aplicarEstiloBotao(btnAdquirirSenha);
-    btnAdquirirSenha.style.background = 'linear-gradient(135deg, #c42b2b, #782b2b)';
-    btnAdquirirSenha.onclick = () => {
-        window.open('https://youtube.com/@mlkmau5960?si=K20r4A1J9cDFwi72', '_blank');
-    };
+        // Botão principal "Acessar"
+let botao = document.createElement('button');
+botao.textContent = 'Acessar';
+aplicarEstiloBotao(botao, true);
 
-    // Container para os botões
-    const botoesContainer = document.createElement('div');
-    Object.assign(botoesContainer.style, {
-        display: 'flex',
-        justifyContent: 'space-between',
-        gap: '10px',
-        width: '100%'
-    });
+// Botão do Discord
+const btnDiscord = document.createElement('button');
+btnDiscord.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="margin-right:8px"><path fill="currentColor" d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.566-.406.825a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.825.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.05.05 0 0 0-.028.019C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.326a.05.05 0 0 0-.02-.069.07.07 0 0 0-.041-.012 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.043c0-.003.002-.006.005-.009a.05.05 0 0 1 .015-.011c.17-.1.335-.206.495-.32.01-.008.022-.01.033-.003l.006.004c.013.008.02.022.017.035a10.2 10.2 0 0 0 3.172 1.525.05.05 0 0 0 .04-.01 7.96 7.96 0 0 0 3.07-1.525.05.05 0 0 0 .017-.035l.006-.004c.01-.007.022-.005.033.003.16.114.326.22.495.32a.05.05 0 0 1 .015.01c.003.004.005.007.005.01a.05.05 0 0 1-.02.042 8.875 8.875 0 0 1-1.248.595.05.05 0 0 0-.041.012.05.05 0 0 0-.02.07c.236.462.51.905.818 1.325a.05.05 0 0 0 .056.02 13.23 13.23 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.05.05 0 0 0-.028-.019zM5.525 9.992c-.889 0-1.613-.774-1.613-1.727 0-.953.724-1.727 1.613-1.727.89 0 1.613.774 1.613 1.727s-.723 1.727-1.613 1.727zm4.95 0c-.889 0-1.613-.774-1.613-1.727 0-.953.724-1.727 1.613-1.727.89 0 1.613.774 1.613 1.727s-.723 1.727-1.613 1.727z"/></svg> Discord';
+aplicarEstiloBotao(btnDiscord);
+btnDiscord.style.background = '#5865F2';
+btnDiscord.onclick = () => {
+    window.open('https://discord.gg/NfVKXRSvYK', '_blank');
+};
 
-    botoesContainer.append(botao, btnAdquirirSenha);
-    // ===== [FIM DO BOTÃO ADQUIRIR SENHA] ===== //
+// Botão do YouTub
+const btnmenor = document.createElement('button');
+btnYouTubeCriador.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="margin-right:8px"><path fill="currentColor" d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/></svg> YouTube MANORICK';
+aplicarEstiloBotao(btnYouTubeCriador);
+btnYouTubeCriador.style.background = 'linear-gradient(135deg, #c42b2b, #782b2b)';
+btnYouTubeCriador.onclick = () => {
+    window.open('https://youtube.com/@manorickzin?si=V_71STAk8DLJNhtd', '_blank');
+};
+
+// Botão do YouTube (mlkmaucriador)
+const btnCriadorr = document.createElement('button');
+btnYouTubeMlkMau.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="margin-right:8px"><path fill="currentColor" d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/></svg> Youtube MlkMau';
+aplicarEstiloBotao(btnYouTubeMlkMau);
+btnYouTubeMlkMau.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
+btnYouTubeMlkMau.onclick = () => {
+    window.open('https://youtube.com/@mlkmau5960?si=10XFeUjXBoYDa_JQ', '_blank');
+};
+
+// Container para os botões
+const botoesContainer = document.createElement('div');
+Object.assign(botoesContainer.style, {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '10px',
+    width: '100%'
+});
+
+// Adiciona os botões no container
+botoesContainer.append(botao, btnDiscord, btnmenor, btnCriador);
 
         const erro = document.createElement('div');
-        erro.textContent = '❌ Senha incorreta. Se não tiver a senha procure um adm.';
+        erro.textContent = '❌ Senha incorreta. Clique no botão do Discord para suporte.';
         Object.assign(erro.style, {
             display: 'none', 
             color: '#ff5555', 
@@ -644,7 +655,7 @@ setInterval(() => {
             fontSize: '14px'
         });
 
-        // ===== [SISTEMA DE SENHAS REMOTO CORRIGIDO] ===== //
+        // Sistema de senhas
         let senhasCarregadas = false;
 
         const carregarSenhasRemotas = async () => {
@@ -660,7 +671,7 @@ setInterval(() => {
                 senhasCarregadas = true;
             } catch (error) {
                 console.error('Falha ao carregar senhas:', error);
-                // Fallback com senhas locais (case sensitive)
+                // Fallback com senhas locais
                 window.verificarSenha = function(senha) {
                     const senhasBackup = [
                         "admin",
@@ -677,12 +688,9 @@ setInterval(() => {
             }
         };
 
-        // Carregar senhas ao iniciar
         carregarSenhasRemotas();
 
-        // Verificação com espera do carregamento
         botao.onclick = async () => {
-            // Se ainda não carregou, mostra aviso
             if (!senhasCarregadas) {
                 sendToast('🔒 Carregando sistema de senhas...', 2000);
                 await carregarSenhasRemotas();
@@ -697,7 +705,6 @@ setInterval(() => {
                 erro.style.display = 'block';
             }
         };
-        // ===== [FIM DO SISTEMA CORRIGIDO] ===== //
 
         janela.append(nome, input, botoesContainer, erro);
         fundo.append(janela);
@@ -779,7 +786,6 @@ setInterval(() => {
                 localStorage.setItem("dhonatanX", posX);
                 localStorage.setItem("dhonatanY", posY);
             } else {
-                // Se não estava arrastando, é um clique
                 b.remove();
                 senhaLiberada ? criarMenu() : criarInterface();
             }
