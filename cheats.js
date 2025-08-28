@@ -637,7 +637,7 @@ btnmenor.innerHTML = `
     </svg> Canal Manorick
 `;
 aplicarEstiloBotao(btnmenor);
-btnmenor.style.background = 'linear-gradient(135deg, #c42b2b, #782b2b)';
+btnmenor.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
 btnmenor.onclick = () => {
     window.open('https://youtube.com/@manorickzin?si=V_71STAk8DLJNhtd', '_blank');
 };
