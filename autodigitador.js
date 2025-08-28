@@ -75,6 +75,9 @@
         return;
       }
 
+      // Previne a abertura do teclado móvel
+      el.blur();
+      
       const texto = prompt('📋 Cole ou digite o texto:');
       if (texto == null) return; // cancelado
 
@@ -209,7 +212,10 @@
     }
     document.getElementById('digitadorV2-progresso')?.remove();
 
-    // --- Não foca o elemento, evitando teclado no celular ---
+    // Foca no elemento mas previne a abertura do teclado
+    el.focus();
+    el.blur(); // Remove o foco visual para evitar teclado móvel
+
     let i = 0;
 
     const progresso = document.createElement('div');
@@ -232,15 +238,20 @@
     const intervalId = setInterval(() => {
       if (i < texto.length) {
         const c = texto[i++];
-        document.execCommand('insertText', false, c); // digita sem abrir teclado
+        // Mantém o foco durante a digitação mas sem abrir teclado
+        el.focus({preventScroll: true});
+        typeChar(c);
+        el.blur();
         progresso.textContent = `${Math.round((i / texto.length) * 100)}%`;
         if (i % 25 === 0) el.dispatchEvent(new Event('input', { bubbles: true }));
       } else {
         clearInterval(intervalId);
         window[NS].typingIntervalId = null;
         progresso.remove();
+        // Dispara eventos finais
         el.dispatchEvent(new Event('input', { bubbles: true }));
         el.dispatchEvent(new Event('change', { bubbles: true }));
+
         toast('✅ Texto digitado com sucesso!');
       }
     }, velocidade);
