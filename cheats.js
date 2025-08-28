@@ -623,21 +623,41 @@ btnDiscord.onclick = () => {
     window.open('https://discord.gg/NfVKXRSvYK', '_blank');
 };
 
-// Botão do YouTub
+// Botão do YouTube Manorick
 const btnmenor = document.createElement('button');
-btnYouTubeCriador.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="margin-right:8px"><path fill="currentColor" d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/></svg> YouTube MANORICK';
-aplicarEstiloBotao(btnYouTubeCriador);
-btnYouTubeCriador.style.background = 'linear-gradient(135deg, #c42b2b, #782b2b)';
-btnYouTubeCriador.onclick = () => {
+btnmenor.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24">
+        <path d="M19.615 3.184C21.403 3.64 22.76 5.011 23.217 6.799 
+        24 9.946 24 12 24 12s0 2.054-.783 5.201c-.457 1.788-1.814 
+        3.159-3.602 3.615C17.468 21.6 12 21.6 12 21.6s-5.468 0-8.615-.784C1.597 
+        20.36.24 18.989-.217 17.201-.999 14.054-.999 12-.999 
+        12s0-2.054.782-5.201C1.24 5.011 2.597 3.64 4.385 
+        3.184 7.532 2.4 12 2.4 12 2.4s5.468 0 7.615.784zM9.545 
+        8.568v6.864L15.818 12 9.545 8.568z"/>
+    </svg> Canal Manorick
+`;
+aplicarEstiloBotao(btnmenor);
+btnmenor.style.background = 'linear-gradient(135deg, #c42b2b, #782b2b)';
+btnmenor.onclick = () => {
     window.open('https://youtube.com/@manorickzin?si=V_71STAk8DLJNhtd', '_blank');
 };
 
-// Botão do YouTube (mlkmaucriador)
-const btnCriadorr = document.createElement('button');
-btnYouTubeMlkMau.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="margin-right:8px"><path fill="currentColor" d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/></svg> Youtube MlkMau';
-aplicarEstiloBotao(btnYouTubeMlkMau);
-btnYouTubeMlkMau.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
-btnYouTubeMlkMau.onclick = () => {
+// Botão do YouTube Mlk Mau
+const btncriadorpainel = document.createElement('button');
+btncriadorpainel.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24">
+        <path d="M19.615 3.184C21.403 3.64 22.76 5.011 23.217 6.799 
+        24 9.946 24 12 24 12s0 2.054-.783 5.201c-.457 1.788-1.814 
+        3.159-3.602 3.615C17.468 21.6 12 21.6 12 21.6s-5.468 0-8.615-.784C1.597 
+        20.36.24 18.989-.217 17.201-.999 14.054-.999 12-.999 
+        12s0-2.054.782-5.201C1.24 5.011 2.597 3.64 4.385 
+        3.184 7.532 2.4 12 2.4 12 2.4s5.468 0 7.615.784zM9.545 
+        8.568v6.864L15.818 12 9.545 8.568z"/>
+    </svg> Criador Mlk Mau
+`;
+aplicarEstiloBotao(btncriadorpainel);
+btncriadorpainel.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
+btncriadorpainel.onclick = () => {
     window.open('https://youtube.com/@mlkmau5960?si=10XFeUjXBoYDa_JQ', '_blank');
 };
 
@@ -650,8 +670,8 @@ Object.assign(botoesContainer.style, {
     width: '100%'
 });
 
-// Adiciona os botões no container
-botoesContainer.append(botao, btnDiscord, btnmenor, btnCriador);
+// Adiciona todos os botões
+botoesContainer.append(botao, btnDiscord, btnmenor, btncriadorpainel);
 
         const erro = document.createElement('div');
         erro.textContent = '❌ Senha incorreta. Clique no botão do Discord para suporte.';
