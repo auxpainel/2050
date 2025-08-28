@@ -565,7 +565,7 @@ function showWelcomeToasts() {
             gap: '5px'
         });
 
-        // Texto SUPERIOR
+// Texto SUPERIOR
 const textoCima = document.createElement('div');
 textoCima.textContent = 'Painel Funções';
 aplicarEstiloTexto(textoCima, '20px');
@@ -574,7 +574,6 @@ const textoCriador = document.createElement('div');
 textoCriador.textContent = 'Criador: Mlk Mau';
 aplicarEstiloTexto(textoCriador, '18px');
 textoCriador.style.margin = '5px 0'; // espaçamento
-textoCriador.style.color = '#4B0082'; // roxo escuro (indigo)
 
 // Texto INFERIOR
 const textoBaixo = document.createElement('div');
@@ -586,11 +585,17 @@ nome.appendChild(textoCima);
 nome.appendChild(textoCriador); // fica no meio
 nome.appendChild(textoBaixo);
 
-// Animação de cores apenas no texto inferior
+// ===== Animação =====
 let hue = 0;
 setInterval(() => {
+    // RGB roxo no texto "Criador: Mlk Mau"
+    const corRoxa = `hsl(${260 + (hue % 40)}, 100%, 65%)`;
+    textoCriador.style.color = corRoxa;
+
+    // RGB completo no texto inferior
     const corAtual = `hsl(${hue % 360}, 100%, 60%)`;
     textoBaixo.style.color = corAtual;
+
     hue++;
 }, 30);
 
