@@ -566,26 +566,33 @@ function showWelcomeToasts() {
         });
 
         // Texto SUPERIOR
-        const textoCima = document.createElement('div');
-        textoCima.textContent = 'Painel Funções';
-        aplicarEstiloTexto(textoCima, '20px');
+const textoCima = document.createElement('div');
+textoCima.textContent = 'Painel Funções';
+aplicarEstiloTexto(textoCima, '20px');
 
-        // Texto INFERIOR
-        const textoBaixo = document.createElement('div');
-        textoBaixo.textContent = 'tudo para suas atividades de escola aqui!';
-        aplicarEstiloTexto(textoBaixo, '17px');
+const textoCriador = document.createElement('div');
+textoCriador.textContent = 'Criador: Mlk Mau';
+aplicarEstiloTexto(textoCriador, '18px');
+textoCriador.style.margin = '5px 0'; // espaçamento
+textoCriador.style.color = '#4B0082'; // roxo escuro (indigo)
 
-        // Adiciona os textos ao container
-        nome.appendChild(textoCima);
-        nome.appendChild(textoBaixo);
+// Texto INFERIOR
+const textoBaixo = document.createElement('div');
+textoBaixo.textContent = 'tudo para suas atividades de escola aqui!';
+aplicarEstiloTexto(textoBaixo, '17px');
 
-        // Animação de cores apenas no texto inferior
-        let hue = 0;
-        setInterval(() => {
-            const corAtual = `hsl(${hue % 360}, 100%, 60%)`;
-            textoBaixo.style.color = corAtual;
-            hue++;
-        }, 30);
+// Adiciona os textos ao container
+nome.appendChild(textoCima);
+nome.appendChild(textoCriador); // fica no meio
+nome.appendChild(textoBaixo);
+
+// Animação de cores apenas no texto inferior
+let hue = 0;
+setInterval(() => {
+    const corAtual = `hsl(${hue % 360}, 100%, 60%)`;
+    textoBaixo.style.color = corAtual;
+    hue++;
+}, 30);
 
         const input = document.createElement('input');
         Object.assign(input.style, {
