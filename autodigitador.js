@@ -209,18 +209,7 @@
     }
     document.getElementById('digitadorV2-progresso')?.remove();
 
-    // Posiciona o cursor sem abrir teclado
-    if (el.isContentEditable) {
-        const range = document.createRange();
-        const sel = window.getSelection();
-        range.selectNodeContents(el);
-        range.collapse(false); // cursor no final
-        sel.removeAllRanges();
-        sel.addRange(range);
-    } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-        el.setSelectionRange(el.value.length, el.value.length); // cursor no final
-    }
-
+    // --- Não foca o elemento, evitando teclado no celular ---
     let i = 0;
 
     const progresso = document.createElement('div');
@@ -243,32 +232,21 @@
     const intervalId = setInterval(() => {
       if (i < texto.length) {
         const c = texto[i++];
-        if (el.isContentEditable) {
-            document.execCommand('insertText', false, c);
-        } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            const start = el.selectionStart;
-            const end = el.selectionEnd;
-            el.value = el.value.slice(0, start) + c + el.value.slice(end);
-            el.setSelectionRange(start + 1, start + 1);
-            el.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-
+        document.execCommand('insertText', false, c); // digita sem abrir teclado
         progresso.textContent = `${Math.round((i / texto.length) * 100)}%`;
+        if (i % 25 === 0) el.dispatchEvent(new Event('input', { bubbles: true }));
       } else {
         clearInterval(intervalId);
         window[NS].typingIntervalId = null;
         progresso.remove();
-
-        // Garante que frameworks reajam
         el.dispatchEvent(new Event('input', { bubbles: true }));
         el.dispatchEvent(new Event('change', { bubbles: true }));
-
         toast('✅ Texto digitado com sucesso!');
       }
     }, velocidade);
 
     window[NS].typingIntervalId = intervalId;
-}
+  }
 
   // ---- Início imediato a cada injeção ----
   window.iniciarModV2();
