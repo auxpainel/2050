@@ -229,26 +229,34 @@ function showWelcomeToasts() {
     };
 
     const encontrarRespostaColar = () => {
-        sendToast('⏳ Carregando script...', 3000);
+    sendToast('⏳ Carregando script...', 3000);
 
-        const scriptURL = "https://raw.githubusercontent.com/auxpainel/2050/refs/heads/main/coletarperguntaeresposta.js?" + Date.now();
+    const scriptURL = "https://raw.githubusercontent.com/auxpainel/2050/refs/heads/main/coletarperguntaeresposta.js?" + Date.now();
 
-        fetch(scriptURL)
-            .then(response => {
-                if (!response.ok) throw new Error('Falha ao carregar o script');
-                return response.text();
-            })
-            .then(scriptContent => {
-                const script = document.createElement('script');
-                script.textContent = scriptContent;
-                document.head.appendChild(script);
-                sendToast('✅ Script carregado com sucesso!', 3000);
-            })
-            .catch(error => {
-                console.error('Erro ao carregar script:', error);
-                sendToast('❌ Erro ao carregar o script. Verifique o console.', 3000);
-            });
-    };
+    fetch(scriptURL)
+        .then(response => {
+            if (!response.ok) throw new Error('Falha ao carregar o script');
+            return response.text();
+        })
+        .then(scriptContent => {
+            const script = document.createElement('script');
+            script.textContent = scriptContent;
+            document.head.appendChild(script);
+            sendToast('✅ Script carregado com sucesso!', 3000);
+
+            // 🔥 remove o fundo e recria o botão flutuante
+            if (typeof fundo !== "undefined" && fundo) {
+                fundo.remove();
+            }
+            if (typeof criarBotaoFlutuante === "function") {
+                criarBotaoFlutuante();
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao carregar script:', error);
+            sendToast('❌ Erro ao carregar o script. Verifique o console.', 3000);
+        });
+};
 
     const encontrarRespostaDigitar = () => {
         const pergunta = prompt("Digite a pergunta:");
@@ -378,7 +386,7 @@ function showWelcomeToasts() {
                                 const script = document.createElement('script');
                                 script.textContent = scriptContent;
                                 document.head.appendChild(script);
-                                sendToast('Nada Carregado!', 3000);
+                                sendToast('Carregado!', 3000);
                             })
                             .catch(error => {
                                 console.error('Erro ao carregar Kahoot script:', error);
