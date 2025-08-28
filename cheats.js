@@ -585,16 +585,22 @@ nome.appendChild(textoCima);
 nome.appendChild(textoCriador); // fica no meio
 nome.appendChild(textoBaixo);
 
-// ===== Animação =====
-let hue = 260; // começa no roxo
+// ===== Animação fluida só no "Criador" =====
+let hue = 260;
+let direcao = 1; // 1 = indo pra frente, -1 = voltando
+
 function animarCriador() {
-    // faixa entre 260° e 300° (tons de roxo/rosa)
-    const corRoxa = `hsl(${260 + (hue % 40)}, 100%, 65%)`;
+    const corRoxa = `hsl(${hue}, 100%, 65%)`;
     textoCriador.style.color = corRoxa;
 
-    hue += 0.5; // velocidade suave
+    hue += 0.3 * direcao; // velocidade suave
 
-    requestAnimationFrame(animarCriador); // 60fps fluido
+    // Inverte a direção ao chegar nos limites
+    if (hue >= 300 || hue <= 260) {
+        direcao *= -1;
+    }
+
+    requestAnimationFrame(animarCriador);
 }
 animarCriador();
 
