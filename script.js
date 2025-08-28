@@ -55,7 +55,7 @@ function sendToast(text, duration = 5000, gravity = 'bottom') {
 
 async function showSplashScreen() {
   splashScreen.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;transition:opacity 0.5s ease;user-select:none;color:white;font-family:MuseoSans,sans-serif;font-size:30px;text-align:center;";
-  splashScreen.innerHTML = '<span style="color:white;">KHAN.</span><span style="color:#ff1717;">mod</span>';
+  splashScreen.innerHTML = '<span style="color:white;">MLK</span><span style="color:#ff1717;"> MAU O PROPRIO</span>';
   document.body.appendChild(splashScreen);
   setTimeout(() => splashScreen.style.opacity = '1', 10);
 }
@@ -742,12 +742,12 @@ if (!/^https?:\/\/([a-z0-9-]+\.)?khanacademy\.org/.test(window.location.href)) {
     createFloatingMenu();
     setupMain();
     
-    sendToast("INICIOU SEU CHEAT NO KHAN🌟 kkk!");
+    sendToast("Carregando...!");
     setTimeout(() => {
-        sendToast("Isso mesmo estudar é bom demais", 2500);
+        sendToast("Carregado", 2500);
     }, 1000);
     setTimeout(() => {
-        sendToast("Sou muito estudioso", 2500);
+        sendToast("KHAN MENU INICIADO", 2500);
     }, 3500);
     
     console.clear();
