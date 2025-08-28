@@ -577,7 +577,7 @@ textoCriador.style.margin = '5px 0'; // espaçamento
 
 // Texto INFERIOR
 const textoBaixo = document.createElement('div');
-textoBaixo.textContent = 'tudo para suas atividades de escola aqui!';
+textoBaixo.textContent = 'Tudo para suas atividades de escola aqui!';
 aplicarEstiloTexto(textoBaixo, '17px');
 
 // Adiciona os textos ao container
