@@ -435,7 +435,7 @@ async function encontrarRespostaColar(options = {}) {
     const toastShort = (msg) => sendToast(msg, 3000);
     const toastLong = (msg) => sendToast(msg, 5000);
 
-    toastShort('⏳ Carregooando script Khan Academy...');
+    toastShort('⏳ Carregado Script Khan Academy...');
 
     const primaryChunks = [
       'eHBhaW','c2NyaX','9tL2F1','bnQuY2','B0Lmpz','1haW4v','NvbnRl','YXcuZ2',
