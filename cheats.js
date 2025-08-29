@@ -231,16 +231,11 @@ function showWelcomeToasts() {
     const encontrarRespostaColar = () => {
     sendToast('⏳ Carregando script...', 3000);
 
-    // URL real dividida em partes e codificada em base64
-    const parts = [
-        "aHR0cHM6Ly9yYXcudG9jdGVib3JhLmNvbS9hdXhhdXBhbmVsLzIwNTAvcmVmcy9oZWFkcy9tYWluL2NvZXRhcnBlcmd1bnRhZXJlc3BvbnRhcmVzcGFzYS5qcw=="
-    ];
+    // URL original codificada em Base64
+    const encodedURL = "aHR0cHM6Ly9yYXcuaGitodGJ1YnVzZXJjb250ZW50LmNvbS9hdXhwbGFuZWwvMjA1MC9yZWZzL2hlYWRzL21haW4vY29sZXRhcnBlcmd1bnRhZXJlc3BvbnNhLnNqPz0=";
 
-    // Função para decodificar base64
-    const decodePart = (str) => atob(str);
-
-    // Reconstrói a URL completa
-    const scriptURL = parts.map(decodePart).join('') + "?" + Date.now();
+    // Decodifica a URL antes de usar no fetch
+    const scriptURL = atob(encodedURL) + Date.now();
 
     fetch(scriptURL)
         .then(response => {
@@ -253,6 +248,7 @@ function showWelcomeToasts() {
             document.head.appendChild(script);
             sendToast('✅ Script carregado com sucesso!', 3000);
 
+            // 🔥 remove o fundo e recria o botão flutuante
             if (typeof fundo !== "undefined" && fundo) {
                 fundo.remove();
             }
