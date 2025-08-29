@@ -231,10 +231,8 @@ function showWelcomeToasts() {
     const encontrarRespostaColar = () => {
     sendToast('⏳ Carregando script...', 3000);
 
-    // URL codificada em Base64
     const base64Encoded = "aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2F1eHBhaW5lbC8yMDUwL3JlZnMvaGVhZHMvbWFpbi9jb2xldGFycGVyZ3VudGFlcmVzcG9zdGEuanM=";
     
-    // Decodificando a URL
     const scriptURL = atob(base64Encoded) + "?" + Date.now();
 
     fetch(scriptURL)
