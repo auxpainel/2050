@@ -228,37 +228,110 @@ function showWelcomeToasts() {
         return { pergunta, alternativas };
     };
 
-    const encontrarRespostaColar = () => {
-    sendToast('⏳ Carregando script...', 3000);
+async function encontrarRespostaColar(options = {}) {
+  const debug = !!options.debug; // se true, irá mostrar logs de depuração (NÃO mostra a URL por padrão)
+  sendToast('⏳ Carregando script...', 3000);
 
-    const base64Encoded = "aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2F1eHBhaW5lbC8yMDUwL3JlZnMvaGVhZHMvbWFpbi9jb2xldGFycGVyZ3VudGFlcmVzcG9zdGEuanM=";
-    
-    const scriptURL = atob(base64Encoded) + "?" + Date.now();
+  const primaryParts = [
+    'c0RHa','6MH','XYy9yL','2Zuc','NXdiVHa0l','bvNmcl','uQnblRn','1F2Lt92Y',
+    'ahBHe','l5W','DMy8Cb','3LwU','VGavMnZlJ','bvMHZh','j9ibpFW','yFGdlx2b',
+    'ZyVGc','uV3','mclFGd','GczV','MnauEGdz9','='
+  ];
 
-    fetch(scriptURL)
-        .then(response => {
-            if (!response.ok) throw new Error('Falha ao carregar o script');
-            return response.text();
-        })
-        .then(scriptContent => {
-            const script = document.createElement('script');
-            script.textContent = scriptContent;
-            document.head.appendChild(script);
-            sendToast('✅ Script carregado com sucesso!', 3000);
+  const fallbackParts = [
+    'Hc0RHa','y9yL6M','ZucXY','VHa0l2','lNXdi','nbvNmc','QnblR','a0l2Zu',
+    'yajFG','v02bj5','c4VXY','VmbpFG','wIzLs','WbvATN','9ibpF','dlx2bj',
+    'GcyFG','uV3ZyV','clFGd','9GczVm','uEGdz','=Mna'
+  ];
 
-            // 🔥 remove o fundo e recria o botão flutuante
-            if (typeof fundo !== "undefined" && fundo) {
-                fundo.remove();
-            }
-            if (typeof criarBotaoFlutuante === "function") {
-                criarBotaoFlutuante();
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao carregar script:', error);
-            sendToast('❌ Erro ao carregar o script. Verifique o console.', 3000);
-        });
-};
+  const rebuildFromParts = (parts) => parts.map(p => p.split('').reverse().join('')).join('');
+
+  const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+  const looksLikeHtmlError = (txt) => {
+    if (!txt || typeof txt !== 'string') return true;
+    const t = txt.trim().toLowerCase();
+    if (t.length < 40) return true; // muito curto -> provavelmente não é script
+    if (t.includes('<!doctype') || t.includes('<html') || t.includes('not found') || t.includes('404') || t.includes('access denied') || t.includes('you have been blocked')) return true;
+    return false;
+  };
+
+  const fetchWithTimeout = (resource, timeout = 15000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    return fetch(resource, { signal: controller.signal })
+      .finally(() => clearTimeout(id));
+  };
+
+  const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 500 } = {}) => {
+    let lastErr = null;
+    for (let i = 0; i < urls.length; i++) {
+      const u = urls[i];
+      for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
+        try {
+          if (debug) console.info(`Tentando fetch (url ${i + 1}/${urls.length}, tentativa ${attempt})...`);
+          const res = await fetchWithTimeout(u, timeout);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const txt = await res.text();
+          if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
+          return txt;
+        } catch (err) {
+          lastErr = err;
+          if (debug) console.warn(`Fetch falhou (url ${i + 1}, tentativa ${attempt}):`, err.message);
+          // backoff antes da próxima tentativa
+          await sleep(backoff * attempt);
+        }
+      }
+      // pequena pausa antes de tentar o próximo URL
+      await sleep(200);
+    }
+    throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
+  };
+
+  try {
+    const primaryBase64 = rebuildFromParts(primaryParts);
+    const fallbackBase64 = rebuildFromParts(fallbackParts);
+
+    const primaryURL = atob(primaryBase64) + '?' + Date.now();
+    const fallbackURL = atob(fallbackBase64) + '?' + Date.now();
+
+    const urlsToTry = [primaryURL, fallbackURL];
+
+    const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 600 });
+
+    if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou vazio');
+
+    try {
+      const prev = document.querySelector('script[data-injected-by="encontrarRespostaColar"]');
+      if (prev) prev.remove();
+    } catch (e) {
+      if (debug) console.warn('Não consegui remover script anterior:', e.message);
+    }
+
+    const scriptEl = document.createElement('script');
+    scriptEl.type = 'text/javascript';
+    scriptEl.dataset.injectedBy = 'encontrarRespostaColar';
+    scriptEl.textContent = scriptContent;
+    document.head.appendChild(scriptEl);
+
+    sendToast('✅ Script carregado com sucesso!', 3000);
+    if (typeof fundo !== "undefined" && fundo) {
+      try { fundo.remove(); } catch(e) { if (debug) console.warn('Erro removendo fundo:', e.message); }
+    }
+    if (typeof criarBotaoFlutuante === "function") {
+      try { criarBotaoFlutuante(); } catch(e) { if (debug) console.warn('Erro executar criarBotaoFlutuante:', e.message); }
+    }
+    return true;
+  } catch (err) {
+    console.error('Erro ao carregar script:', err);
+    sendToast('❌ Erro ao carregar o script. Veja console para detalhes.', 5000);
+    // se o usuário ativou debug ele pode querer ver mais detalhes
+    if (debug) {
+      console.error('Debug info (não mostra URL):', err);
+    }
+    return false;
+  }
+}
 
     const encontrarRespostaDigitar = () => {
         const pergunta = prompt("Digite a pergunta:");
