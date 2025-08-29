@@ -8,6 +8,7 @@ window.verificarSenha = function(senha) {
         "vitor",
         "pablo",
         "testegratis",
+        "gatos3D",
         "rick",
         "rafael"
     ];
