@@ -1045,7 +1045,7 @@ botoesContainer.style.flexWrap = 'nowrap';
 botoesContainer.append(botao, btnDiscord, btnWhatsApp, btnmenor, btncriadorpainel);
 
         const erro = document.createElement('div');
-        erro.textContent = '❌ Senha incorreta. Clique no botão do Discord para suporte.';
+        erro.textContent = '❌ Senha incorreta. Clique no botão do Discord/Whatsapp para suporte.';
         Object.assign(erro.style, {
             display: 'none', 
             color: '#ff5555', 
