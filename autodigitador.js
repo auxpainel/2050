@@ -75,9 +75,6 @@
         return;
       }
 
-      // Previne a abertura do teclado móvel
-      el.blur();
-      
       const texto = prompt('📋 Cole ou digite o texto:');
       if (texto == null) return; // cancelado
 
@@ -162,7 +159,13 @@
         <option value="40">Normal (40ms)</option>
         <option value="20">Rápido (20ms)</option>
         <option value="10">Muito Rápido (10ms)</option>
+        <option value="humana">Velocidade Humana indetect</option>
       </select>
+
+      <label style="display:flex; align-items:center; gap:8px; margin:16px 0; cursor:pointer;">
+        <input type="checkbox" id="digitadorV2-mostrar-porcentagem" checked style="width:18px; height:18px;">
+        <span style="font-weight:600; color:#1f2937;">Mostrar porcentagem durante a digitação</span>
+      </label>
 
       <div style="display:flex; gap:10px; justify-content:flex-end;">
         <button id="digitadorV2-cancelar" style="
@@ -185,78 +188,209 @@
     // Ações
     modal.querySelector('#digitadorV2-cancelar').addEventListener('click', () => modal.remove());
     modal.querySelector('#digitadorV2-confirmar').addEventListener('click', () => {
-      const velocidade = parseInt(modal.querySelector('#digitadorV2-velocidade').value, 10);
+      const velocidade = modal.querySelector('#digitadorV2-velocidade').value;
+      const mostrarPorcentagem = modal.querySelector('#digitadorV2-mostrar-porcentagem').checked;
       const textoAtual = txt.value;
       modal.remove();
-      iniciarDigitacao(el, textoAtual, velocidade);
+      iniciarDigitacao(el, textoAtual, velocidade, mostrarPorcentagem);
     });
 
     // Fechar com ESC
     modal.addEventListener('keydown', (ev) => {
       if (ev.key === 'Escape') modal.remove();
     });
+
+    // Força foco no modal textarea para edição (opcional)
+    txt.focus();
   }
 
   // ===============================
-  // Digitação tecla-por-tecla (execCommand)
+  // Inserção segura por tipo (não abre teclado)
   // ===============================
-  function typeChar(char) {
-    // Usa sempre execCommand para simular digitação humana
-    document.execCommand('insertText', false, char);
+  function inserirCharEmInput(el, ch) {
+    try {
+      // posição atual (fallback no final)
+      let pos = typeof el.selectionStart === 'number' ? el.selectionStart : el.value.length;
+
+      if (typeof el.setRangeText === 'function') {
+        el.setRangeText(ch, pos, pos, 'end');
+        // após setRangeText, a seleção fica após o texto inserido
+      } else {
+        // fallback
+        const v = el.value || '';
+        const before = v.slice(0, pos);
+        const after = v.slice(pos);
+        el.value = before + ch + after;
+        const newPos = pos + ch.length;
+        try { el.setSelectionRange(newPos, newPos); } catch (_) {}
+      }
+    } catch (err) {
+      // último recurso: concatena
+      el.value = (el.value || '') + ch;
+    }
   }
 
-  function iniciarDigitacao(el, texto, velocidade) {
+  function inserirCharEmContentEditable(el, ch) {
+    try {
+      // cria um textNode com o caractere e insere ao final do elemento (sem focar)
+      const doc = el.ownerDocument || document;
+      const sel = doc.getSelection ? doc.getSelection() : null;
+      let range;
+      if (sel && sel.rangeCount) {
+        // tenta usar seleção atual se estiver dentro do elemento
+        range = sel.getRangeAt(0).cloneRange();
+        // se seleção não estiver dentro do el, substitui pela posição final
+        if (!el.contains(range.commonAncestorContainer)) {
+          range = null;
+        }
+      }
+      if (!range) {
+        range = doc.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false); // ao final
+      }
+      // insere nó de texto
+      const txtNode = doc.createTextNode(ch);
+      range.insertNode(txtNode);
+      // move range após o nó inserido
+      range.setStartAfter(txtNode);
+      range.collapse(true);
+      if (sel) {
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    } catch (err) {
+      // fallback: concatena diretamente no innerText (pior caso)
+      el.innerText = (el.innerText || '') + ch;
+    }
+  }
+
+  // ===============================
+  // Digitação tecla-por-tecla (sem abrir teclado)
+  // ===============================
+  function iniciarDigitacao(el, texto, velocidade, mostrarPorcentagem) {
     if (window[NS].typingIntervalId) {
-      clearInterval(window[NS].typingIntervalId);
+      clearTimeout(window[NS].typingIntervalId);
       window[NS].typingIntervalId = null;
     }
     document.getElementById('digitadorV2-progresso')?.remove();
 
-    // Foca no elemento mas previne a abertura do teclado
-    el.focus();
-    el.blur(); // Remove o foco visual para evitar teclado móvel
+    // Detecta tipo do elemento
+    const isInputEl = (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA');
+    const isContentEditable = !!el.isContentEditable;
+
+    // Preparações para inputs/textarea: evitar teclado usando readOnly
+    let prevReadOnly = null;
+    try {
+      if (isInputEl) {
+        prevReadOnly = el.readOnly;
+        el.readOnly = true; // crucial: evita que o teclado virtual apareça ao focar
+        // foco é necessário em alguns browsers para setRangeText; com readOnly true o teclado normalmente não aparece
+        try { el.focus({ preventScroll: true }); } catch (_) { try { el.focus(); } catch (_) {} }
+        // posiciona caret no final se possível
+        try {
+          const len = el.value ? el.value.length : 0;
+          el.setSelectionRange(len, len);
+        } catch (_) {}
+      }
+    } catch (_) {}
 
     let i = 0;
+    // Criar elemento de progresso apenas se for mostrar porcentagem
+    let progresso = null;
+    if (mostrarPorcentagem) {
+      progresso = document.createElement('div');
+      progresso.id = 'digitadorV2-progresso';
+      Object.assign(progresso.style, {
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        background: 'rgba(0,0,0,0.85)',
+        color: '#fff',
+        padding: '10px 20px',
+        borderRadius: '8px',
+        zIndex: 10000002,
+        fontSize: '18px',
+        fontFamily: 'Arial, sans-serif'
+      });
+      document.body.appendChild(progresso);
+    }
 
-    const progresso = document.createElement('div');
-    progresso.id = 'digitadorV2-progresso';
-    Object.assign(progresso.style, {
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      background: 'rgba(0,0,0,0.85)',
-      color: '#fff',
-      padding: '10px 20px',
-      borderRadius: '8px',
-      zIndex: 10000002,
-      fontSize: '18px',
-      fontFamily: 'Arial, sans-serif'
-    });
-    document.body.appendChild(progresso);
+    // Função para obter o próximo intervalo baseado na velocidade selecionada
+    function obterProximoIntervalo() {
+      if (velocidade === 'humana') {
+        // Velocidade humana: intervalo variável entre 100ms e 300ms com pausas ocasionais
+        if (i > 0 && Math.random() < 0.05) {
+          // Pausa ocasional (5% de chance após cada caractere)
+          return 500 + Math.random() * 1000; // 500ms a 1500ms de pausa
+        }
+        return 100 + Math.random() * 200; // 100ms a 300ms
+      } else {
+        return parseInt(velocidade, 10); // Velocidade fixa
+      }
+    }
 
-    const intervalId = setInterval(() => {
+    function digitarProximoCaractere() {
       if (i < texto.length) {
         const c = texto[i++];
-        // Mantém o foco durante a digitação mas sem abrir teclado
-        el.focus({preventScroll: true});
-        typeChar(c);
-        el.blur();
-        progresso.textContent = `${Math.round((i / texto.length) * 100)}%`;
-        if (i % 25 === 0) el.dispatchEvent(new Event('input', { bubbles: true }));
+
+        // Inserção de acordo com o tipo do elemento
+        if (isInputEl) {
+          inserirCharEmInput(el, c);
+        } else if (isContentEditable) {
+          inserirCharEmContentEditable(el, c);
+        } else {
+          // caso genérico (p.ex. elementos que aceitam innerText)
+          try {
+            el.innerText = (el.innerText || '') + c;
+          } catch (_) {}
+        }
+
+        // Atualizar progresso se estiver sendo mostrado
+        if (mostrarPorcentagem && progresso) {
+          progresso.textContent = `${Math.round((i / texto.length) * 100)}%`;
+        }
+
+        // Disparar eventos de input periodicamente e para cada caractere
+        try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+        if (i % 25 === 0) {
+          try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+        }
+
+        // Agendar próximo caractere
+        window[NS].typingIntervalId = setTimeout(digitarProximoCaractere, obterProximoIntervalo());
       } else {
-        clearInterval(intervalId);
+        // Finalização
         window[NS].typingIntervalId = null;
-        progresso.remove();
-        // Dispara eventos finais
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-        el.dispatchEvent(new Event('change', { bubbles: true }));
+        if (progresso) progresso.remove();
+
+        // remove readonly e desfoca para inputs
+        try {
+          if (isInputEl) {
+            // desfoca primeiro
+            try { el.blur(); } catch (_) {}
+            // restaura readOnly original
+            if (prevReadOnly !== null && typeof prevReadOnly !== 'undefined') {
+              try { el.readOnly = prevReadOnly; } catch (_) {}
+            } else {
+              try { el.readOnly = false; } catch (_) {}
+            }
+          } else if (isContentEditable) {
+            // não forçamos foco; apenas disparamos eventos
+          }
+        } catch (_) {}
+
+        // Garante que frameworks reajam
+        try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+        try { el.dispatchEvent(new Event('change', { bubbles: true })); } catch (_) {}
 
         toast('✅ Texto digitado com sucesso!');
       }
-    }, velocidade);
+    }
 
-    window[NS].typingIntervalId = intervalId;
+    // Iniciar digitação
+    window[NS].typingIntervalId = setTimeout(digitarProximoCaractere, obterProximoIntervalo());
   }
 
   // ---- Início imediato a cada injeção ----
