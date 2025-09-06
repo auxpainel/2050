@@ -664,7 +664,7 @@ function setupMain() {
             zTable: false
           };
           
-          itemData.question.content = "Assinale abaixo " + `[[☃ radio 1]]`;
+          itemData.question.content = "Assinale abaixo Criador: Mlk Mau " + `[[☃ radio 1]]`;
           itemData.question.widgets = {
             "radio 1": {
               type: "radio",
