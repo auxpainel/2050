@@ -35,15 +35,7 @@ async function sendToast(text, duration = 5000, gravity = 'bottom') {
 }
 
 function showWelcomeToasts() {
-    sendToast("iniciando painel");
-    
-    setTimeout(() => {
-        sendToast("puxando dados", 2500);
-    }, 1000);
-    
-    setTimeout(() => {
-        sendToast("carregado!", 2500);
-    }, 1000);
+    sendToast("Painel carregado");
 }
 
 // ===== [CÓDIGO PRINCIPAL] ===== //
