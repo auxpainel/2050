@@ -637,8 +637,8 @@ async function encontrarRespostaColar(options = {}) {
     }
   }
 },
-                { nome: '📄 Criar Texto com Tema', func: criarTextoComTema },
-                { nome: '🔁 Reescrever Texto', func: abrirReescritor }
+                { nome: '📄 Criar Texto com Tema via IA', func: criarTextoComTema },
+                { nome: '🔁 Reescrever Texto (remover plágio)', func: abrirReescritor }
             ],
             respostas: [
                 { nome: '📡 Encontrar Resposta', func: encontrarRespostaColar },
