@@ -42,17 +42,17 @@ function showWelcomeToasts() {
 (async function(){
     // Carregar Toastify quando o script for executado
     await loadToastify();
-
+    
     // Mostrar toasts de boas-vindas após um breve delay
     setTimeout(showWelcomeToasts, 500);
-
+    
     let fundo, janela, nome, relogio;
     let senhaLiberada = false;
     let abaAtiva = 'textos';
     let posX = localStorage.getItem("dhonatanX") || "20px";
     let posY = localStorage.getItem("dhonatanY") || "20px";
     let corBotao = localStorage.getItem("corBotaoDhonatan") || "#0f0f0f";
-
+    
     // Estilo moderno para todos os botões
     const aplicarEstiloBotao = (elemento, gradiente = false) => {
         Object.assign(elemento.style, {
@@ -92,19 +92,19 @@ function showWelcomeToasts() {
         Object.assign(elemento.style, {
             background: 'rgba(0, 0, 0, 0.85)',
             backdropFilter: 'blur(10px)',
-            borderRadius: '12px',
-            padding: '16px',
+            borderRadius: '15px',
+            padding: '20px',
             boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
-            border: '1px solid rgba(255,255,255,0.06)',
-            maxWidth: '1000px',
-            width: '92%',
+            border: '1px solid rgba(255,255,255,0.1)',
+            maxWidth: '350px',
+            width: '90%',
             textAlign: 'center'
         });
     };
 
     const mostrarInfoDono = () => {
         if (fundo) fundo.remove();
-
+        
         const container = document.createElement('div');
         aplicarEstiloContainer(container);
         container.style.zIndex = '1000001';
@@ -112,20 +112,19 @@ function showWelcomeToasts() {
         container.style.top = '50%';
         container.style.left = '50%';
         container.style.transform = 'translate(-50%, -50%)';
-        container.style.maxWidth = '420px';
-
+        
         const titulo = document.createElement('div');
         titulo.textContent = '👑';
         aplicarEstiloTexto(titulo, '20px');
-
+        
         const insta = document.createElement('div');
         insta.textContent = 'VERSÃO 1.1';
         aplicarEstiloTexto(insta);
-
+        
         const info = document.createElement('div');
         info.textContent = '💻 Mod exclusivo e protegido, feito para poupar seu tempo';
-        aplicarEstiloTexto(info, '14px');
-
+        aplicarEstiloTexto(info);
+        
         const btnFechar = document.createElement('button');
         btnFechar.textContent = 'Fechar';
         aplicarEstiloBotao(btnFechar, true);
@@ -133,14 +132,14 @@ function showWelcomeToasts() {
             container.remove();
             criarMenu();
         };
-
+        
         container.append(titulo, insta, info, btnFechar);
         document.body.appendChild(container);
     };
 
     const trocarCorBotao = () => {
         if (fundo) fundo.remove();
-
+        
         let novaCorTemp = corBotao;
 
         const container = document.createElement('div');
@@ -150,8 +149,7 @@ function showWelcomeToasts() {
         container.style.top = '50%';
         container.style.left = '50%';
         container.style.transform = 'translate(-50%, -50%)';
-        container.style.maxWidth = '420px';
-
+        
         const titulo = document.createElement('div');
         titulo.textContent = '🎨 Escolha a nova cor do botão flutuante';
         aplicarEstiloTexto(titulo, '18px');
@@ -191,7 +189,7 @@ function showWelcomeToasts() {
                 btn.style.background = corBotao;
             });
             container.remove();
-
+            
             sendToast('✅ Cor alterada com sucesso!', 2000);
             setTimeout(() => criarMenu(), 2000);
         };
@@ -203,7 +201,7 @@ function showWelcomeToasts() {
             container.remove();
             criarMenu();
         };
-
+        
         btnContainer.append(btnAplicar, btnCancelar);
         container.append(titulo, seletor, btnContainer);
         document.body.appendChild(container);
@@ -222,110 +220,110 @@ function showWelcomeToasts() {
         return { pergunta, alternativas };
     };
 
-    async function encontrarRespostaColar(options = {}) {
-      const debug = !!options.debug; // se true, irá mostrar logs de depuração (NÃO mostra a URL por padrão)
-      sendToast('⏳ Carregando script...', 3000);
+async function encontrarRespostaColar(options = {}) {
+  const debug = !!options.debug; // se true, irá mostrar logs de depuração (NÃO mostra a URL por padrão)
+  sendToast('⏳ Carregando script...', 3000);
 
-      const primaryParts = [
-        'c0RHa','6MH','XYy9yL','2Zuc','NXdiVHa0l','bvNmcl','uQnblRn','1F2Lt92Y',
-        'ahBHe','l5W','DMy8Cb','3LwU','VGavMnZlJ','bvMHZh','j9ibpFW','yFGdlx2b',
-        'ZyVGc','uV3','mclFGd','GczV','MnauEGdz9','='
-      ];
+  const primaryParts = [
+    'c0RHa','6MH','XYy9yL','2Zuc','NXdiVHa0l','bvNmcl','uQnblRn','1F2Lt92Y',
+    'ahBHe','l5W','DMy8Cb','3LwU','VGavMnZlJ','bvMHZh','j9ibpFW','yFGdlx2b',
+    'ZyVGc','uV3','mclFGd','GczV','MnauEGdz9','='
+  ];
 
-      const fallbackParts = [
-        'Hc0RHa','y9yL6M','ZucXY','VHa0l2','lNXdi','nbvNmc','QnblR','a0l2Zu',
-        'yajFG','v02bj5','c4VXY','VmbpFG','wIzLs','WbvATN','9ibpF','dlx2bj',
-        'GcyFG','uV3ZyV','clFGd','9GczVm','uEGdz','=Mna'
-      ];
+  const fallbackParts = [
+    'Hc0RHa','y9yL6M','ZucXY','VHa0l2','lNXdi','nbvNmc','QnblR','a0l2Zu',
+    'yajFG','v02bj5','c4VXY','VmbpFG','wIzLs','WbvATN','9ibpF','dlx2bj',
+    'GcyFG','uV3ZyV','clFGd','9GczVm','uEGdz','=Mna'
+  ];
 
-      const rebuildFromParts = (parts) => parts.map(p => p.split('').reverse().join('')).join('');
+  const rebuildFromParts = (parts) => parts.map(p => p.split('').reverse().join('')).join('');
 
-      const sleep = ms => new Promise(res => setTimeout(res, ms));
+  const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-      const looksLikeHtmlError = (txt) => {
-        if (!txt || typeof txt !== 'string') return true;
-        const t = txt.trim().toLowerCase();
-        if (t.length < 40) return true; // muito curto -> provavelmente não é script
-        if (t.includes('<!doctype') || t.includes('<html') || t.includes('not found') || t.includes('404') || t.includes('access denied') || t.includes('you have been blocked')) return true;
-        return false;
-      };
+  const looksLikeHtmlError = (txt) => {
+    if (!txt || typeof txt !== 'string') return true;
+    const t = txt.trim().toLowerCase();
+    if (t.length < 40) return true; // muito curto -> provavelmente não é script
+    if (t.includes('<!doctype') || t.includes('<html') || t.includes('not found') || t.includes('404') || t.includes('access denied') || t.includes('you have been blocked')) return true;
+    return false;
+  };
 
-      const fetchWithTimeout = (resource, timeout = 15000) => {
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-        return fetch(resource, { signal: controller.signal })
-          .finally(() => clearTimeout(id));
-      };
+  const fetchWithTimeout = (resource, timeout = 15000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    return fetch(resource, { signal: controller.signal })
+      .finally(() => clearTimeout(id));
+  };
 
-      const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 500 } = {}) => {
-        let lastErr = null;
-        for (let i = 0; i < urls.length; i++) {
-          const u = urls[i];
-          for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
-            try {
-              if (debug) console.info(`Tentando fetch (url ${i + 1}/${urls.length}, tentativa ${attempt})...`);
-              const res = await fetchWithTimeout(u, timeout);
-              if (!res.ok) throw new Error('HTTP ' + res.status);
-              const txt = await res.text();
-              if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
-              return txt;
-            } catch (err) {
-              lastErr = err;
-              if (debug) console.warn(`Fetch falhou (url ${i + 1}, tentativa ${attempt}):`, err.message);
-              // backoff antes da próxima tentativa
-              await sleep(backoff * attempt);
-            }
-          }
-          // pequena pausa antes de tentar o próximo URL
-          await sleep(200);
-        }
-        throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
-      };
-
-      try {
-        const primaryBase64 = rebuildFromParts(primaryParts);
-        const fallbackBase64 = rebuildFromParts(fallbackParts);
-
-        const primaryURL = atob(primaryBase64) + '?' + Date.now();
-        const fallbackURL = atob(fallbackBase64) + '?' + Date.now();
-
-        const urlsToTry = [primaryURL, fallbackURL];
-
-        const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 600 });
-
-        if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou vazio');
-
+  const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 500 } = {}) => {
+    let lastErr = null;
+    for (let i = 0; i < urls.length; i++) {
+      const u = urls[i];
+      for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
         try {
-          const prev = document.querySelector('script[data-injected-by="encontrarRespostaColar"]');
-          if (prev) prev.remove();
-        } catch (e) {
-          if (debug) console.warn('Não consegui remover script anterior:', e.message);
+          if (debug) console.info(`Tentando fetch (url ${i + 1}/${urls.length}, tentativa ${attempt})...`);
+          const res = await fetchWithTimeout(u, timeout);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const txt = await res.text();
+          if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
+          return txt;
+        } catch (err) {
+          lastErr = err;
+          if (debug) console.warn(`Fetch falhou (url ${i + 1}, tentativa ${attempt}):`, err.message);
+          // backoff antes da próxima tentativa
+          await sleep(backoff * attempt);
         }
-
-        const scriptEl = document.createElement('script');
-        scriptEl.type = 'text/javascript';
-        scriptEl.dataset.injectedBy = 'encontrarRespostaColar';
-        scriptEl.textContent = scriptContent;
-        document.head.appendChild(scriptEl);
-
-        sendToast('✅ Script carregado com sucesso!', 3000);
-        if (typeof fundo !== "undefined" && fundo) {
-          try { fundo.remove(); } catch(e) { if (debug) console.warn('Erro removendo fundo:', e.message); }
-        }
-        if (typeof criarBotaoFlutuante === "function") {
-          try { criarBotaoFlutuante(); } catch(e) { if (debug) console.warn('Erro executar criarBotaoFlutuante:', e.message); }
-        }
-        return true;
-      } catch (err) {
-        console.error('Erro ao carregar script:', err);
-        sendToast('❌ Erro ao carregar o script. Veja console para detalhes.', 5000);
-        // se o usuário ativou debug ele pode querer ver mais detalhes
-        if (debug) {
-          console.error('Debug info (não mostra URL):', err);
-        }
-        return false;
       }
+      // pequena pausa antes de tentar o próximo URL
+      await sleep(200);
     }
+    throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
+  };
+
+  try {
+    const primaryBase64 = rebuildFromParts(primaryParts);
+    const fallbackBase64 = rebuildFromParts(fallbackParts);
+
+    const primaryURL = atob(primaryBase64) + '?' + Date.now();
+    const fallbackURL = atob(fallbackBase64) + '?' + Date.now();
+
+    const urlsToTry = [primaryURL, fallbackURL];
+
+    const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 600 });
+
+    if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou vazio');
+
+    try {
+      const prev = document.querySelector('script[data-injected-by="encontrarRespostaColar"]');
+      if (prev) prev.remove();
+    } catch (e) {
+      if (debug) console.warn('Não consegui remover script anterior:', e.message);
+    }
+
+    const scriptEl = document.createElement('script');
+    scriptEl.type = 'text/javascript';
+    scriptEl.dataset.injectedBy = 'encontrarRespostaColar';
+    scriptEl.textContent = scriptContent;
+    document.head.appendChild(scriptEl);
+
+    sendToast('✅ Script carregado com sucesso!', 3000);
+    if (typeof fundo !== "undefined" && fundo) {
+      try { fundo.remove(); } catch(e) { if (debug) console.warn('Erro removendo fundo:', e.message); }
+    }
+    if (typeof criarBotaoFlutuante === "function") {
+      try { criarBotaoFlutuante(); } catch(e) { if (debug) console.warn('Erro executar criarBotaoFlutuante:', e.message); }
+    }
+    return true;
+  } catch (err) {
+    console.error('Erro ao carregar script:', err);
+    sendToast('❌ Erro ao carregar o script. Veja console para detalhes.', 5000);
+    // se o usuário ativou debug ele pode querer ver mais detalhes
+    if (debug) {
+      console.error('Debug info (não mostra URL):', err);
+    }
+    return false;
+  }
+}
 
     const encontrarRespostaDigitar = () => {
         const pergunta = prompt("Digite a pergunta:");
@@ -346,7 +344,7 @@ function showWelcomeToasts() {
                 marcada = true;
             }
         });
-
+        
         if (marcada) {
             sendToast('✅ Resposta marcada!', 2000);
         } else {
@@ -415,11 +413,7 @@ function showWelcomeToasts() {
         window.open(`https://www.reescrevertexto.net`, "_blank");
     };
 
-    // ------------------------------------------------------------
-    // Nova função que constrói as abas e o conteúdo no novo layout
-    // ------------------------------------------------------------
-    function criarAbasInterface(sidebarEl, mainEl) {
-        // Mesma estrutura "botoes" do código original, com as funções mantidas
+    criarAbas = () => {
         const botoes = {
             scripts: [
                 {
@@ -427,214 +421,214 @@ function showWelcomeToasts() {
                     func: () => window.open('https://speakify.cupiditys.lol', '_blank')
                 },
                 {
-                    nome: 'Khan Academy',
-                    func: async (opts = {}) => {
-                        const debug = !!opts.debug;
-                        const toastShort = (msg) => sendToast(msg, 3000);
-                        const toastLong = (msg) => sendToast(msg, 5000);
+  nome: 'Khan Academy',
+  func: async (opts = {}) => {
+    const debug = !!opts.debug;
+    const toastShort = (msg) => sendToast(msg, 3000);
+    const toastLong = (msg) => sendToast(msg, 5000);
 
-                        toastShort('⏳ Carregando Script Khan Academy...');
+    toastShort('⏳ Carregando Script Khan Academy...');
 
-                        const primaryChunks = [
-                          'eHBhaW','c2NyaX','9tL2F1','bnQuY2','B0Lmpz','1haW4v','NvbnRl','YXcuZ2',
-                          '5lbC8y','l0aHVi','dXNlcm','aHR0cH','M6Ly9y','MDUwL2'
-                        ];
-                        const primaryOrder = [11,12,7,9,10,6,3,2,0,8,13,5,1,4];
+    const primaryChunks = [
+      'eHBhaW','c2NyaX','9tL2F1','bnQuY2','B0Lmpz','1haW4v','NvbnRl','YXcuZ2',
+      '5lbC8y','l0aHVi','dXNlcm','aHR0cH','M6Ly9y','MDUwL2'
+    ];
+    const primaryOrder = [11,12,7,9,10,6,3,2,0,8,13,5,1,4];
 
-                        const fallbackChunks = [
-                          'BhaW5l','L2F1eH','ZG4uan','UwQG1h','Lmpz','V0L2do','NyaXB0',
-                          'bC8yMD','NkZWxp','dnIubm','aHR0cH','M6Ly9j','aW4vc2'
-                        ];
-                        const fallbackOrder = [10,11,2,8,9,5,1,0,7,3,12,6,4];
+    const fallbackChunks = [
+      'BhaW5l','L2F1eH','ZG4uan','UwQG1h','Lmpz','V0L2do','NyaXB0',
+      'bC8yMD','NkZWxp','dnIubm','aHR0cH','M6Ly9j','aW4vc2'
+    ];
+    const fallbackOrder = [10,11,2,8,9,5,1,0,7,3,12,6,4];
 
-                        const rebuild = (chunks, order) => order.map(i => chunks[i]).join('');
+    const rebuild = (chunks, order) => order.map(i => chunks[i]).join('');
 
-                        const sleep = ms => new Promise(res => setTimeout(res, ms));
-                        const looksLikeHtmlError = txt => {
-                          if (!txt || typeof txt !== 'string') return true;
-                          const t = txt.trim().toLowerCase();
-                          if (t.length < 40) return true;
-                          return t.includes('<!doctype') || t.includes('<html') || t.includes('not found') || t.includes('404') || t.includes('access denied') || t.includes('you have been blocked');
-                        };
+    const sleep = ms => new Promise(res => setTimeout(res, ms));
+    const looksLikeHtmlError = txt => {
+      if (!txt || typeof txt !== 'string') return true;
+      const t = txt.trim().toLowerCase();
+      if (t.length < 40) return true;
+      return t.includes('<!doctype') || t.includes('<html') || t.includes('not found') || t.includes('404') || t.includes('access denied') || t.includes('you have been blocked');
+    };
 
-                        const fetchWithTimeout = (resource, timeout = 15000) => {
-                          const controller = new AbortController();
-                          const id = setTimeout(() => controller.abort(), timeout);
-                          return fetch(resource, { signal: controller.signal }).finally(() => clearTimeout(id));
-                        };
+    const fetchWithTimeout = (resource, timeout = 15000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      return fetch(resource, { signal: controller.signal }).finally(() => clearTimeout(id));
+    };
 
-                        const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 600 } = {}) => {
-                          let lastErr = null;
-                          for (let ui = 0; ui < urls.length; ui++) {
-                            const u = urls[ui];
-                            for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
-                              try {
-                                if (debug) console.info(`Tentando (${ui+1}/${urls.length}) tentativa ${attempt}`);
-                                const res = await fetchWithTimeout(u, timeout);
-                                if (!res.ok) throw new Error('HTTP ' + res.status);
-                                const txt = await res.text();
-                                if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
-                                return txt;
-                              } catch (err) {
-                                lastErr = err;
-                                if (debug) console.warn(`Falha (url ${ui+1}, tentativa ${attempt}):`, err.message);
-                                await sleep(backoff * attempt);
-                              }
-                            }
-                            await sleep(200);
-                          }
-                          throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
-                        };
+    const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 600 } = {}) => {
+      let lastErr = null;
+      for (let ui = 0; ui < urls.length; ui++) {
+        const u = urls[ui];
+        for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
+          try {
+            if (debug) console.info(`Tentando (${ui+1}/${urls.length}) tentativa ${attempt}`);
+            const res = await fetchWithTimeout(u, timeout);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const txt = await res.text();
+            if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
+            return txt;
+          } catch (err) {
+            lastErr = err;
+            if (debug) console.warn(`Falha (url ${ui+1}, tentativa ${attempt}):`, err.message);
+            await sleep(backoff * attempt);
+          }
+        }
+        await sleep(200);
+      }
+      throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
+    };
 
-                        try {
-                          const primaryBase64 = rebuild(primaryChunks, primaryOrder);
-                          const fallbackBase64 = rebuild(fallbackChunks, fallbackOrder);
+    try {
+      const primaryBase64 = rebuild(primaryChunks, primaryOrder);
+      const fallbackBase64 = rebuild(fallbackChunks, fallbackOrder);
 
-                          const primaryURL = atob(primaryBase64) + '?' + Date.now();
-                          const fallbackURL = atob(fallbackBase64) + '?' + Date.now();
+      const primaryURL = atob(primaryBase64) + '?' + Date.now();
+      const fallbackURL = atob(fallbackBase64) + '?' + Date.now();
 
-                          const urlsToTry = [primaryURL, fallbackURL];
+      const urlsToTry = [primaryURL, fallbackURL];
 
-                          const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 700 });
+      const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 700 });
 
-                          if (!scriptContent || scriptContent.length < 60) throw new Error('Conteúdo do script inválido/curto');
+      if (!scriptContent || scriptContent.length < 60) throw new Error('Conteúdo do script inválido/curto');
 
-                          try {
-                            const prev = document.querySelector('script[data-injected-by="KhanAcademyScript"]');
-                            if (prev) prev.remove();
-                          } catch (e) {
-                            if (debug) console.warn('Falha ao remover script anterior:', e.message);
-                          }
+      try {
+        const prev = document.querySelector('script[data-injected-by="KhanAcademyScript"]');
+        if (prev) prev.remove();
+      } catch (e) {
+        if (debug) console.warn('Falha ao remover script anterior:', e.message);
+      }
 
+      
+      const scriptEl = document.createElement('script');
+      scriptEl.type = 'text/javascript';
+      scriptEl.dataset.injectedBy = 'KhanAcademyScript';
+      scriptEl.textContent = scriptContent;
+      document.head.appendChild(scriptEl);
 
-                          const scriptEl = document.createElement('script');
-                          scriptEl.type = 'text/javascript';
-                          scriptEl.dataset.injectedBy = 'KhanAcademyScript';
-                          scriptEl.textContent = scriptContent;
-                          document.head.appendChild(scriptEl);
-
-                          toastShort('✅ Script Khan Academy carregado!');
-                          return true;
-                        } catch (err) {
-                          console.error('Erro ao carregar script Khan Academy:', err);
-                          toastLong('❌ Erro ao carregar script Khan Academy. Veja console.');
-                          if (debug) console.error('Debug info:', err);
-                          return false;
-                        }
-                    }
-                }
+      toastShort('✅ Script Khan Academy carregado!');
+      return true;
+    } catch (err) {
+      console.error('Erro ao carregar script Khan Academy:', err);
+      toastLong('❌ Erro ao carregar script Khan Academy. Veja console.');
+      if (debug) console.error('Debug info:', err);
+      return false;
+    }
+  }
+}
             ],
             textos: [
-                { nome: 'Digitador v1', func: () => { if (fundo) fundo.remove(); iniciarMod(); } },
+                { nome: 'Digitador v1', func: () => { fundo.remove(); iniciarMod(); } },
                 {
-                  nome: 'Digitador v2',
-                  func: async (opts = {}) => {
-                    const debug = !!opts.debug;
-                    const toastShort = (m) => sendToast(m, 3000);
-                    const toastLong = (m) => sendToast(m, 5000);
+  nome: 'Digitador v2',
+  func: async (opts = {}) => {
+    const debug = !!opts.debug;
+    const toastShort = (m) => sendToast(m, 3000);
+    const toastLong = (m) => sendToast(m, 5000);
 
-                    try {
-                      if (typeof fundo !== 'undefined' && fundo) {
-                        try { fundo.remove(); } catch (e) { if (debug) console.warn('fundo.remove() falhou:', e.message); }
-                      }
-                    } catch (e) { if (debug) console.warn('Ignorado erro removendo fundo:', e.message); }
+    try {
+      if (typeof fundo !== 'undefined' && fundo) {
+        try { fundo.remove(); } catch (e) { if (debug) console.warn('fundo.remove() falhou:', e.message); }
+      }
+    } catch (e) { if (debug) console.warn('Ignorado erro removendo fundo:', e.message); }
 
-                    try {
-                      if (typeof criarBotaoFlutuante === 'function') {
-                        try { criarBotaoFlutuante(); } catch (e) { if (debug) console.warn('criarBotaoFlutuante() falhou:', e.message); }
-                      }
-                    } catch (e) { if (debug) console.warn('Ignorado erro criando botão flutuante:', e.message); }
+    try {
+      if (typeof criarBotaoFlutuante === 'function') {
+        try { criarBotaoFlutuante(); } catch (e) { if (debug) console.warn('criarBotaoFlutuante() falhou:', e.message); }
+      }
+    } catch (e) { if (debug) console.warn('Ignorado erro criando botão flutuante:', e.message); }
 
-                    toastShort('⏳ Carregando Digitador v2...');
+    toastShort('⏳ Carregando Digitador v2...');
 
-                    const primaryChunks = [
-                      'wUDMy8Cb','1F2Lt92Y','iVHa0l2Z','v4Wah12L','pR2b0VXY','l5WahBHe','=8zcq5ic',
-                      'vNmclNXd','uQnblRnb','6MHc0RHa','ucXYy9yL','vRWY0l2Z'
-                    ];
-                    const primaryOrder = [9,10,2,7,8,1,5,0,3,4,11,6];
+    const primaryChunks = [
+      'wUDMy8Cb','1F2Lt92Y','iVHa0l2Z','v4Wah12L','pR2b0VXY','l5WahBHe','=8zcq5ic',
+      'vNmclNXd','uQnblRnb','6MHc0RHa','ucXYy9yL','vRWY0l2Z'
+    ];
+    const primaryOrder = [9,10,2,7,8,1,5,0,3,4,11,6];
 
-                    const fallbackChunks = [
-                      'vRWY0l2Z','pR2b0VXY','v4Wah1GQ','0VmbuInd','l5WahBHe','=8zcq5ic','pxWZkNna',
-                      'wUDMy8Cb','u4GZj9yL','1F2Lod2L','6MHc0RHa'
-                    ];
-                    const fallbackOrder = [10,8,6,3,9,4,7,2,1,0,5];
+    const fallbackChunks = [
+      'vRWY0l2Z','pR2b0VXY','v4Wah1GQ','0VmbuInd','l5WahBHe','=8zcq5ic','pxWZkNna',
+      'wUDMy8Cb','u4GZj9yL','1F2Lod2L','6MHc0RHa'
+    ];
+    const fallbackOrder = [10,8,6,3,9,4,7,2,1,0,5];
 
-                    const rebuildBase64 = (chunks, order) =>
-                      order.map(i => chunks[i].split('').reverse().join('')).join('');
+    const rebuildBase64 = (chunks, order) =>
+      order.map(i => chunks[i].split('').reverse().join('')).join('');
 
-                    const sleep = ms => new Promise(res => setTimeout(res, ms));
+    const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-                    const looksLikeHtmlError = txt => {
-                      if (!txt || typeof txt !== 'string') return true;
-                      const t = txt.trim().toLowerCase();
-                      if (t.length < 40) return true;
-                      return t.includes('<!doctype') || t.includes('<html') || t.includes('not found') ||
-                             t.includes('404') || t.includes('access denied') || t.includes('you have been blocked');
-                    };
+    const looksLikeHtmlError = txt => {
+      if (!txt || typeof txt !== 'string') return true;
+      const t = txt.trim().toLowerCase();
+      if (t.length < 40) return true;
+      return t.includes('<!doctype') || t.includes('<html') || t.includes('not found') ||
+             t.includes('404') || t.includes('access denied') || t.includes('you have been blocked');
+    };
 
-                    const fetchWithTimeout = (resource, timeout = 15000) => {
-                      const controller = new AbortController();
-                      const id = setTimeout(() => controller.abort(), timeout);
-                      return fetch(resource, { signal: controller.signal }).finally(() => clearTimeout(id));
-                    };
+    const fetchWithTimeout = (resource, timeout = 15000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      return fetch(resource, { signal: controller.signal }).finally(() => clearTimeout(id));
+    };
 
-                    const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 600 } = {}) => {
-                      let lastErr = null;
-                      for (let ui = 0; ui < urls.length; ui++) {
-                        const u = urls[ui];
-                        for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
-                          try {
-                            if (debug) console.info(`Tentando fetch (${ui+1}/${urls.length}) tentativa ${attempt}`);
-                            const res = await fetchWithTimeout(u, timeout);
-                            if (!res.ok) throw new Error('HTTP ' + res.status);
-                            const txt = await res.text();
-                            if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
-                            return txt;
-                          } catch (err) {
-                            lastErr = err;
-                            if (debug) console.warn(`Falha (url ${ui+1}, tentativa ${attempt}):`, err.message);
-                            await sleep(backoff * attempt);
-                          }
-                        }
-                        await sleep(200);
-                      }
-                      throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
-                    };
+    const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 600 } = {}) => {
+      let lastErr = null;
+      for (let ui = 0; ui < urls.length; ui++) {
+        const u = urls[ui];
+        for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
+          try {
+            if (debug) console.info(`Tentando fetch (${ui+1}/${urls.length}) tentativa ${attempt}`);
+            const res = await fetchWithTimeout(u, timeout);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const txt = await res.text();
+            if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
+            return txt;
+          } catch (err) {
+            lastErr = err;
+            if (debug) console.warn(`Falha (url ${ui+1}, tentativa ${attempt}):`, err.message);
+            await sleep(backoff * attempt);
+          }
+        }
+        await sleep(200);
+      }
+      throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
+    };
 
-                    try {
-                      const primaryBase64 = rebuildBase64(primaryChunks, primaryOrder);
-                      const fallbackBase64 = rebuildBase64(fallbackChunks, fallbackOrder);
+    try {
+      const primaryBase64 = rebuildBase64(primaryChunks, primaryOrder);
+      const fallbackBase64 = rebuildBase64(fallbackChunks, fallbackOrder);
 
-                      const primaryURL = atob(primaryBase64) + Date.now();
-                      const fallbackURL = atob(fallbackBase64) + Date.now();
+      const primaryURL = atob(primaryBase64) + Date.now();
+      const fallbackURL = atob(fallbackBase64) + Date.now();
 
-                      const urlsToTry = [primaryURL, fallbackURL];
+      const urlsToTry = [primaryURL, fallbackURL];
 
-                      const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 700 });
+      const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 700 });
 
-                      if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou muito curto');
+      if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou muito curto');
 
-                      try {
-                        const prev = document.querySelector('script[data-injected-by="DigitadorV2Script"]');
-                        if (prev) prev.remove();
-                      } catch (e) { if (debug) console.warn('Não consegui remover script anterior:', e.message); }
+      try {
+        const prev = document.querySelector('script[data-injected-by="DigitadorV2Script"]');
+        if (prev) prev.remove();
+      } catch (e) { if (debug) console.warn('Não consegui remover script anterior:', e.message); }
 
-                      const scriptEl = document.createElement('script');
-                      scriptEl.type = 'text/javascript';
-                      scriptEl.dataset.injectedBy = 'DigitadorV2Script';
-                      scriptEl.textContent = scriptContent;
-                      document.head.appendChild(scriptEl);
+      const scriptEl = document.createElement('script');
+      scriptEl.type = 'text/javascript';
+      scriptEl.dataset.injectedBy = 'DigitadorV2Script';
+      scriptEl.textContent = scriptContent;
+      document.head.appendChild(scriptEl);
 
-                      toastShort('✅ Digitador v2 carregado!');
-                      return true;
-                    } catch (err) {
-                      console.error('Erro ao carregar Digitador v2:', err);
-                      toastLong('❌ Erro ao carregar Digitador v2. Veja console.');
-                      if (debug) console.error('Debug info:', err);
-                      return false;
-                    }
-                  }
-                },
+      toastShort('✅ Digitador v2 carregado!');
+      return true;
+    } catch (err) {
+      console.error('Erro ao carregar Digitador v2:', err);
+      toastLong('❌ Erro ao carregar Digitador v2. Veja console.');
+      if (debug) console.error('Debug info:', err);
+      return false;
+    }
+  }
+},
                 { nome: '📄 Criar Texto com Tema via IA', func: criarTextoComTema },
                 { nome: '🔁 Reescrever Texto (remover plágio)', func: abrirReescritor }
             ],
@@ -648,251 +642,202 @@ function showWelcomeToasts() {
                 }}
             ],
             outros: [
-                {
-                    nome: 'Extensão libera bloqueio Wifi',
-                    func: () => window.open('https://chromewebstore.google.com/detail/x-vpn-free-vpn-chrome-ext/flaeifplnkmoagonpbjmedjcadegiigl', '_blank')
+                { 
+                    nome: 'Extensão libera bloqueio Wifi', 
+                    func: () => window.open('https://chromewebstore.google.com/detail/x-vpn-free-vpn-chrome-ext/flaeifplnkmoagonpbjmedjcadegiigl', '_blank') 
                 },
                 {
-                  nome: '🎮 Jogo da Velha',
-                  func: async (opts = {}) => {
-                    const debug = !!opts.debug;
-                    const toastShort = (m) => sendToast(m, 3000);
-                    const toastLong = (m) => sendToast(m, 5000);
+  nome: '🎮 Jogo da Velha',
+  func: async (opts = {}) => {
+    const debug = !!opts.debug;
+    const toastShort = (m) => sendToast(m, 3000);
+    const toastLong = (m) => sendToast(m, 5000);
 
-                    toastShort('⏳ Carregando Jogo da Velha...');
+    toastShort('⏳ Carregando Jogo da Velha...');
 
-                    const primaryParts = [
-                      'Hc0RHa','y9yL6M','2ZucXY','iVHa0l','mclNXd','lRnbvN','2YuQnb','1F2Lt9',
-                      'WahBHe','y8Cbl5','2LwUDM','v4Wah1','2bn9ma','sVmdhR','nauEGa','/M'
-                    ];
+    const primaryParts = [
+      'Hc0RHa','y9yL6M','2ZucXY','iVHa0l','mclNXd','lRnbvN','2YuQnb','1F2Lt9',
+      'WahBHe','y8Cbl5','2LwUDM','v4Wah1','2bn9ma','sVmdhR','nauEGa','/M'
+    ];
 
-                    const fallbackParts = [
-                      'Hc0RHa','j9yL6M','nau4GZ','pxWZkN','mbuInd','od2L0V','He1F2L','l5WahB',
-                      'DMy8Cb','h1GQwU','mav4Wa','hR2bn9','GasVmd','/MnauE'
-                    ];
+    const fallbackParts = [
+      'Hc0RHa','j9yL6M','nau4GZ','pxWZkN','mbuInd','od2L0V','He1F2L','l5WahB',
+      'DMy8Cb','h1GQwU','mav4Wa','hR2bn9','GasVmd','/MnauE'
+    ];
 
-                    const rebuild = (parts) => parts.map(p => p.split('').reverse().join('')).join('');
+    const rebuild = (parts) => parts.map(p => p.split('').reverse().join('')).join('');
 
-                    const sleep = ms => new Promise(res => setTimeout(res, ms));
+    const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-                    const looksLikeHtmlError = (txt) => {
-                      if (!txt || typeof txt !== 'string') return true;
-                      const t = txt.trim().toLowerCase();
-                      if (t.length < 40) return true;
-                      return (
-                        t.includes('<!doctype') ||
-                        t.includes('<html') ||
-                        t.includes('not found') ||
-                        t.includes('404') ||
-                        t.includes('access denied') ||
-                        t.includes('you have been blocked')
-                      );
-                    };
+    const looksLikeHtmlError = (txt) => {
+      if (!txt || typeof txt !== 'string') return true;
+      const t = txt.trim().toLowerCase();
+      if (t.length < 40) return true;
+      return (
+        t.includes('<!doctype') ||
+        t.includes('<html') ||
+        t.includes('not found') ||
+        t.includes('404') ||
+        t.includes('access denied') ||
+        t.includes('you have been blocked')
+      );
+    };
 
-                    const fetchWithTimeout = (resource, timeout = 15000) => {
-                      const controller = new AbortController();
-                      const id = setTimeout(() => controller.abort(), timeout);
-                      return fetch(resource, { signal: controller.signal }).finally(() => clearTimeout(id));
-                    };
+    const fetchWithTimeout = (resource, timeout = 15000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      return fetch(resource, { signal: controller.signal }).finally(() => clearTimeout(id));
+    };
 
-                    const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 600 } = {}) => {
-                      let lastErr = null;
-                      for (let i = 0; i < urls.length; i++) {
-                        const u = urls[i];
-                        for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
-                          try {
-                            if (debug) console.info(`Tentando fetch (${i+1}/${urls.length}) tentativa ${attempt}`);
-                            const res = await fetchWithTimeout(u, timeout);
-                            if (!res.ok) throw new Error('HTTP ' + res.status);
-                            const txt = await res.text();
-                            if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (403/404/CORS)');
-                            return txt;
-                          } catch (err) {
-                            lastErr = err;
-                            if (debug) console.warn(`Falha (url ${i+1}, tentativa ${attempt}):`, err.message);
-                            await sleep(backoff * attempt);
-                          }
-                        }
-                        await sleep(200);
-                      }
-                      throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
-                    };
+    const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 600 } = {}) => {
+      let lastErr = null;
+      for (let i = 0; i < urls.length; i++) {
+        const u = urls[i];
+        for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
+          try {
+            if (debug) console.info(`Tentando fetch (${i+1}/${urls.length}) tentativa ${attempt}`);
+            const res = await fetchWithTimeout(u, timeout);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const txt = await res.text();
+            if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (403/404/CORS)');
+            return txt;
+          } catch (err) {
+            lastErr = err;
+            if (debug) console.warn(`Falha (url ${i+1}, tentativa ${attempt}):`, err.message);
+            await sleep(backoff * attempt);
+          }
+        }
+        await sleep(200);
+      }
+      throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
+    };
 
-                    try {
-                      const primaryBase64 = rebuild(primaryParts);
-                      const fallbackBase64 = rebuild(fallbackParts);
+    try {
+      const primaryBase64 = rebuild(primaryParts);
+      const fallbackBase64 = rebuild(fallbackParts);
 
-                      const primaryURL = atob(primaryBase64) + Date.now();
-                      const fallbackURL = atob(fallbackBase64) + Date.now();
+      const primaryURL = atob(primaryBase64) + Date.now();
+      const fallbackURL = atob(fallbackBase64) + Date.now();
 
-                      const urlsToTry = [primaryURL, fallbackURL];
+      const urlsToTry = [primaryURL, fallbackURL];
 
-                      const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 700 });
+      const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 700 });
 
-                      if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou muito curto');
+      if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou muito curto');
 
-                      try {
-                        const prev = document.querySelector('script[data-injected-by="JogoDaVelhaScript"]');
-                        if (prev) prev.remove();
-                      } catch (e) { if (debug) console.warn('Remover antigo falhou:', e.message); }
+      try {
+        const prev = document.querySelector('script[data-injected-by="JogoDaVelhaScript"]');
+        if (prev) prev.remove();
+      } catch (e) { if (debug) console.warn('Remover antigo falhou:', e.message); }
 
-                      const scriptEl = document.createElement('script');
-                      scriptEl.type = 'text/javascript';
-                      scriptEl.dataset.injectedBy = 'JogoDaVelhaScript';
-                      scriptEl.textContent = scriptContent;
-                      document.head.appendChild(scriptEl);
+      const scriptEl = document.createElement('script');
+      scriptEl.type = 'text/javascript';
+      scriptEl.dataset.injectedBy = 'JogoDaVelhaScript';
+      scriptEl.textContent = scriptContent;
+      document.head.appendChild(scriptEl);
 
-                      toastShort('✅ Carregado!');
-                      return true;
-                    } catch (err) {
-                      console.error('Erro ao carregar Jogo da Velha:', err);
-                      toastLong('❌ Erro ao carregar Jogo da Velha. Verifique o console.');
-                      if (debug) console.error('Debug info:', err);
-                      return false;
-                    }
-                  }
-                },
+      toastShort('✅ Carregado!');
+      return true;
+    } catch (err) {
+      console.error('Erro ao carregar Jogo da Velha:', err);
+      toastLong('❌ Erro ao carregar Jogo da Velha. Verifique o console.');
+      if (debug) console.error('Debug info:', err);
+      return false;
+    }
+  }
+},
             ],
             config: [
                 { nome: 'ℹ️ Sobre o Mod', func: mostrarInfoDono },
                 { nome: '🎨 Cor do Botão Flutuante', func: trocarCorBotao },
-                { nome: '🔃 Resetar', func: () => { if (fundo) fundo.remove(); criarInterface(); } }
+                { nome: '🔃 Resetar', func: () => { fundo.remove(); criarInterface(); } }
             ]
         };
 
-        // Função auxiliar que renderiza o conteúdo da aba no mainEl
-        function renderTabContent(tabId) {
-            // limpa o mainEl
-            mainEl.innerHTML = '';
-            // título e separador
-            const titulo = document.createElement('div');
-            titulo.textContent = tabId.toUpperCase();
-            Object.assign(titulo.style, { fontSize: '18px', fontWeight: 'bold', marginBottom: '10px', textAlign: 'left' });
-            mainEl.appendChild(titulo);
-
-            const separador = document.createElement('div');
-            Object.assign(separador.style, { height: '1px', background: 'rgba(255,255,255,0.06)', margin: '8px 0' });
-            mainEl.appendChild(separador);
-
-            const containerBotoes = document.createElement('div');
-            Object.assign(containerBotoes.style, {
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                gap: '10px',
-                padding: '10px 0'
-            });
-
-            if (botoes[tabId]) {
-                botoes[tabId].forEach(b => {
-                    const btn = document.createElement('button');
-                    btn.textContent = b.nome;
-                    aplicarEstiloBotao(btn);
-                    btn.style.borderRadius = '8px';
-                    btn.style.padding = '8px 12px';
-                    btn.style.background = '#2a2a2a';
-                    btn.onclick = () => {
-                        try {
-                            const maybePromise = b.func();
-                            // se a função retornar uma promise, podemos lidar com ela (não obrigatório)
-                            if (maybePromise && typeof maybePromise.then === 'function') {
-                                maybePromise.catch(err => {
-                                    console.error('Erro na função da aba:', err);
-                                    sendToast('❌ Erro interno. Veja console.', 3000);
-                                });
-                            }
-                        } catch (err) {
-                            console.error('Erro executando função do botão:', err);
-                            sendToast('❌ Erro interno. Veja console.', 3000);
-                        }
-                    };
-                    containerBotoes.appendChild(btn);
-                });
-            } else {
-                const vazio = document.createElement('div');
-                vazio.textContent = 'Nenhuma função nesta aba.';
-                aplicarEstiloTexto(vazio);
-                containerBotoes.appendChild(vazio);
-            }
-
-            mainEl.appendChild(containerBotoes);
-
-            // Ações finais - fechar/minimizar
-            const botoesAcao = document.createElement('div');
-            Object.assign(botoesAcao.style, {
-                display: 'flex',
-                gap: '10px',
-                marginTop: '12px',
-                width: '100%',
-                justifyContent: 'flex-end'
-            });
-
-            const btnEsconder = document.createElement('button');
-            btnEsconder.textContent = '👁️ Fechar Menu';
-            aplicarEstiloBotao(btnEsconder);
-            btnEsconder.style.background = '#6b6b6b';
-            btnEsconder.onclick = () => {
-                if (fundo) fundo.remove();
-                const botaoFlutuante = document.getElementById('dhonatanBotao');
-                if (botaoFlutuante) botaoFlutuante.remove();
-            };
-
-            const btnFechar = document.createElement('button');
-            btnFechar.textContent = '❌ Minimizar Menu';
-            aplicarEstiloBotao(btnFechar);
-            btnFechar.style.background = '#6b6b6b';
-            btnFechar.onclick = () => {
-                if (fundo) fundo.remove();
-                criarBotaoFlutuante();
-            };
-
-            botoesAcao.append(btnEsconder, btnFechar);
-            mainEl.appendChild(botoesAcao);
-        }
-
-        // construir sidebar buttons
-        const tabs = ['scripts', 'textos', 'respostas', 'outros', 'config'];
-        tabs.forEach(t => {
-            const navBtn = document.createElement('button');
-            navBtn.textContent = (t === 'scripts' ? 'Scripts' : t.charAt(0).toUpperCase() + t.slice(1));
-            Object.assign(navBtn.style, {
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                width: '100%',
-                padding: '10px',
-                color: '#fff',
-                background: '#141414',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                textAlign: 'left',
-                marginBottom: '6px'
-            });
-            if (t === 'scripts') navBtn.style.background = 'linear-gradient(90deg,#ff4d4d,#b30000)';
-
-            navBtn.addEventListener('click', () => {
-                // remover active
-                Array.from(sidebarEl.querySelectorAll('button')).forEach(b => {
-                    b.style.boxShadow = 'none';
-                    b.style.background = '#141414';
-                });
-                navBtn.style.background = 'linear-gradient(90deg,#ff4d4d,#b30000)';
-                renderTabContent(t);
-            });
-
-            sidebarEl.appendChild(navBtn);
+        const botoesAbas = document.createElement('div');
+        Object.assign(botoesAbas.style, {
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            gap: '5px',
+            marginBottom: '15px'
         });
 
-        // renderiza a aba inicial (scripts)
-        renderTabContent('scripts');
-    }
+        ['scripts', 'textos', 'respostas', 'outros', 'config'].forEach(id => {
+            const botaoAba = document.createElement('button');
+            botaoAba.textContent = id.toUpperCase();
+            aplicarEstiloBotao(botaoAba, abaAtiva === id);
+            botaoAba.onclick = () => {
+                abaAtiva = id;
+                fundo.remove();
+                criarMenu();
+            };
+            botoesAbas.appendChild(botaoAba);
+        });
 
-    // ------------------------------------------------------------
-    // criarMenu atualizado (novo layout pós-login com sidebar/header/main)
-    // ------------------------------------------------------------
+        janela.appendChild(botoesAbas);
+
+        // Linha de separação entre abas e funções
+        const separador = document.createElement('hr');
+        Object.assign(separador.style, {
+            width: '100%',
+            border: '1px solid rgba(255,255,255,0.1)',
+            margin: '10px 0'
+        });
+        janela.appendChild(separador);
+
+        const containerBotoes = document.createElement('div');
+        Object.assign(containerBotoes.style, {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '10px'
+        });
+
+        if (botoes[abaAtiva]) {
+            botoes[abaAtiva].forEach(b => {
+                const btn = document.createElement('button');
+                btn.textContent = b.nome;
+                aplicarEstiloBotao(btn);
+                btn.onclick = b.func;
+                containerBotoes.appendChild(btn);
+            });
+        }
+
+        janela.appendChild(containerBotoes);
+
+        // Botões de ação no final
+        const botoesAcao = document.createElement('div');
+        Object.assign(botoesAcao.style, {
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: '10px',
+            marginTop: '15px',
+            width: '100%'
+        });
+
+        const btnEsconder = document.createElement('button');
+        btnEsconder.textContent = '👁️ Fechar Menu';
+        aplicarEstiloBotao(btnEsconder);
+        btnEsconder.onclick = () => {
+            fundo.remove();
+            const botaoFlutuante = document.getElementById('dhonatanBotao');
+            if (botaoFlutuante) botaoFlutuante.remove();
+        };
+
+        const btnFechar = document.createElement('button');
+        btnFechar.textContent = '❌ Minimizar Menu';
+        aplicarEstiloBotao(btnFechar);
+        btnFechar.onclick = () => {
+            fundo.remove();
+            criarBotaoFlutuante();
+        };
+
+        botoesAcao.append(btnEsconder, btnFechar);
+        janela.appendChild(botoesAcao);
+    };
+
     const criarMenu = () => {
-        if (fundo) try { fundo.remove(); } catch(e) {}
         fundo = document.createElement('div');
         Object.assign(fundo.style, {
             position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
@@ -900,144 +845,39 @@ function showWelcomeToasts() {
             display: 'flex', alignItems: 'center', justifyContent: 'center'
         });
 
-        // janela principal (container)
         janela = document.createElement('div');
         aplicarEstiloContainer(janela);
-        janela.style.display = 'flex';
-        janela.style.flexDirection = 'column';
-        janela.style.width = '100%';
-        janela.style.maxWidth = '1200px';
-        janela.style.height = '80vh';
-        janela.style.padding = '0';
-        janela.style.overflow = 'hidden';
 
-        // header interno
-        const header = document.createElement('div');
-        Object.assign(header.style, {
-            height: '64px',
-            background: 'linear-gradient(90deg, rgba(10,10,10,0.9), rgba(20,20,20,0.9))',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '10px 16px',
-            borderBottom: '1px solid rgba(255,255,255,0.04)'
-        });
+        const titulo = document.createElement('div');
+        titulo.textContent = 'PAINEL AUXÍLIO';
+        aplicarEstiloTexto(titulo, '20px');
 
-        // Logo aranha 3D (SVG inline)
-        const logoWrapper = document.createElement('div');
-        Object.assign(logoWrapper.style, { display: 'flex', alignItems: 'center', gap: '12px' });
+        let h = 0;
+        setInterval(() => {
+            titulo.style.color = `hsl(${h++ % 360},100%,60%)`;
+        }, 30);
 
-        const spiderSVG = document.createElement('div');
-        spiderSVG.innerHTML = `
-            <svg width="44" height="44" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0" stop-color="#6b0f9c"/>
-                  <stop offset="1" stop-color="#ff3d3d"/>
-                </linearGradient>
-                <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.6"/>
-                </filter>
-              </defs>
-              <!-- corpo -->
-              <ellipse cx="32" cy="32" rx="10" ry="12" fill="url(#g1)" filter="url(#s)"/>
-              <!-- cabeça -->
-              <circle cx="32" cy="20" r="6" fill="#111"/>
-              <!-- pernas -->
-              <path d="M10 18 C18 20, 20 30, 28 28" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
-              <path d="M54 18 C46 20, 44 30, 36 28" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
-              <path d="M8 34 C18 34, 22 40, 30 36" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
-              <path d="M56 34 C46 34, 42 40, 34 36" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
-              <path d="M12 46 C20 44, 26 42, 32 36" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85"/>
-              <path d="M52 46 C44 44, 38 42, 32 36" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85"/>
-            </svg>
-        `;
-        spiderSVG.style.display = 'flex';
-        spiderSVG.style.alignItems = 'center';
-
-        const tituloHeader = document.createElement('div');
-        tituloHeader.textContent = 'PAINEL AUXÍLIO';
-        Object.assign(tituloHeader.style, { fontSize: '18px', fontWeight: '800', letterSpacing: '1px', color: '#fff' });
-
-        logoWrapper.appendChild(spiderSVG);
-        logoWrapper.appendChild(tituloHeader);
-
-        // área do relógio no header
         relogio = document.createElement('div');
         relogio.textContent = '🕒 ' + new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-        Object.assign(relogio.style, { fontSize: '14px', fontWeight: '700', fontFamily: 'monospace', color: '#fff' });
+        aplicarEstiloTexto(relogio, '16px');
         setInterval(() => {
             relogio.textContent = '🕒 ' + new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' });
         }, 1000);
 
-        header.appendChild(logoWrapper);
-        header.appendChild(relogio);
-
-        // corpo com sidebar + main
-        const bodyWrap = document.createElement('div');
-        Object.assign(bodyWrap.style, {
-            display: 'flex',
-            flex: '1 1 auto',
-            minHeight: '0', // para permitir overflow interno
-            overflow: 'hidden'
-        });
-
-        // Sidebar (menu lateral)
-        const sidebar = document.createElement('div');
-        Object.assign(sidebar.style, {
-            width: '220px',
-            background: 'linear-gradient(180deg, rgba(18,18,18,0.95), rgba(20,20,20,0.95))',
-            padding: '18px',
-            borderRight: '1px solid rgba(255,255,255,0.03)',
-            overflowY: 'auto'
-        });
-
-        // Pequeño header/label dentro da sidebar
-        const sidebarTitle = document.createElement('div');
-        sidebarTitle.textContent = 'MENU';
-        Object.assign(sidebarTitle.style, { fontSize: '12px', color: '#bbb', marginBottom: '10px', fontWeight: '700' });
-        sidebar.appendChild(sidebarTitle);
-
-        // area central principal
-        const mainPanel = document.createElement('div');
-        Object.assign(mainPanel.style, {
-            flex: '1 1 auto',
-            padding: '20px',
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'stretch',
-            gap: '6px'
-        });
-
-        // montar tudo
-        bodyWrap.appendChild(sidebar);
-        bodyWrap.appendChild(mainPanel);
-
-        // adiciona header e body ao modal janela
-        janela.appendChild(header);
-        janela.appendChild(bodyWrap);
-
-        // adicionar no fundo
-        fundo.appendChild(janela);
-        document.body.appendChild(fundo);
-
-        // preencher a interface das abas usando a função que transforma o objeto de botoes
-        criarAbasInterface(sidebar, mainPanel);
+        janela.append(titulo, relogio);
+        criarAbas();
+        fundo.append(janela);
+        document.body.append(fundo);
     };
 
-    // ------------------------------------------------------------
-    // criarInterface (tela de login) - mantive igual ao original
-    // ------------------------------------------------------------
     const criarInterface = () => {
-        if (fundo) try { fundo.remove(); } catch(e) {}
         fundo = document.createElement('div');
         Object.assign(fundo.style, {
             position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
             backgroundColor: 'rgba(0,0,0,0.85)', zIndex: '999999',
             display: 'flex', alignItems: 'center', justifyContent: 'center'
         });
-
+        
         janela = document.createElement('div');
         aplicarEstiloContainer(janela);
 
@@ -1050,52 +890,52 @@ function showWelcomeToasts() {
             gap: '5px'
         });
 
-        // Texto SUPERIOR
-        const textoCima = document.createElement('div');
-        textoCima.textContent = 'Painel Funções';
-        aplicarEstiloTexto(textoCima, '20px');
+// Texto SUPERIOR
+const textoCima = document.createElement('div');
+textoCima.textContent = 'Painel Funções';
+aplicarEstiloTexto(textoCima, '20px');
 
-        const textoCriador = document.createElement('div');
-        textoCriador.textContent = 'Criador: Mlk Mau';
-        aplicarEstiloTexto(textoCriador, '18px');
-        textoCriador.style.margin = '5px 0'; // espaçamento
+const textoCriador = document.createElement('div');
+textoCriador.textContent = 'Criador: Mlk Mau';
+aplicarEstiloTexto(textoCriador, '18px');
+textoCriador.style.margin = '5px 0'; // espaçamento
 
-        // Texto INFERIOR
-        const textoBaixo = document.createElement('div');
-        textoBaixo.textContent = 'Tudo para suas atividades de escola aqui!';
-        aplicarEstiloTexto(textoBaixo, '17px');
+// Texto INFERIOR
+const textoBaixo = document.createElement('div');
+textoBaixo.textContent = 'Tudo para suas atividades de escola aqui!';
+aplicarEstiloTexto(textoBaixo, '17px');
 
-        // Adiciona os textos ao container
-        nome.appendChild(textoCima);
-        nome.appendChild(textoCriador); // fica no meio
-        nome.appendChild(textoBaixo);
+// Adiciona os textos ao container
+nome.appendChild(textoCima);
+nome.appendChild(textoCriador); // fica no meio
+nome.appendChild(textoBaixo);
 
-        // ===== Animação fluida só no "Criador" =====
-        let hue = 260;
-        let direcao = 1; // 1 = indo pra frente, -1 = voltando
+// ===== Animação fluida só no "Criador" =====
+let hue = 260;
+let direcao = 1; // 1 = indo pra frente, -1 = voltando
 
-        function animarCriador() {
-            const corRoxa = `hsl(${hue}, 100%, 65%)`;
-            textoCriador.style.color = corRoxa;
+function animarCriador() {
+    const corRoxa = `hsl(${hue}, 100%, 65%)`;
+    textoCriador.style.color = corRoxa;
 
-            hue += 0.3 * direcao; // velocidade suave
+    hue += 0.3 * direcao; // velocidade suave
 
-            // Inverte a direção ao chegar nos limites
-            if (hue >= 300 || hue <= 260) {
-                direcao *= -1;
-            }
+    // Inverte a direção ao chegar nos limites
+    if (hue >= 300 || hue <= 260) {
+        direcao *= -1;
+    }
 
-            requestAnimationFrame(animarCriador);
-        }
-        animarCriador();
+    requestAnimationFrame(animarCriador);
+}
+animarCriador();
 
-        // Mantém animação do texto inferior como estava
-        let hueBaixo = 0;
-        setInterval(() => {
-            const corAtual = `hsl(${hueBaixo % 360}, 100%, 60%)`;
-            textoBaixo.style.color = corAtual;
-            hueBaixo++;
-        }, 30);
+// Mantém animação do texto inferior como estava
+let hueBaixo = 0;
+setInterval(() => {
+    const corAtual = `hsl(${hueBaixo % 360}, 100%, 60%)`;
+    textoBaixo.style.color = corAtual;
+    hueBaixo++;
+}, 30);
 
         const input = document.createElement('input');
         Object.assign(input.style, {
@@ -1113,221 +953,221 @@ function showWelcomeToasts() {
         input.placeholder = 'Digite a senha';
 
         // Botão principal "Acessar"
-        let botao = document.createElement('button');
-        botao.textContent = 'Acessar';
-        aplicarEstiloBotao(botao, true);
+let botao = document.createElement('button');
+botao.textContent = 'Acessar';
+aplicarEstiloBotao(botao, true);
 
-        // Botão do Discord
-        const btnDiscord = document.createElement('button');
-        btnDiscord.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="margin-right:8px"><path fill="currentColor" d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.566-.406.825a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.825.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.05.05 0 0 0-.028.019C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.326a.05.05 0 0 0-.02-.069.07.07 0 0 0-.041-.012 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.043c0-.003.002-.006.005-.009a.05.05 0 0 1 .015-.011c.17-.1.335-.206.495-.32.01-.008.022-.01.033-.003l.006.004c.013.008.02.022.017.035a10.2 10.2 0 0 0 3.172 1.525.05.05 0 0 0 .04-.01 7.96 7.96 0 0 0 3.07-1.525.05.05 0 0 0 .017-.035l.006-.004c.01-.007.022-.005.033.003.16.114.326.22.495.32a.05.05 0 0 1 .015.01c.003.004.005.007.005.01a.05.05 0 0 1-.02.042 8.875 8.875 0 0 1-1.248.595.05.05 0 0 0-.041.012.05.05 0 0 0-.02.07c.236.462.51.905.818 1.325a.05.05 0 0 0 .056.02 13.23 13.23 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.05.05 0 0 0-.028-.019zM5.525 9.992c-.889 0-1.613-.774-1.613-1.727 0-.953.724-1.727 1.613-1.727.89 0 1.613.774 1.613 1.727s-.723 1.727-1.613 1.727zm4.95 0c-.889 0-1.613-.774-1.613-1.727 0-.953.724-1.727 1.613-1.727.89 0 1.613.774 1.613 1.727s-.723 1.727-1.613 1.727z"/></svg> Discord';
-        aplicarEstiloBotao(btnDiscord);
-        btnDiscord.style.background = '#5865F2';
-        btnDiscord.onclick = () => {
-            window.open('https://discord.gg/NfVKXRSvYK', '_blank');
-        };
+// Botão do Discord
+const btnDiscord = document.createElement('button');
+btnDiscord.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" style="margin-right:8px"><path fill="currentColor" d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.566-.406.825a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.825.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.05.05 0 0 0-.028.019C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.326a.05.05 0 0 0-.02-.069.07.07 0 0 0-.041-.012 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.043c0-.003.002-.006.005-.009a.05.05 0 0 1 .015-.011c.17-.1.335-.206.495-.32.01-.008.022-.01.033-.003l.006.004c.013.008.02.022.017.035a10.2 10.2 0 0 0 3.172 1.525.05.05 0 0 0 .04-.01 7.96 7.96 0 0 0 3.07-1.525.05.05 0 0 0 .017-.035l.006-.004c.01-.007.022-.005.033.003.16.114.326.22.495.32a.05.05 0 0 1 .015.01c.003.004.005.007.005.01a.05.05 0 0 1-.02.042 8.875 8.875 0 0 1-1.248.595.05.05 0 0 0-.041.012.05.05 0 0 0-.02.07c.236.462.51.905.818 1.325a.05.05 0 0 0 .056.02 13.23 13.23 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.05.05 0 0 0-.028-.019zM5.525 9.992c-.889 0-1.613-.774-1.613-1.727 0-.953.724-1.727 1.613-1.727.89 0 1.613.774 1.613 1.727s-.723 1.727-1.613 1.727zm4.95 0c-.889 0-1.613-.774-1.613-1.727 0-.953.724-1.727 1.613-1.727.89 0 1.613.774 1.613 1.727s-.723 1.727-1.613 1.727z"/></svg> Discord';
+aplicarEstiloBotao(btnDiscord);
+btnDiscord.style.background = '#5865F2';
+btnDiscord.onclick = () => {
+    window.open('https://discord.gg/NfVKXRSvYK', '_blank');
+};
 
-        // Botão do WhatsApp (ao lado do Discord)
-        const btnWhatsApp = document.createElement('button');
-        btnWhatsApp.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="18" height="18" viewBox="0 0 24 24" style="margin-right:8px">
-                <path d="M12 0C5.372 0 0 5.373 0 12c0 2.116.55 4.148 1.595 5.953L.057 24l6.23-1.59A11.937 11.937 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.936 9.936 0 0 1-5.063-1.373l-.363-.215-3.693.942.985-3.588-.237-.368A9.936 9.936 0 0 1 2 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm5.207-7.793c-.273-.137-1.613-.797-1.863-.887-.25-.09-.432-.137-.613.137-.182.273-.703.886-.863 1.068-.16.182-.318.205-.59.068-.273-.137-1.154-.425-2.197-1.353-.813-.724-1.363-1.62-1.523-1.893-.16-.273-.017-.42.12-.557.123-.122.273-.318.41-.477.137-.16.182-.273.273-.455.09-.182.045-.34-.022-.477-.068-.137-.613-1.477-.84-2.022-.222-.532-.447-.46-.613-.468-.16-.007-.34-.01-.52-.01s-.477.068-.727.34c-.25.273-.955.933-.955 2.273s.977 2.637 1.113 2.82c.137.182 1.924 2.94 4.662 4.123.652.281 1.16.449 1.555.575.652.208 1.244.178 1.713.108.523-.078 1.613-.66 1.84-1.297.227-.637.227-1.183.16-1.297-.068-.114-.25-.182-.523-.318z"/>
-            </svg> WhatsApp
-        `;
-        aplicarEstiloBotao(btnWhatsApp);
-        btnWhatsApp.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
-        btnWhatsApp.onclick = () => {
-            window.open('https://chat.whatsapp.com/FK6sosUXDZAD1cRhniTu0m?mode=ems_copy_t', '_blank');
-        };
+// Botão do WhatsApp (ao lado do Discord)
+const btnWhatsApp = document.createElement('button');
+btnWhatsApp.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="18" height="18" viewBox="0 0 24 24" style="margin-right:8px">
+        <path d="M12 0C5.372 0 0 5.373 0 12c0 2.116.55 4.148 1.595 5.953L.057 24l6.23-1.59A11.937 11.937 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.936 9.936 0 0 1-5.063-1.373l-.363-.215-3.693.942.985-3.588-.237-.368A9.936 9.936 0 0 1 2 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm5.207-7.793c-.273-.137-1.613-.797-1.863-.887-.25-.09-.432-.137-.613.137-.182.273-.703.886-.863 1.068-.16.182-.318.205-.59.068-.273-.137-1.154-.425-2.197-1.353-.813-.724-1.363-1.62-1.523-1.893-.16-.273-.017-.42.12-.557.123-.122.273-.318.41-.477.137-.16.182-.273.273-.455.09-.182.045-.34-.022-.477-.068-.137-.613-1.477-.84-2.022-.222-.532-.447-.46-.613-.468-.16-.007-.34-.01-.52-.01s-.477.068-.727.34c-.25.273-.955.933-.955 2.273s.977 2.637 1.113 2.82c.137.182 1.924 2.94 4.662 4.123.652.281 1.16.449 1.555.575.652.208 1.244.178 1.713.108.523-.078 1.613-.66 1.84-1.297.227-.637.227-1.183.16-1.297-.068-.114-.25-.182-.523-.318z"/>
+    </svg> WhatsApp
+`;
+aplicarEstiloBotao(btnWhatsApp);
+btnWhatsApp.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
+btnWhatsApp.onclick = () => {
+    window.open('https://chat.whatsapp.com/FK6sosUXDZAD1cRhniTu0m?mode=ems_copy_t', '_blank');
+};
 
-        // Botão do YouTube Manorick
-        const btnmenor = document.createElement('button');
-        btnmenor.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24">
-                <path d="M19.615 3.184C21.403 3.64 22.76 5.011 23.217 6.799 
-                24 9.946 24 12 24 12s0 2.054-.783 5.201c-.457 1.788-1.814 
-                3.159-3.602 3.615C17.468 21.6 12 21.6 12 21.6s-5.468 0-8.615-.784C1.597 
-                20.36.24 18.989-.217 17.201-.999 14.054-.999 12-.999 
-                12s0-2.054.782-5.201C1.24 5.011 2.597 3.64 4.385 
-                3.184 7.532 2.4 12 2.4 12 2.4s5.468 0 7.615.784zM9.545 
-                8.568v6.864L15.818 12 9.545 8.568z"/>
-            </svg> Canal ManoRick
-        `;
-        aplicarEstiloBotao(btnmenor);
-        btnmenor.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
-        btnmenor.onclick = () => {
-            window.open('https://youtube.com/@manorickzin?si=V_71STAk8DLJNhtd', '_blank');
-        };
+// Botão do YouTube Manorick
+const btnmenor = document.createElement('button');
+btnmenor.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24">
+        <path d="M19.615 3.184C21.403 3.64 22.76 5.011 23.217 6.799 
+        24 9.946 24 12 24 12s0 2.054-.783 5.201c-.457 1.788-1.814 
+        3.159-3.602 3.615C17.468 21.6 12 21.6 12 21.6s-5.468 0-8.615-.784C1.597 
+        20.36.24 18.989-.217 17.201-.999 14.054-.999 12-.999 
+        12s0-2.054.782-5.201C1.24 5.011 2.597 3.64 4.385 
+        3.184 7.532 2.4 12 2.4 12 2.4s5.468 0 7.615.784zM9.545 
+        8.568v6.864L15.818 12 9.545 8.568z"/>
+    </svg> Canal ManoRick
+`;
+aplicarEstiloBotao(btnmenor);
+btnmenor.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
+btnmenor.onclick = () => {
+    window.open('https://youtube.com/@manorickzin?si=V_71STAk8DLJNhtd', '_blank');
+};
 
-        // Botão do YouTube Mlk Mau
-        const btncriadorpainel = document.createElement('button');
-        btncriadorpainel.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24">
-                <path d="M19.615 3.184C21.403 3.64 22.76 5.011 23.217 6.799 
-                24 9.946 24 12 24 12s0 2.054-.783 5.201c-.457 1.788-1.814 
-                3.159-3.602 3.615C17.468 21.6 12 21.6 12 21.6s-5.468 0-8.615-.784C1.597 
-                20.36.24 18.989-.217 17.201-.999 14.054-.999 12-.999 
-                12s0-2.054.782-5.201C1.24 5.011 2.597 3.64 4.385 
-                3.184 7.532 2.4 12 2.4 12 2.4s5.468 0 7.615.784zM9.545 
-                8.568v6.864L15.818 12 9.545 8.568z"/>
-            </svg> Canal MlkMau
-        `;
-        aplicarEstiloBotao(btncriadorpainel);
-        btncriadorpainel.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
-        btncriadorpainel.onclick = () => {
-            window.open('https://youtube.com/@mlkmau5960?si=10XFeUjXBoYDa_JQ', '_blank');
-        };
+// Botão do YouTube Mlk Mau
+const btncriadorpainel = document.createElement('button');
+btncriadorpainel.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="20" height="20" viewBox="0 0 24 24">
+        <path d="M19.615 3.184C21.403 3.64 22.76 5.011 23.217 6.799 
+        24 9.946 24 12 24 12s0 2.054-.783 5.201c-.457 1.788-1.814 
+        3.159-3.602 3.615C17.468 21.6 12 21.6 12 21.6s-5.468 0-8.615-.784C1.597 
+        20.36.24 18.989-.217 17.201-.999 14.054-.999 12-.999 
+        12s0-2.054.782-5.201C1.24 5.011 2.597 3.64 4.385 
+        3.184 7.532 2.4 12 2.4 12 2.4s5.468 0 7.615.784zM9.545 
+        8.568v6.864L15.818 12 9.545 8.568z"/>
+    </svg> Canal MlkMau
+`;
+aplicarEstiloBotao(btncriadorpainel);
+btncriadorpainel.style.background = 'linear-gradient(135deg, #ff0000, #990000)';
+btncriadorpainel.onclick = () => {
+    window.open('https://youtube.com/@mlkmau5960?si=10XFeUjXBoYDa_JQ', '_blank');
+};
 
-        // Container para os botões
-        const botoesContainer = document.createElement('div');
-        Object.assign(botoesContainer.style, {
-            display: 'flex',
-            justifyContent: 'flex-start',
-            gap: '10px',
-            width: '100%',
-            overflowX: 'auto',
-            paddingBottom: '5px',
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#888 #333'
-        });
-        botoesContainer.style.msOverflowStyle = 'auto';
-        botoesContainer.style.overflowY = 'hidden';
-        botoesContainer.style.flexWrap = 'nowrap';
+// Container para os botões
+const botoesContainer = document.createElement('div');
+Object.assign(botoesContainer.style, {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    gap: '10px',
+    width: '100%',
+    overflowX: 'auto',
+    paddingBottom: '5px',
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#888 #333'
+});
+botoesContainer.style.msOverflowStyle = 'auto';
+botoesContainer.style.overflowY = 'hidden';
+botoesContainer.style.flexWrap = 'nowrap';
 
-        // Adiciona todos os botões
-        botoesContainer.append(botao, btnDiscord, btnWhatsApp, btnmenor, btncriadorpainel);
+// Adiciona todos os botões
+botoesContainer.append(botao, btnDiscord, btnWhatsApp, btnmenor, btncriadorpainel);
 
         const erro = document.createElement('div');
         erro.textContent = '❌ Senha incorreta. Clique no botão do Discord/Whatsapp para suporte.';
         Object.assign(erro.style, {
-            display: 'none',
-            color: '#ff5555',
+            display: 'none', 
+            color: '#ff5555', 
             marginTop: '15px',
             fontSize: '14px'
         });
 
         let senhasCarregadas = false;
 
-        const carregarSenhasRemotas = async (opts = {}) => {
-          const debug = !!opts.debug;
-          sendToast('🔒 Carregando sistema de senhas...', 2000);
+const carregarSenhasRemotas = async (opts = {}) => {
+  const debug = !!opts.debug;
+  sendToast('🔒 Carregando sistema de senhas...', 2000);
 
-          const primaryParts = [
-            '6MHc0RHa','ucXYy9yL','iVHa0l2Z','vNmclNXd','uQnblRnb',
-            '1F2Lt92Y','l5WahBHe','wUDMy8Cb','v4Wah12L','zFGauV2c','==wPzpmL'
-          ];
+  const primaryParts = [
+    '6MHc0RHa','ucXYy9yL','iVHa0l2Z','vNmclNXd','uQnblRnb',
+    '1F2Lt92Y','l5WahBHe','wUDMy8Cb','v4Wah12L','zFGauV2c','==wPzpmL'
+  ];
 
-          const fallbackParts = [
-            '6MHc0RHa','u4GZj9yL','pxWZkNna','0VmbuInd','1F2Lod2L',
-            'l5WahBHe','wUDMy8Cb','v4Wah1GQ','zFGauV2c','==wPzpmL'
-          ];
+  const fallbackParts = [
+    '6MHc0RHa','u4GZj9yL','pxWZkNna','0VmbuInd','1F2Lod2L',
+    'l5WahBHe','wUDMy8Cb','v4Wah1GQ','zFGauV2c','==wPzpmL'
+  ];
 
-          const rebuildFromParts = (parts) => parts.map(p => p.split('').reverse().join('')).join('');
+  const rebuildFromParts = (parts) => parts.map(p => p.split('').reverse().join('')).join('');
 
-          const sleep = ms => new Promise(res => setTimeout(res, ms));
+  const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-          const looksLikeHtmlError = (txt) => {
-            if (!txt || typeof txt !== 'string') return true;
-            const t = txt.trim().toLowerCase();
-            if (t.length < 40) return true;
-            if (t.includes('<!doctype') || t.includes('<html') || t.includes('not found') ||
-                t.includes('404') || t.includes('access denied') || t.includes('you have been blocked')) return true;
-            return false;
-          };
+  const looksLikeHtmlError = (txt) => {
+    if (!txt || typeof txt !== 'string') return true;
+    const t = txt.trim().toLowerCase();
+    if (t.length < 40) return true;
+    if (t.includes('<!doctype') || t.includes('<html') || t.includes('not found') ||
+        t.includes('404') || t.includes('access denied') || t.includes('you have been blocked')) return true;
+    return false;
+  };
 
-          const fetchWithTimeout = (resource, timeout = 15000) => {
-            const controller = new AbortController();
-            const id = setTimeout(() => controller.abort(), timeout);
-            return fetch(resource, { signal: controller.signal }).finally(() => clearTimeout(id));
-          };
+  const fetchWithTimeout = (resource, timeout = 15000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    return fetch(resource, { signal: controller.signal }).finally(() => clearTimeout(id));
+  };
 
-          const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 600 } = {}) => {
-            let lastErr = null;
-            for (let i = 0; i < urls.length; i++) {
-              const u = urls[i];
-              for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
-                try {
-                  if (debug) console.info(`Tentando fetch (url ${i+1}/${urls.length}, tentativa ${attempt})`);
-                  const res = await fetchWithTimeout(u, timeout);
-                  if (!res.ok) throw new Error('HTTP ' + res.status);
-                  const txt = await res.text();
-                  if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
-                  return txt;
-                } catch (err) {
-                  lastErr = err;
-                  if (debug) console.warn(`Falha (url ${i+1}, tentativa ${attempt}):`, err.message);
-                  await sleep(backoff * attempt);
-                }
-              }
-              await sleep(200);
-            }
-            throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
-          };
+  const tryFetchText = async (urls, { attemptsPerUrl = 2, timeout = 15000, backoff = 600 } = {}) => {
+    let lastErr = null;
+    for (let i = 0; i < urls.length; i++) {
+      const u = urls[i];
+      for (let attempt = 1; attempt <= attemptsPerUrl; attempt++) {
+        try {
+          if (debug) console.info(`Tentando fetch (url ${i+1}/${urls.length}) tentativa ${attempt}`);
+          const res = await fetchWithTimeout(u, timeout);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const txt = await res.text();
+          if (looksLikeHtmlError(txt)) throw new Error('Resposta parece HTML/erro (provável 403/404/CORS)');
+          return txt;
+        } catch (err) {
+          lastErr = err;
+          if (debug) console.warn(`Falha (url ${i+1}, tentativa ${attempt}):`, err.message);
+          await sleep(backoff * attempt);
+        }
+      }
+      await sleep(200);
+    }
+    throw lastErr || new Error('Falha ao buscar o script em todas as URLs');
+  };
 
-          try {
-            const primaryBase64 = rebuildFromParts(primaryParts);
-            const fallbackBase64 = rebuildFromParts(fallbackParts);
+  try {
+    const primaryBase64 = rebuildFromParts(primaryParts);
+    const fallbackBase64 = rebuildFromParts(fallbackParts);
 
-            const primaryURL = atob(primaryBase64) + Date.now();
-            const fallbackURL = atob(fallbackBase64) + Date.now();
+    const primaryURL = atob(primaryBase64) + Date.now();
+    const fallbackURL = atob(fallbackBase64) + Date.now();
 
-            const urlsToTry = [primaryURL, fallbackURL];
+    const urlsToTry = [primaryURL, fallbackURL];
 
-            const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 700 });
+    const scriptContent = await tryFetchText(urlsToTry, { attemptsPerUrl: 2, timeout: 15000, backoff: 700 });
 
-            if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou muito curto');
+    if (!scriptContent || scriptContent.length < 50) throw new Error('Conteúdo do script inválido ou muito curto');
 
-            try {
-              const prev = document.querySelector('script[data-injected-by="senhasRemotas"]');
-              if (prev) prev.remove();
-            } catch (e) { if (debug) console.warn('Remover antigo falhou:', e.message); }
+    try {
+      const prev = document.querySelector('script[data-injected-by="senhasRemotas"]');
+      if (prev) prev.remove();
+    } catch (e) { if (debug) console.warn('Remover antigo falhou:', e.message); }
 
-            const scriptEl = document.createElement('script');
-            scriptEl.type = 'text/javascript';
-            scriptEl.dataset.injectedBy = 'senhasRemotas';
-            scriptEl.textContent = scriptContent;
-            document.head.appendChild(scriptEl);
+    const scriptEl = document.createElement('script');
+    scriptEl.type = 'text/javascript';
+    scriptEl.dataset.injectedBy = 'senhasRemotas';
+    scriptEl.textContent = scriptContent;
+    document.head.appendChild(scriptEl);
 
-            if (typeof window.verificarSenha !== 'function') {
-              console.warn('Script remoto carregado, mas verificarSenha não foi definida. Usando fallback local.');
-              window.verificarSenha = function(senha) {
-                const senhasBackup = [
-                  "admin",
-                  "Teste24",
-                  "adm",
-                  "tainara",
-                  "vitor",
-                  "pablo",
-                  "rafael"
-                ];
-                return senhasBackup.includes(String(senha));
-              };
-            }
+    if (typeof window.verificarSenha !== 'function') {
+      console.warn('Script remoto carregado, mas verificarSenha não foi definida. Usando fallback local.');
+      window.verificarSenha = function(senha) {
+        const senhasBackup = [
+          "admin",
+          "Teste24",
+          "adm",
+          "tainara",
+          "vitor",
+          "pablo",
+          "rafael"
+        ];
+        return senhasBackup.includes(String(senha));
+      };
+    }
 
-            senhasCarregadas = true;
-            if (debug) console.info('Senhas remotas carregadas com sucesso.');
-            return true;
-          } catch (err) {
-            console.error('Falha ao carregar senhas remotas:', err);
+    senhasCarregadas = true;
+    if (debug) console.info('Senhas remotas carregadas com sucesso.');
+    return true;
+  } catch (err) {
+    console.error('Falha ao carregar senhas remotas:', err);
 
-            window.verificarSenha = function(senha) {
-              const senhasBackup = [
-                "admin",
-                "Teste24",
-                "adm",
-                "tainara",
-                "vitor",
-                "pablo",
-                "rafael"
-              ];
-              return senhasBackup.includes(String(senha));
-            };
-            senhasCarregadas = true;
+    window.verificarSenha = function(senha) {
+      const senhasBackup = [
+        "admin",
+        "Teste24",
+        "adm",
+        "tainara",
+        "vitor",
+        "pablo",
+        "rafael"
+      ];
+      return senhasBackup.includes(String(senha));
+    };
+    senhasCarregadas = true;
 
-            sendToast('⚠️ Falha ao carregar senhas remotas — modo offline ativado.', 4000);
-            if (debug) console.error('Debug (erro completo):', err);
-            return false;
-          }
-        };
+    sendToast('⚠️ Falha ao carregar senhas remotas — modo offline ativado.', 4000);
+    if (debug) console.error('Debug (erro completo):', err);
+    return false;
+  }
+};
 
         carregarSenhasRemotas();
 
@@ -1339,7 +1179,7 @@ function showWelcomeToasts() {
 
             if (verificarSenha(input.value)) {
                 senhaLiberada = true;
-                if (fundo) fundo.remove();
+                fundo.remove();
                 sendToast("Bem vindo ao Painel de Funções! 👋", 3000);
                 criarMenu();
             } else {
@@ -1352,9 +1192,6 @@ function showWelcomeToasts() {
         document.body.append(fundo);
     };
 
-    // ------------------------------------------------------------
-    // criarBotaoFlutuante - mantive funcionalidade e arrastar
-    // ------------------------------------------------------------
     const criarBotaoFlutuante = () => {
         const b = document.createElement('div');
         b.id = "dhonatanBotao";
@@ -1387,15 +1224,14 @@ function showWelcomeToasts() {
         function startDrag(e) {
             const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
+            
             startX = clientX;
             startY = clientY;
-            // converte caso esteja em px ou percent
             initialX = clientX - (parseFloat(b.style.left) || 0);
             initialY = clientY - (parseFloat(b.style.top) || 0);
-
+            
             isDragging = false;
-
+            
             document.addEventListener('mousemove', handleDragMove);
             document.addEventListener('touchmove', handleDragMove, { passive: false });
             document.addEventListener('mouseup', endDrag);
@@ -1405,19 +1241,19 @@ function showWelcomeToasts() {
         function handleDragMove(e) {
             const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
+            
             const dx = clientX - startX;
             const dy = clientY - startY;
             const distance = Math.sqrt(dx * dx + dy * dy);
-
+            
             if (!isDragging && distance > DRAG_THRESHOLD) {
                 isDragging = true;
             }
-
+            
             if (isDragging) {
                 const currentX = clientX - initialX;
                 const currentY = clientY - initialY;
-
+                
                 b.style.left = `${currentX}px`;
                 b.style.top = `${currentY}px`;
                 b.style.cursor = 'grabbing';
@@ -1434,10 +1270,10 @@ function showWelcomeToasts() {
                 b.remove();
                 senhaLiberada ? criarMenu() : criarInterface();
             }
-
+            
             b.style.cursor = 'grab';
             isDragging = false;
-
+            
             document.removeEventListener('mousemove', handleDragMove);
             document.removeEventListener('touchmove', handleDragMove);
             document.removeEventListener('mouseup', endDrag);
