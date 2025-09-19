@@ -35,6 +35,15 @@ async function sendToast(text, duration = 5000, gravity = 'bottom') {
 }
 
 function showWelcomeToasts() {
+    sendToast("iniciando painel");
+    
+    setTimeout(() => {
+        sendToast("puxando dados", 2500);
+    }, 1000);
+    
+    setTimeout(() => {
+        sendToast("carregado!", 2500);
+    }, 1000);
     sendToast("Painel carregado");
 }
 
@@ -42,17 +51,17 @@ function showWelcomeToasts() {
 (async function(){
     // Carregar Toastify quando o script for executado
     await loadToastify();
-    
+
     // Mostrar toasts de boas-vindas após um breve delay
     setTimeout(showWelcomeToasts, 500);
-    
+
     let fundo, janela, nome, relogio;
     let senhaLiberada = false;
     let abaAtiva = 'textos';
     let posX = localStorage.getItem("dhonatanX") || "20px";
     let posY = localStorage.getItem("dhonatanY") || "20px";
     let corBotao = localStorage.getItem("corBotaoDhonatan") || "#0f0f0f";
-    
+
     // Estilo moderno para todos os botões
     const aplicarEstiloBotao = (elemento, gradiente = false) => {
         Object.assign(elemento.style, {
@@ -104,7 +113,7 @@ function showWelcomeToasts() {
 
     const mostrarInfoDono = () => {
         if (fundo) fundo.remove();
-        
+
         const container = document.createElement('div');
         aplicarEstiloContainer(container);
         container.style.zIndex = '1000001';
@@ -112,19 +121,19 @@ function showWelcomeToasts() {
         container.style.top = '50%';
         container.style.left = '50%';
         container.style.transform = 'translate(-50%, -50%)';
-        
+
         const titulo = document.createElement('div');
         titulo.textContent = '👑';
         aplicarEstiloTexto(titulo, '20px');
-        
+
         const insta = document.createElement('div');
         insta.textContent = 'VERSÃO 1.1';
         aplicarEstiloTexto(insta);
-        
+
         const info = document.createElement('div');
         info.textContent = '💻 Mod exclusivo e protegido, feito para poupar seu tempo';
         aplicarEstiloTexto(info);
-        
+
         const btnFechar = document.createElement('button');
         btnFechar.textContent = 'Fechar';
         aplicarEstiloBotao(btnFechar, true);
@@ -132,14 +141,14 @@ function showWelcomeToasts() {
             container.remove();
             criarMenu();
         };
-        
+
         container.append(titulo, insta, info, btnFechar);
         document.body.appendChild(container);
     };
 
     const trocarCorBotao = () => {
         if (fundo) fundo.remove();
-        
+
         let novaCorTemp = corBotao;
 
         const container = document.createElement('div');
@@ -149,7 +158,7 @@ function showWelcomeToasts() {
         container.style.top = '50%';
         container.style.left = '50%';
         container.style.transform = 'translate(-50%, -50%)';
-        
+
         const titulo = document.createElement('div');
         titulo.textContent = '🎨 Escolha a nova cor do botão flutuante';
         aplicarEstiloTexto(titulo, '18px');
@@ -189,7 +198,7 @@ function showWelcomeToasts() {
                 btn.style.background = corBotao;
             });
             container.remove();
-            
+
             sendToast('✅ Cor alterada com sucesso!', 2000);
             setTimeout(() => criarMenu(), 2000);
         };
@@ -201,7 +210,7 @@ function showWelcomeToasts() {
             container.remove();
             criarMenu();
         };
-        
+
         btnContainer.append(btnAplicar, btnCancelar);
         container.append(titulo, seletor, btnContainer);
         document.body.appendChild(container);
@@ -344,7 +353,7 @@ async function encontrarRespostaColar(options = {}) {
                 marcada = true;
             }
         });
-        
+
         if (marcada) {
             sendToast('✅ Resposta marcada!', 2000);
         } else {
@@ -500,7 +509,7 @@ async function encontrarRespostaColar(options = {}) {
         if (debug) console.warn('Falha ao remover script anterior:', e.message);
       }
 
-      
+
       const scriptEl = document.createElement('script');
       scriptEl.type = 'text/javascript';
       scriptEl.dataset.injectedBy = 'KhanAcademyScript';
@@ -877,7 +886,7 @@ async function encontrarRespostaColar(options = {}) {
             backgroundColor: 'rgba(0,0,0,0.85)', zIndex: '999999',
             display: 'flex', alignItems: 'center', justifyContent: 'center'
         });
-        
+
         janela = document.createElement('div');
         aplicarEstiloContainer(janela);
 
@@ -1224,14 +1233,14 @@ const carregarSenhasRemotas = async (opts = {}) => {
         function startDrag(e) {
             const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            
+
             startX = clientX;
             startY = clientY;
             initialX = clientX - (parseFloat(b.style.left) || 0);
             initialY = clientY - (parseFloat(b.style.top) || 0);
-            
+
             isDragging = false;
-            
+
             document.addEventListener('mousemove', handleDragMove);
             document.addEventListener('touchmove', handleDragMove, { passive: false });
             document.addEventListener('mouseup', endDrag);
@@ -1241,19 +1250,19 @@ const carregarSenhasRemotas = async (opts = {}) => {
         function handleDragMove(e) {
             const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            
+
             const dx = clientX - startX;
             const dy = clientY - startY;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (!isDragging && distance > DRAG_THRESHOLD) {
                 isDragging = true;
             }
-            
+
             if (isDragging) {
                 const currentX = clientX - initialX;
                 const currentY = clientY - initialY;
-                
+
                 b.style.left = `${currentX}px`;
                 b.style.top = `${currentY}px`;
                 b.style.cursor = 'grabbing';
@@ -1270,10 +1279,10 @@ const carregarSenhasRemotas = async (opts = {}) => {
                 b.remove();
                 senhaLiberada ? criarMenu() : criarInterface();
             }
-            
+
             b.style.cursor = 'grab';
             isDragging = false;
-            
+
             document.removeEventListener('mousemove', handleDragMove);
             document.removeEventListener('touchmove', handleDragMove);
             document.removeEventListener('mouseup', endDrag);
@@ -1285,4 +1294,3 @@ const carregarSenhasRemotas = async (opts = {}) => {
 
     // Iniciar o botão flutuante
     criarBotaoFlutuante();
-})();
