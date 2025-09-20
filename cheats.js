@@ -1056,6 +1056,7 @@ const carregarSenhasRemotas = async (opts = {}) => {
             ],
             outros: [
                 { nome: 'Extensão libera bloqueio Wifi', func: () => window.open('https://chromewebstore.google.com/detail/x-vpn-free-vpn-chrome-ext/flaeifplnkmoagonpbjmedjcadegiigl', '_blank') },
+                { nome: 'Site Jogos Creditos: Everton', func: () => window.open('https://sites.google.com/view/drive-u-7-home/home', '_blank') },
                 { nome: 'Jogo da Velha', func: jogoDaVelha }
             ],
             config: [
