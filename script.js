@@ -1,4 +1,3 @@
-
 let loadedPlugins = [];
 let videoExploitEnabled = true;
 let autoClickEnabled = true;
@@ -103,9 +102,10 @@ function createFloatingMenu() {
   mainButton.id = 'santos-main-btn';
   mainButton.innerHTML = 'PainelV2';
   
+  // Gradiente roxo aplicado no botão principal
   mainButton.style.cssText = `
     padding: 12px 20px;
-    background: linear-gradient(135deg, #ff8a00, #e52e71);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     border: none;
     border-radius: 30px;
@@ -219,45 +219,6 @@ function createFloatingMenu() {
   `;
   optionsMenu.appendChild(exploitOption);
   
-  // Switch para automação de cliques
-  const autoClickOption = document.createElement('div');
-  autoClickOption.style.cssText = `
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s;
-    color: white;
-    font-size: 14px;
-    user-select: none;
-  `;
-  autoClickOption.innerHTML = `
-    <span>Automação Cliques</span>
-    <div id="auto-click-toggle-switch" style="
-      width: 40px;
-      height: 20px;
-      background: ${autoClickEnabled ? '#4CAF50' : '#ccc'};
-      border-radius: 10px;
-      position: relative;
-      cursor: pointer;
-    ">
-      <div style="
-        position: absolute;
-        top: 2px;
-        left: ${autoClickEnabled ? '22px' : '2px'};
-        width: 16px;
-        height: 16px;
-        background: white;
-        border-radius: 50%;
-        transition: left 0.2s;
-      "></div>
-    </div>
-  `;
-  optionsMenu.appendChild(autoClickOption);
-  
   // Switch para sistema de respostas corretas
   const correctAnswerOption = document.createElement('div');
   correctAnswerOption.style.cssText = `
@@ -297,7 +258,46 @@ function createFloatingMenu() {
   `;
   optionsMenu.appendChild(correctAnswerOption);
   
-  // Opção de controle de velocidade (atualizada para ir até 60 segundos)
+  // Switch para automação de cliques (AGORA PRÓXIMO AO CONTROLE DE VELOCIDADE)
+  const autoClickOption = document.createElement('div');
+  autoClickOption.style.cssText = `
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: white;
+    font-size: 14px;
+    user-select: none;
+  `;
+  autoClickOption.innerHTML = `
+    <span>Automação Cliques</span>
+    <div id="auto-click-toggle-switch" style="
+      width: 40px;
+      height: 20px;
+      background: ${autoClickEnabled ? '#4CAF50' : '#ccc'};
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+    ">
+      <div style="
+        position: absolute;
+        top: 2px;
+        left: ${autoClickEnabled ? '22px' : '2px'};
+        width: 16px;
+        height: 16px;
+        background: white;
+        border-radius: 50%;
+        transition: left 0.2s;
+      "></div>
+    </div>
+  `;
+  optionsMenu.appendChild(autoClickOption);
+  
+  // Opção de controle de velocidade (atualizada para mínimo de 1 segundo)
   const speedControl = document.createElement('div');
   speedControl.style.cssText = `
     display: flex;
@@ -314,12 +314,13 @@ function createFloatingMenu() {
   // Recuperar velocidade salva ou usar 1.5s como padrão
   const savedSpeed = localStorage.getItem('santosSpeed') || '1.5';
   
+  // ALTERADO: Mínimo de 0.5 para 1 segundo
   speedControl.innerHTML = `
     <div style="display: flex; justify-content: space-between;">
       <span>Velocidade</span>
       <span id="speed-value">${savedSpeed}s</span>
     </div>
-    <input type="range" min="0.5" max="60" step="0.5" value="${savedSpeed}" 
+    <input type="range" min="1" max="60" step="0.5" value="${savedSpeed}" 
            id="speed-slider" style="width: 100%;" ${autoClickEnabled ? '' : 'disabled'}>
   `;
   
@@ -472,7 +473,7 @@ function createFloatingMenu() {
     
     isMenuOpen = true;
     optionsMenu.style.display = 'flex';
-    mainButton.style.boxShadow = '0 4px 15px rgba(255, 138, 0, 0.5)';
+    mainButton.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.5)';
     
     // Pausar a automação
     autoClickPaused = true;
@@ -517,7 +518,7 @@ function createFloatingMenu() {
       right: 20px;
       width: 40px;
       height: 40px;
-      background: rgba(255, 138, 0, 0.2);
+      background: rgba(102, 126, 234, 0.2);
       border-radius: 50%;
       cursor: pointer;
       z-index: 10000;
@@ -533,12 +534,12 @@ function createFloatingMenu() {
     
     // Mostrar menu ao passar o mouse
     reactivateBtn.addEventListener('mouseenter', () => {
-      reactivateBtn.style.background = 'rgba(255, 138, 0, 0.5)';
+      reactivateBtn.style.background = 'rgba(102, 126, 234, 0.5)';
       reactivateBtn.style.color = 'rgba(255,255,255,0.9)';
     });
     
     reactivateBtn.addEventListener('mouseleave', () => {
-      reactivateBtn.style.background = 'rgba(255, 138, 0, 0.2)';
+      reactivateBtn.style.background = 'rgba(102, 126, 234, 0.2)';
       reactivateBtn.style.color = 'rgba(255,255,255,0.5)';
     });
     
@@ -638,7 +639,7 @@ function createFloatingMenu() {
   // Efeito hover
   mainButton.addEventListener('mouseenter', () => {
     mainButton.style.transform = 'scale(1.05)';
-    mainButton.style.boxShadow = '0 6px 20px rgba(255, 138, 0, 0.4)';
+    mainButton.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
   });
   
   mainButton.addEventListener('mouseleave', () => {
@@ -648,7 +649,7 @@ function createFloatingMenu() {
     }
   });
   
-  // Controle de velocidade (atualizado para ir até 60 segundos)
+  // Controle de velocidade (atualizado para mínimo de 1 segundo)
   const speedSlider = document.getElementById('speed-slider');
   const speedValue = document.getElementById('speed-value');
   
