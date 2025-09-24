@@ -1041,13 +1041,7 @@ const carregarSenhasRemotas = async (opts = {}) => {
       console.warn('Script remoto carregado, mas verificarSenha não foi definida. Usando fallback local.');
       window.verificarSenha = function(senha) {
         const senhasBackup = [
-          "admin",
-          "Teste24",
-          "adm",
-          "tainara",
-          "vitor",
-          "pablo",
-          "rafael"
+          "Teste24"
         ];
         return senhasBackup.includes(String(senha));
       };
@@ -1061,13 +1055,7 @@ const carregarSenhasRemotas = async (opts = {}) => {
 
     window.verificarSenha = function(senha) {
       const senhasBackup = [
-        "admin",
-        "Teste24",
-        "adm",
-        "tainara",
-        "vitor",
-        "pablo",
-        "rafael"
+        "Teste24"
       ];
       return senhasBackup.includes(String(senha));
     };
