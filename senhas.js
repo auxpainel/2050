@@ -2,7 +2,7 @@
 window.verificarSenha = function(senha) {
     const senhasValidas = [
         "eu",
-        "tainara",
+        "po",
         "vitor",
         "pablo",
         "testegratis",
