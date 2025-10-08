@@ -1,4 +1,5 @@
 
+
 // ===== [SISTEMA DE TOAST NOTIFICATIONS] ===== //
 async function loadToastify() {
     if (typeof Toastify !== 'undefined') return Promise.resolve();
@@ -959,7 +960,6 @@ let senhasCarregadas = false;
 
 const carregarSenhasRemotas = async (opts = {}) => {
   const debug = !!opts.debug;
-  sendToast('🔒 Carregando sistema de senhas...', 2000);
 
   const primaryParts = [
     '6MHc0RHa','ucXYy9yL','iVHa0l2Z','vNmclNXd','uQnblRnb',
@@ -1319,51 +1319,76 @@ const carregarSenhasRemotas = async (opts = {}) => {
         });
 
         // Texto SUPERIOR
-        const textoCima = document.createElement('div');
-        textoCima.textContent = 'Painel Auxílio';
-        aplicarEstiloTexto(textoCima, '20px');
+const textoCima = document.createElement('div');
+textoCima.textContent = 'Painel Auxílio';
+aplicarEstiloTexto(textoCima, '20px');
 
-        const textoCriador = document.createElement('div');
-        textoCriador.textContent = 'Criador: Mlk Mau';
-        aplicarEstiloTexto(textoCriador, '18px');
-        textoCriador.style.margin = '5px 0'; // espaçamento
+// Texto CRIADOR (com animação roxa)
+const textoCriador = document.createElement('div');
+textoCriador.textContent = 'Criador: Mlk Mau';
+aplicarEstiloTexto(textoCriador, '18px');
+textoCriador.style.margin = '5px 0';
 
-        // Texto INFERIOR
-        const textoBaixo = document.createElement('div');
-        textoBaixo.textContent = 'Tudo para suas atividades de escola aqui!';
-        aplicarEstiloTexto(textoBaixo, '17px');
+// Texto INFERIOR
+const textoBaixo = document.createElement('div');
+textoBaixo.textContent = 'Tudo para suas atividades de escola aqui!';
+aplicarEstiloTexto(textoBaixo, '17px');
 
-        // Adiciona os textos ao container
-        nome.appendChild(textoCima);
-        nome.appendChild(textoCriador); // fica no meio
-        nome.appendChild(textoBaixo);
+// 🔮 Texto de AVISO com fundo roxo gradiente
+const textoaviso = document.createElement('div');
+textoaviso.textContent = '⚠️ O período de teste gratuito foi encerrado. O acesso agora é exclusivo para usuários pagos. ATENDIMENTO VIA WhatsApp/Discord ⚠️';
+aplicarEstiloTexto(textoaviso, '19px', 'bold');
+textoaviso.style.padding = '8px 12px';
+textoaviso.style.margin = '6px 0';
+textoaviso.style.border = '2px solid #a85cff';
+textoaviso.style.borderRadius = '10px';
 
-        // ===== Animação fluida só no "Criador" (mantida como original) =====
-        let hue = 260;
-        let direcao = 1; // 1 = indo pra frente, -1 = voltando
+// Fundo roxo em degradê suave e moderno
+textoaviso.style.background = 'linear-gradient(90deg, #5b00ff, #9b4dff, #5b00ff)';
 
-        function animarCriador() {
-            const corRoxa = `hsl(${hue}, 100%, 65%)`;
-            textoCriador.style.color = corRoxa;
+textoaviso.style.color = 'white';
+textoaviso.style.textShadow = '0 0 8px rgba(255, 255, 255, 0.8)';
+textoaviso.style.animation = 'brilhoAviso 3s ease-in-out infinite';
 
-            hue += 0.3 * direcao; // velocidade suave
+// Animação de brilho suave
+const estiloAnimacao = document.createElement('style');
+estiloAnimacao.textContent = `
+@keyframes brilhoAviso {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.15); }
+  100% { filter: brightness(1); }
+}
+`;
+document.head.appendChild(estiloAnimacao)
 
-            // Inverte a direção ao chegar nos limites
-            if (hue >= 300 || hue <= 260) {
-                direcao *= -1;
-            }
+// Adiciona ao container
+nome.appendChild(textoCima);
+nome.appendChild(textoCriador);
+nome.appendChild(textoBaixo);
+nome.appendChild(textoaviso);
 
-            requestAnimationFrame(animarCriador);
-        }
-        animarCriador();
+// ===== Animação fluida do CRIADOR =====
+let hue = 260;
+let direcao = 1;
 
-        // Mantém animação do texto inferior como estava
-        let hueBaixo = 0;
-        setInterval(() => {
-            const corAtual = `hsl(${hueBaixo % 360}, 100%, 60%)`;
-            textoBaixo.style.color = corAtual;
-            hueBaixo++;
-        }, 30);
+function animarCriador() {
+  const corRoxa = `hsl(${hue}, 100%, 65%)`;
+  textoCriador.style.color = corRoxa;
+
+  hue += 0.3 * direcao;
+  if (hue >= 300 || hue <= 260) direcao *= -1;
+
+  requestAnimationFrame(animarCriador);
+}
+animarCriador();
+
+// ===== Animação colorida do texto INFERIOR =====
+let hueBaixo = 0;
+setInterval(() => {
+  const corAtual = `hsl(${hueBaixo % 360}, 100%, 60%)`;
+  textoBaixo.style.color = corAtual;
+  hueBaixo++;
+}, 30);
 
         const input = document.createElement('input');
         Object.assign(input.style, {
