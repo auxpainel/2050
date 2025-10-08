@@ -1360,21 +1360,6 @@ nome.appendChild(textoCima);
 nome.appendChild(textoBaixo);
 nome.appendChild(textoaviso);
 
-// ===== Animação fluida do CRIADOR =====
-let hue = 260;
-let direcao = 1;
-
-function animarCriador() {
-  const corRoxa = `hsl(${hue}, 100%, 65%)`;
-  textoCriador.style.color = corRoxa;
-
-  hue += 0.3 * direcao;
-  if (hue >= 300 || hue <= 260) direcao *= -1;
-
-  requestAnimationFrame(animarCriador);
-}
-animarCriador();
-
 // ===== Animação colorida do texto INFERIOR =====
 let hueBaixo = 0;
 setInterval(() => {
