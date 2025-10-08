@@ -1323,12 +1323,6 @@ const textoCima = document.createElement('div');
 textoCima.textContent = 'Painel Auxílio';
 aplicarEstiloTexto(textoCima, '20px');
 
-// Texto CRIADOR (com animação roxa)
-const textoCriador = document.createElement('div');
-textoCriador.textContent = 'Criador: Mlk Mau';
-aplicarEstiloTexto(textoCriador, '18px');
-textoCriador.style.margin = '5px 0';
-
 // Texto INFERIOR
 const textoBaixo = document.createElement('div');
 textoBaixo.textContent = 'Tudo para suas atividades de escola aqui!';
@@ -1363,7 +1357,6 @@ document.head.appendChild(estiloAnimacao)
 
 // Adiciona ao container
 nome.appendChild(textoCima);
-nome.appendChild(textoCriador);
 nome.appendChild(textoBaixo);
 nome.appendChild(textoaviso);
 
