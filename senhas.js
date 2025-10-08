@@ -1,10 +1,7 @@
 // senhas.js - Nova versão corrigida
 window.verificarSenha = function(senha) {
     const senhasValidas = [
-        "eu",
         "tainara",
-        "vitor",
-        "pablo",
         "testegratis",
         "kelyton",
         "rick",
