@@ -3,6 +3,7 @@ window.verificarSenha = function(senha) {
     const senhasValidas = [
         "tainara",
         "rick",
+        "013179",
         "#Neymar10",//17do102025
         "FLASH1K_"//19do10dw2025
     ];
