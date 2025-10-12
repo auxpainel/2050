@@ -438,7 +438,7 @@
         const bar = document.createElement('div');
         bar.className = 'leiacheat-bar';
         bar.innerHTML = `
-            <h3>LeiaCheat</h3>
+            <h3>LeiaCcheat</h3>
         `;
         document.body.appendChild(bar);
 
