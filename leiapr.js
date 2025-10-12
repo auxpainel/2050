@@ -525,7 +525,7 @@
         instructions.style.display = 'block'; // Garante que as instruções sejam visíveis inicialmente
         instructions.innerHTML = `
             <h2>Instruções de uso:</h2>
-            <p>1. Clique no botão à direita escrito "LeiaCheat"</p>
+            <p>1. Clique no botão à direita escriooooto "LeiaCheat"</p>
             <p>2. Irá abrir um menu com funções autoexplicativas.</p>
             <button id="close-instructions-btn">Fechar instruções</button>
         `;
