@@ -130,7 +130,7 @@
         const bar = document.createElement('div');
         bar.className = 'leiacheat-bar';
         bar.id = 'leiacheat-bar';
-        bar.innerHTML = `LeiaCheat`;
+        bar.innerHTML = `MENU`;
         document.body.appendChild(bar);
         bar.addEventListener('click', toggleMenu);
     }
@@ -140,7 +140,7 @@
         menu.className = 'leiacheat-menu';
         menu.innerHTML = `
             <div class="leiacheat-menu-header">
-                <h2>LeiaCheat</h2>
+                <h2>MENU</h2>
             </div>
 
             <div class="leiacheat-menu-section">
@@ -163,7 +163,7 @@
             </div>
 
             <div class="leiacheat-menu-footer">
-                <div>v3.2 — wyzop__</div>
+                <div>v1.0 — mlkmau</div>
             </div>
         `;
         document.body.appendChild(menu);
