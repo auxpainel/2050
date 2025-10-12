@@ -5,7 +5,7 @@
     let maxTimes = 300;
     let intervalId;
     let isRunning = false;
-    let detectQuiz = false;
+    let detectQuiz = true;
     let autoContinueAfterQuiz = false;
     let intervalTime = 1000;
     let quizCheckIntervalId = null;
