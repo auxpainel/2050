@@ -112,6 +112,13 @@
             cursor: pointer;
         }
 
+        .info-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
         .leiacheat-menu-footer {
             text-align: center;
             margin-top: 6px;
@@ -158,6 +165,7 @@
             </div>
 
             <div class="leiacheat-menu-section">
+                <div class="info-text">Deixe as 2 seguintes opções ativadas para melhor funcionamento 👇</div>
                 <label class="small-row"><input type="checkbox" id="detect-quiz" checked> Detectar atividade</label>
                 <label class="small-row"><input type="checkbox" id="auto-continue"> Auto-continuar (após atividade)</label>
             </div>
