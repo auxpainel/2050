@@ -5,7 +5,7 @@
     let maxTimes = 300;
     let intervalId;
     let isRunning = false;
-    let detectQuiz = true;
+    let detectQuiz = false;
     let autoContinueAfterQuiz = false;
     let intervalTime = 1000;
     let quizCheckIntervalId = null;
@@ -159,7 +159,7 @@
 
             <div class="leiacheat-menu-section">
                 <label class="small-row"><input type="checkbox" id="detect-quiz" checked> Detectar atividade</label>
-                <label class="small-row"><input type="checkbox" id="auto-continue"> Auto-continuar</label>
+                <label class="small-row"><input type="checkbox" id="auto-continue"> Auto-continuar (após atividade)</label>
             </div>
 
             <div class="leiacheat-menu-footer">
