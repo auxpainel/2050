@@ -41,7 +41,7 @@
         }
 
         .leiacheat-menu {
-            display: block; /* ABERTO por padrão */
+            display: none; /* FECHADO por padrão */
             position: fixed;
             top: 60px;
             right: 16px;
@@ -132,14 +132,10 @@
         bar.id = 'leiacheat-bar';
         bar.innerHTML = `LeiaCheat`;
         document.body.appendChild(bar);
-
         bar.addEventListener('click', toggleMenu);
     }
 
     function createMenu() {
-        // evita criar menu duplicado
-        if (document.querySelector('.leiacheat-menu')) return;
-
         const menu = document.createElement('div');
         menu.className = 'leiacheat-menu';
         menu.innerHTML = `
@@ -177,23 +173,18 @@
         document.getElementById('seconds-input').addEventListener('input', updateIntervalFromSeconds);
         document.getElementById('milliseconds-input').addEventListener('input', updateIntervalFromMilliseconds);
 
-        document.getElementById('detect-quiz').addEventListener('change', (e) => {
-            detectQuiz = e.target.checked;
-        });
-        document.getElementById('auto-continue').addEventListener('change', (e) => {
-            autoContinueAfterQuiz = e.target.checked;
-        });
+        document.getElementById('detect-quiz').addEventListener('change', (e) => detectQuiz = e.target.checked);
+        document.getElementById('auto-continue').addEventListener('change', (e) => autoContinueAfterQuiz = e.target.checked);
     }
 
     function toggleMenu() {
         const menu = document.querySelector('.leiacheat-menu');
         if (!menu) return;
-        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
     }
 
     function showNotification(message) {
         const notification = document.createElement('div');
-        notification.className = 'leiacheat-notification';
         notification.style.cssText = `
             position: fixed;
             bottom: 18px;
@@ -208,17 +199,7 @@
         `;
         notification.textContent = message;
         document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.style.opacity = '1';
-        }, 50);
-
-        setTimeout(() => {
-            notification.style.opacity = '0';
-            setTimeout(() => {
-                if (notification.parentNode) notification.parentNode.removeChild(notification);
-            }, 300);
-        }, 2200);
+        setTimeout(() => notification.remove(), 2000);
     }
 
     function updateIntervalFromSeconds() {
@@ -238,23 +219,11 @@
     }
 
     function startInterval() {
-        if (isRunning) {
-            showNotification("O script já está em execução");
-            return;
-        }
-
+        if (isRunning) return showNotification("Já está em execução");
         const secondsInput = document.getElementById('seconds-input').value;
         const millisecondsInput = document.getElementById('milliseconds-input').value;
-
-        if (!secondsInput && !millisecondsInput) {
-            showNotification("Defina tempo em segundos ou milissegundos.");
-            return;
-        }
-
-        if (secondsInput && millisecondsInput) {
-            showNotification("Escolha apenas segundos ou milissegundos.");
-            return;
-        }
+        if (!secondsInput && !millisecondsInput) return showNotification("Defina tempo.");
+        if (secondsInput && millisecondsInput) return showNotification("Escolha só um tempo.");
 
         isRunning = true;
         count = 0;
@@ -265,10 +234,10 @@
                 if (autoContinueAfterQuiz) {
                     if (!quizCheckIntervalId) {
                         quizCheckIntervalId = setInterval(() => {
-                            if (!document.querySelector('[data-quiz]') && !document.querySelector('#quiz') && !document.querySelector('.quiz-container') && !document.querySelector('.activity-wrapper')) {
+                            if (!document.querySelector('[data-quiz], #quiz, .quiz-container, .activity-wrapper')) {
                                 clearInterval(quizCheckIntervalId);
                                 quizCheckIntervalId = null;
-                                showNotification("Atividade finalizada. Continuando.");
+                                showNotification("Atividade finalizada, continuando...");
                                 document.dispatchEvent(event);
                             }
                         }, 1000);
@@ -279,7 +248,6 @@
                 }
                 return;
             }
-
             document.dispatchEvent(event);
             count++;
         }, intervalTime);
@@ -298,168 +266,10 @@
         }
         isRunning = false;
         showNotification("Parado");
-        const startBtn = document.getElementById('start-btn');
-        const stopBtn = document.getElementById('stop-btn');
-        if (startBtn) startBtn.disabled = false;
-        if (stopBtn) stopBtn.disabled = true;
+        document.getElementById('start-btn').disabled = false;
+        document.getElementById('stop-btn').disabled = true;
     }
-
-    const RAYZEResolver = {
-        bugDetected: false,
-        learningData: {},
-        adaptationThreshold: 3,
-
-        initialize: function() {
-            this.loadLearningData();
-        },
-
-        loadLearningData: function() {
-            const savedData = localStorage.getItem('RAYZELearningData');
-            if (savedData) {
-                try {
-                    this.learningData = JSON.parse(savedData);
-                } catch (e) { this.learningData = {}; }
-            }
-        },
-
-        saveLearningData: function() {
-            try {
-                localStorage.setItem('RAYZELearningData', JSON.stringify(this.learningData));
-            } catch (e) {}
-        },
-
-        checkForBugs: function() {
-            const detectedBugs = [
-                this.checkQuizDetectionBug(),
-                this.checkAutoContinueBug(),
-                this.checkIntervalConsistencyBug(),
-                this.checkUIResponsivenessBug()
-            ].filter(bug => bug !== null);
-
-            if (detectedBugs.length > 0) {
-                this.bugDetected = true;
-                this.learnAndAdapt(detectedBugs);
-                showNotification("RAYZE: bugs detectados.");
-            }
-        },
-
-        learnAndAdapt: function(detectedBugs) {
-            detectedBugs.forEach(bug => {
-                if (!this.learningData[bug.type]) {
-                    this.learningData[bug.type] = { occurrences: 0, lastSolution: null };
-                }
-
-                this.learningData[bug.type].occurrences++;
-                this.learningData[bug.type].lastSolution = String(bug.solution);
-
-                if (this.learningData[bug.type].occurrences >= this.adaptationThreshold) {
-                    this.implementPermanentFix(bug.type);
-                }
-
-                try { bug.solution(); } catch (e) {}
-            });
-
-            this.saveLearningData();
-        },
-
-        implementPermanentFix: function(bugType) {
-            switch(bugType) {
-                case 'quizDetection':
-                    detectQuiz = () => {
-                        return document.querySelector('[data-quiz], #quiz, .quiz-container, .activity-wrapper');
-                    };
-                    break;
-                case 'autoContinue':
-                    this.enhanceAutoContinue();
-                    break;
-                case 'intervalConsistency':
-                    this.implementDynamicInterval();
-                    break;
-                case 'uiResponsiveness':
-                    this.optimizeUIUpdates();
-                    break;
-            }
-            showNotification(`RAYZE: fix aplicada ${bugType}`);
-        },
-
-        checkQuizDetectionBug: function() {
-            if (detectQuiz && document.querySelector('[data-quiz]') && isRunning) {
-                return {
-                    type: 'quizDetection',
-                    solution: () => {
-                        stopInterval();
-                        detectQuiz = () => document.querySelector('[data-quiz], #quiz');
-                    }
-                };
-            }
-            return null;
-        },
-
-        checkAutoContinueBug: function() {
-            if (autoContinueAfterQuiz && !quizCheckIntervalId && isRunning) {
-                return {
-                    type: 'autoContinue',
-                    solution: this.setupQuizCheckInterval
-                };
-            }
-            return null;
-        },
-
-        checkIntervalConsistencyBug: function() {
-            // função de medição simplificada
-            return null;
-        },
-
-        checkUIResponsivenessBug: function() {
-            return null;
-        },
-
-        setupQuizCheckInterval: function() {
-            quizCheckIntervalId = setInterval(() => {
-                if (!detectQuiz()) {
-                    clearInterval(quizCheckIntervalId);
-                    quizCheckIntervalId = null;
-                    showNotification("Atividade encerrada. Continuando.");
-                    startInterval();
-                }
-            }, 1000);
-        },
-
-        enhanceAutoContinue: function() {
-            autoContinueAfterQuiz = true;
-            const enhancedQuizCheck = () => {
-                if (!document.querySelector('[data-quiz], #quiz, .quiz-container, .activity-wrapper')) {
-                    clearInterval(quizCheckIntervalId);
-                    quizCheckIntervalId = null;
-                    showNotification("Atividade finalizada. Continuando.");
-                    startInterval();
-                }
-            };
-            quizCheckIntervalId = setInterval(enhancedQuizCheck, 500);
-        },
-
-        implementDynamicInterval: function() {
-            // placeholder leve para ajuste dinâmico
-            setInterval(() => {}, 60000);
-        },
-
-        optimizeUIUpdates: function() {
-            // throttle simples
-            const originalShow = showNotification;
-            let inThrottle = false;
-            showNotification = function(msg) {
-                if (inThrottle) return;
-                originalShow(msg);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, 800);
-            };
-        }
-    };
-
-    RAYZEResolver.initialize();
-    setInterval(() => { RAYZEResolver.checkForBugs(); }, 5000);
 
     createBar();
     createMenu();
-
 })();
