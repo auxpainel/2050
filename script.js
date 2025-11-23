@@ -2,7 +2,7 @@ let loadedPlugins = [];
 let videoExploitEnabled = true;
 let autoClickEnabled = true;
 let autoClickPaused = false;
-let correctAnswerSystemEnabled = true; // Nova variável para controlar o sistema de respostas
+let correctAnswerSystemEnabled = true;
 
 console.clear();
 const noop = () => {};
@@ -56,7 +56,7 @@ function sendToast(text, duration = 5000, gravity = 'bottom') {
 
 async function showSplashScreen() {
   splashScreen.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;transition:opacity 0.5s ease;user-select:none;color:white;font-family:MuseoSans,sans-serif;font-size:30px;text-align:center;";
-  splashScreen.innerHTML = '<span style="color:white;">MLK</span><span style="color:#ff1717;"> MAU O PROPRIO</span>';
+  splashScreen.innerHTML = '<span style="color:white;">MLKKK</span><span style="color:#ff1717;"> MAU O PROPRIO</span>';
   document.body.appendChild(splashScreen);
   setTimeout(() => splashScreen.style.opacity = '1', 10);
 }
@@ -85,7 +85,6 @@ async function loadCss(url) {
 }
 
 function createFloatingMenu() {
-  // Contêiner principal arrastável
   const container = document.createElement('div');
   container.id = 'santos-floating-menu';
   container.style.cssText = `
@@ -97,12 +96,10 @@ function createFloatingMenu() {
     user-select: none;
   `;
 
-  // Botão principal
   const mainButton = document.createElement('button');
   mainButton.id = 'santos-main-btn';
   mainButton.innerHTML = 'PainelV2';
   
-  // Gradiente roxo aplicado no botão principal
   mainButton.style.cssText = `
     padding: 12px 20px;
     background: linear-gradient(135deg, #667eea, #764ba2);
@@ -122,7 +119,6 @@ function createFloatingMenu() {
     user-select: none;
   `;
   
-  // Menu de opções (inicialmente oculto)
   const optionsMenu = document.createElement('div');
   optionsMenu.id = 'santos-options-menu';
   optionsMenu.style.cssText = `
@@ -140,7 +136,6 @@ function createFloatingMenu() {
     user-select: none;
   `;
   
-  // Opção de tema
   const themeOption = document.createElement('div');
   themeOption.style.cssText = `
     display: flex;
@@ -180,7 +175,6 @@ function createFloatingMenu() {
   
   optionsMenu.appendChild(themeOption);
   
-  // Switch para exploit de vídeo
   const exploitOption = document.createElement('div');
   exploitOption.style.cssText = `
     display: flex;
@@ -219,7 +213,6 @@ function createFloatingMenu() {
   `;
   optionsMenu.appendChild(exploitOption);
   
-  // Switch para sistema de respostas corretas
   const correctAnswerOption = document.createElement('div');
   correctAnswerOption.style.cssText = `
     display: flex;
@@ -258,7 +251,6 @@ function createFloatingMenu() {
   `;
   optionsMenu.appendChild(correctAnswerOption);
   
-  // Switch para automação de cliques (AGORA PRÓXIMO AO CONTROLE DE VELOCIDADE)
   const autoClickOption = document.createElement('div');
   autoClickOption.style.cssText = `
     display: flex;
@@ -297,7 +289,6 @@ function createFloatingMenu() {
   `;
   optionsMenu.appendChild(autoClickOption);
   
-  // Opção de controle de velocidade (atualizada para mínimo de 1 segundo)
   const speedControl = document.createElement('div');
   speedControl.style.cssText = `
     display: flex;
@@ -311,10 +302,8 @@ function createFloatingMenu() {
     user-select: none;
   `;
   
-  // Recuperar velocidade salva ou usar 1.5s como padrão
   const savedSpeed = localStorage.getItem('santosSpeed') || '1.5';
   
-  // ALTERADO: Mínimo de 0.5 para 1 segundo
   speedControl.innerHTML = `
     <div style="display: flex; justify-content: space-between;">
       <span>Velocidade</span>
@@ -326,7 +315,6 @@ function createFloatingMenu() {
   
   optionsMenu.appendChild(speedControl);
   
-  // Botão para esconder o menu
   const hideMenuOption = document.createElement('div');
   hideMenuOption.style.cssText = `
     display: flex;
@@ -345,7 +333,6 @@ function createFloatingMenu() {
   hideMenuOption.innerHTML = `<span>Esconder Menu</span>`;
   optionsMenu.appendChild(hideMenuOption);
   
-  // Adicionar espaço para futuras opções
   const futureOptions = document.createElement('div');
   futureOptions.id = 'santos-future-options';
   futureOptions.style.cssText = `
@@ -364,10 +351,8 @@ function createFloatingMenu() {
   container.appendChild(optionsMenu);
   document.body.appendChild(container);
   
-  // Estado do tema (dark mode ativo por padrão)
   let isDarkMode = true;
   
-  // Função para atualizar o switch de tema
   function updateThemeSwitch() {
     const switchInner = themeOption.querySelector('#theme-toggle-switch > div');
     if (isDarkMode) {
@@ -379,7 +364,6 @@ function createFloatingMenu() {
     }
   }
   
-  // Alternar tema
   themeOption.addEventListener('click', () => {
     isDarkMode = !isDarkMode;
     
@@ -394,7 +378,6 @@ function createFloatingMenu() {
     updateThemeSwitch();
   });
   
-  // Alternar exploit de vídeo
   exploitOption.addEventListener('click', () => {
     videoExploitEnabled = !videoExploitEnabled;
     
@@ -412,7 +395,6 @@ function createFloatingMenu() {
     }
   });
   
-  // Alternar automação de cliques
   autoClickOption.addEventListener('click', () => {
     autoClickEnabled = !autoClickEnabled;
     
@@ -433,7 +415,6 @@ function createFloatingMenu() {
     }
   });
   
-  // Alternar sistema de respostas corretas
   correctAnswerOption.addEventListener('click', () => {
     correctAnswerSystemEnabled = !correctAnswerSystemEnabled;
     
@@ -451,10 +432,8 @@ function createFloatingMenu() {
     }
   });
   
-  // Estado do menu
   let isMenuOpen = false;
   
-  // Função para fechar o menu e retomar a automação
   function closeMenu() {
     if (!isMenuOpen) return;
     
@@ -462,12 +441,10 @@ function createFloatingMenu() {
     optionsMenu.style.display = 'none';
     mainButton.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
     
-    // Retomar a automação
     autoClickPaused = false;
     sendToast("▶️｜Automação retomada", 1000);
   }
   
-  // Função para abrir o menu e pausar a automação
   function openMenu() {
     if (isMenuOpen) return;
     
@@ -475,12 +452,10 @@ function createFloatingMenu() {
     optionsMenu.style.display = 'flex';
     mainButton.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.5)';
     
-    // Pausar a automação
     autoClickPaused = true;
     sendToast("⏸️｜Automação pausada enquanto o menu está aberto", 1500);
   }
   
-  // Abrir/fechar menu
   function toggleMenu() {
     if (isMenuOpen) {
       closeMenu();
@@ -494,22 +469,18 @@ function createFloatingMenu() {
     toggleMenu();
   });
   
-  // Fechar menu ao clicar fora
   document.addEventListener('click', (e) => {
     if (!container.contains(e.target) && isMenuOpen) {
       closeMenu();
     }
   });
   
-  // Esconder o menu
   hideMenuOption.addEventListener('click', () => {
-    // Fechar o menu antes de esconder
     closeMenu();
     
     container.style.opacity = '0';
     container.style.pointerEvents = 'none';
     
-    // Criar botão de reativação
     const reactivateBtn = document.createElement('div');
     reactivateBtn.id = 'santos-reactivate-btn';
     reactivateBtn.style.cssText = `
@@ -532,7 +503,6 @@ function createFloatingMenu() {
     reactivateBtn.innerHTML = '☰';
     document.body.appendChild(reactivateBtn);
     
-    // Mostrar menu ao passar o mouse
     reactivateBtn.addEventListener('mouseenter', () => {
       reactivateBtn.style.background = 'rgba(102, 126, 234, 0.5)';
       reactivateBtn.style.color = 'rgba(255,255,255,0.9)';
@@ -543,7 +513,6 @@ function createFloatingMenu() {
       reactivateBtn.style.color = 'rgba(255,255,255,0.5)';
     });
     
-    // Reativar menu ao clicar
     reactivateBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       container.style.opacity = '1';
@@ -552,7 +521,6 @@ function createFloatingMenu() {
     });
   });
   
-  // Implementação do arrastar com threshold
   let isDragging = false;
   let startX, startY;
   let initialX, initialY;
@@ -627,7 +595,6 @@ function createFloatingMenu() {
     el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
   }
   
-  // Carregar posição salva
   const savedPosition = localStorage.getItem('santosMenuPosition');
   if (savedPosition) {
     const { x, y } = JSON.parse(savedPosition);
@@ -636,7 +603,6 @@ function createFloatingMenu() {
     setTranslate(x, y, container);
   }
   
-  // Efeito hover
   mainButton.addEventListener('mouseenter', () => {
     mainButton.style.transform = 'scale(1.05)';
     mainButton.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
@@ -649,12 +615,10 @@ function createFloatingMenu() {
     }
   });
   
-  // Controle de velocidade (atualizado para mínimo de 1 segundo)
   const speedSlider = document.getElementById('speed-slider');
   const speedValue = document.getElementById('speed-value');
   
   if (speedSlider && speedValue) {
-    // Desativar slider se automação estiver desligada
     speedSlider.disabled = !autoClickEnabled;
     
     speedSlider.addEventListener('input', () => {
@@ -665,122 +629,253 @@ function createFloatingMenu() {
     });
   }
   
-  // Atualizar o switch inicial
   updateThemeSwitch();
 }
 
+// ========== PARTE SUBSTITUÍDA: SISTEMA DE RESPOSTAS E AUTOMAÇÃO ==========
+
 function setupMain() {
   const originalFetch = window.fetch;
+  const correctAnswers = new Map();
 
-  // Função para manipular requisições de vídeo
-  window.fetch = async function(input, init) {
-    // Verificar se o exploit de vídeo está ativado
-    if (videoExploitEnabled) {
-      let body;
-      if (input instanceof Request) {
-        body = await input.clone().text();
-      } else if (init?.body) {
-        body = init.body;
+  // Helper para frações
+  const toFraction = (d) => {
+      if (d === 0 || d === 1) return String(d);
+      const decimals = (String(d).split('.')[1] || '').length;
+      let num = Math.round(d * Math.pow(10, decimals)), den = Math.pow(10, decimals);
+      const gcd = (a, b) => { while (b) [a, b] = [b, a % b]; return a; };
+      const div = gcd(Math.abs(num), Math.abs(den));
+      return den / div === 1 ? String(num / div) : `${num / div}/${den / div}`;
+  };
+
+  // Funções de automação de cliques
+  const tryClick = (sel) => document.querySelector(sel)?.click();
+
+  const clickButtonWithText = (text) => {
+    const allButtons = document.querySelectorAll("button");
+    for (const button of allButtons) {
+      if (button.textContent && button.textContent.trim() === text) {
+        button.click();
+        sendToast(`🚀｜Botão "${text}" clicado automaticamente!`, 1500);
+        return true;
       }
-
-      if (body?.includes('"operationName":"updateUserVideoProgress"')) {
-        try {
-          let bodyObj = JSON.parse(body);
-          if (bodyObj.variables?.input) {
-            const durationSeconds = bodyObj.variables.input.durationSeconds;
-            bodyObj.variables.input.secondsWatched = durationSeconds;
-            bodyObj.variables.input.lastSecondWatched = durationSeconds;
-            body = JSON.stringify(bodyObj);
-            
-            if (input instanceof Request) {
-              input = new Request(input, { body });
-            } else {
-              init.body = body;
-            }
-            sendToast("🔄｜Vídeo exploitado.", 1000);
-          }
-        } catch (e) {}
+      const spans = button.querySelectorAll("span");
+      for (const span of spans) {
+        if (span.textContent && span.textContent.trim() === text) {
+          button.click();
+          sendToast(`🚀｜Botão "${text}" clicado automaticamente!`, 1500);
+          return true;
+        }
       }
     }
+    return false;
+  };
 
-    const originalResponse = await originalFetch.apply(this, arguments);
+  // Interceptação de fetch
+  window.fetch = async function (resource, init) {
+    let content;
+    const url = resource instanceof Request ? resource.url : resource;
 
-    // Esta parte (modificação de exercícios) será controlada pela opção
-    if (correctAnswerSystemEnabled) {
+    if (resource instanceof Request) {
+      content = await resource.clone().text();
+    } else if (init?.body) {
+      content = init.body;
+    }
+
+    // VIDEO EXPLOIT
+    if (videoExploitEnabled && content?.includes('"operationName":"updateUserVideoProgress"')) {
       try {
-        const clonedResponse = originalResponse.clone();
-        const responseBody = await clonedResponse.text();
-        let responseObj = JSON.parse(responseBody);
-        
-        if (responseObj?.data?.assessmentItem?.item?.itemData) {
-          let itemData = JSON.parse(responseObj.data.assessmentItem.item.itemData);
-          
-          if (itemData.question.content[0] === itemData.question.content[0].toUpperCase()) {
-            itemData.answerArea = {
-              calculator: false,
-              chi2Table: false,
-              periodicTable: false,
-              tTable: false,
-              zTable: false
-            };
-            
-            itemData.question.content = "Assinale abaixo Criador: Mlk Mau " + `[[☃ radio 1]]`;
-            itemData.question.widgets = {
-              "radio 1": {
-                type: "radio",
-                options: {
-                  choices: [{ content: "correta", correct: true }]
-                }
-              }
-            };
-            
-            responseObj.data.assessmentItem.item.itemData = JSON.stringify(itemData);
-            
-            return new Response(JSON.stringify(responseObj), {
-              status: originalResponse.status,
-              statusText: originalResponse.statusText,
-              headers: originalResponse.headers
-            });
+        const parsed = JSON.parse(content);
+        const input = parsed.variables?.input;
+        if (input) {
+          input.secondsWatched = input.durationSeconds;
+          input.lastSecondWatched = input.durationSeconds;
+          content = JSON.stringify(parsed);
+          if (resource instanceof Request) {
+            resource = new Request(resource, { body: content });
+          } else {
+            init.body = content;
           }
+          sendToast("🔄｜Vídeo exploitado.", 1000);
         }
       } catch (e) {}
     }
-    
-    return originalResponse;
+
+    // SISTEMA DE RESPOSTAS CORRETAS
+    if (correctAnswerSystemEnabled && url.includes('attemptProblem') && content) {
+        try {
+            let bodyObj = JSON.parse(content);
+            const itemId = bodyObj.variables?.input?.assessmentItemId;
+            const answers = correctAnswers.get(itemId);
+
+            if (answers?.length > 0) {
+                const attemptContent = [], userInput = {};
+                let attemptState = bodyObj.variables.input.attemptState ? JSON.parse(bodyObj.variables.input.attemptState) : null;
+
+                answers.forEach(a => {
+                    if (a.type === 'radio') {
+                        attemptContent.push({ selectedChoiceIds: [a.choiceId] });
+                        userInput[a.widgetKey] = { selectedChoiceIds: [a.choiceId] };
+                    }
+                    else if (a.type === 'numeric') {
+                        attemptContent.push({ currentValue: a.value });
+                        userInput[a.widgetKey] = { currentValue: a.value };
+                        if (attemptState?.[a.widgetKey]) attemptState[a.widgetKey].currentValue = a.value;
+                    }
+                    else if (a.type === 'expression') {
+                        attemptContent.push(a.value);
+                        userInput[a.widgetKey] = a.value;
+                        if (attemptState?.[a.widgetKey]) attemptState[a.widgetKey].value = a.value;
+                    }
+                    else if (a.type === 'grapher') {
+                        const graph = { type: a.graphType, coords: a.coords, asymptote: a.asymptote || null };
+                        attemptContent.push(graph);
+                        userInput[a.widgetKey] = graph;
+                        if (attemptState?.[a.widgetKey]) attemptState[a.widgetKey].plot = graph;
+                    }
+                });
+
+                bodyObj.variables.input.attemptContent = JSON.stringify([attemptContent, []]);
+                bodyObj.variables.input.userInput = JSON.stringify(userInput);
+                if (attemptState) bodyObj.variables.input.attemptState = JSON.stringify(attemptState);
+
+                content = JSON.stringify(bodyObj);
+                if (resource instanceof Request) resource = new Request(resource, { body: content });
+                else init.body = content;
+
+                sendToast(`✨ ${answers.length} resposta(s) aplicada(s).`, 750);
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    const response = await originalFetch.apply(this, arguments);
+
+    // GET ASSESSMENT - MODIFICAÇÃO DE QUESTÕES
+    if (correctAnswerSystemEnabled && url.includes('getAssessmentItem')) {
+      try {
+        const clone = response.clone();
+        const text = await clone.text();
+        const parsed = JSON.parse(text);
+
+        let item = null;
+        if (parsed?.data) {
+            for (const key in parsed.data) {
+                if (parsed.data[key]?.item) {
+                    item = parsed.data[key].item;
+                    break;
+                }
+            }
+        }
+
+        const itemDataRaw = item?.itemData;
+        if (itemDataRaw) {
+            let itemData = JSON.parse(itemDataRaw);
+            const answers = [];
+
+            for (const [key, w] of Object.entries(itemData.question.widgets || {})) {
+                if (w.type === 'radio' && w.options?.choices) {
+                    const choices = w.options.choices.map((c, i) => ({ ...c, id: c.id || `radio-choice-${i}` }));
+                    const correct = choices.find(c => c.correct);
+                    if (correct) answers.push({ type: 'radio', choiceId: correct.id, widgetKey: key });
+                }
+                else if (w.type === 'numeric-input' && w.options?.answers) {
+                    const correct = w.options.answers.find(a => a.status === 'correct');
+                    if (correct) {
+                        const val = correct.answerForms?.some(f => f === 'proper' || f === 'improper')
+                            ? toFraction(correct.value) : String(correct.value);
+                        answers.push({ type: 'numeric', value: val, widgetKey: key });
+                    }
+                }
+                else if (w.type === 'expression' && w.options?.answerForms) {
+                    const correct = w.options.answerForms.find(f => f.considered === 'correct' || f.form === true);
+                    if (correct) answers.push({ type: 'expression', value: correct.value, widgetKey: key });
+                }
+                else if (w.type === 'grapher' && w.options?.correct) {
+                    const c = w.options.correct;
+                    if (c.type && c.coords) answers.push({
+                        type: 'grapher', graphType: c.type, coords: c.coords,
+                        asymptote: c.asymptote || null, widgetKey: key
+                    });
+                }
+            }
+
+            if (answers.length > 0) {
+                correctAnswers.set(item.id, answers);
+            }
+
+            // MODIFICAÇÃO VISUAL DA QUESTÃO
+            if (itemData.question.content[0] === itemData.question.content[0].toUpperCase()) {
+                itemData.answerArea = {
+                    calculator: false,
+                    chi2Table: false,
+                    periodicTable: false,
+                    tTable: false,
+                    zTable: false,
+                };
+
+                itemData.question.content = "Assinale abaixo Criador: Mlk Mau " + `[[☃ radio 1]]`;
+
+                itemData.question.widgets = {
+                  "radio 1": {
+                    type: "radio", alignment: "default", static: false, graded: true,
+                    options: {
+                        choices: [
+                            { content: "correta", correct: true, id: "correct-choice" },
+                            { content: "", correct: false, id: "incorrect-choice" }
+                        ],
+                        randomize: false, multipleSelect: false, displayCount: null, deselectEnabled: false
+                    },
+                    version: { major: 1, minor: 0 }
+                  },
+                };
+
+                const modifiedData = { ...parsed };
+                if (modifiedData.data) {
+                    for (const key in modifiedData.data) {
+                        if (modifiedData.data[key]?.item?.itemData) {
+                            modifiedData.data[key].item.itemData = JSON.stringify(itemData);
+                            break;
+                        }
+                    }
+                }
+
+                sendToast("🔓 Questão exploitada.", 750);
+                return new Response(JSON.stringify(modifiedData), {
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: response.headers,
+                });
+            }
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    return response;
   };
 
-  // Loop de resolução de exercícios - controlado por autoClickEnabled
+  // LOOP DE AUTOMAÇÃO DE CLIQUES
   (async () => {
-    const selectors = [
-      `[data-testid="choice-icon__library-choice-icon"]`,
-      `[data-testid="exercise-check-answer"]`,
-      `[data-testid="exercise-next-question"]`,
-      `._1udzurba`,
-      `._awve9b`
-    ];
-    
     window.khanwareDominates = true;
-    
+
     while (window.khanwareDominates) {
-      // Se a automação estiver desligada ou pausada, esperar e continuar
       if (!autoClickEnabled || autoClickPaused) {
         await delay(2000);
         continue;
       }
-      
-      for (const selector of selectors) {
-        findAndClickBySelector(selector);
-        const element = document.querySelector(`${selector}> div`);
-        if (element?.innerText === "Mostrar resumo") {
-          sendToast("🎉｜Exercício concluído!", 3000);
-        }
-      }
-      
+
+      clickButtonWithText("Vamos lá");
+      clickButtonWithText("Mostrar resumo");
+      tryClick(`button[aria-label^="("]`);
+      tryClick(`[data-testid="exercise-check-answer"]`);
+      tryClick(`[data-testid="exercise-next-question"]`);
+
       const speed = parseFloat(localStorage.getItem('santosSpeed')) || 1.5;
       await delay(speed * 1000);
     }
   })();
 }
+
+// ========== FIM DA PARTE SUBSTITUÍDA ==========
 
 if (!/^https?:\/\/([a-z0-9-]+\.)?khanacademy\.org/.test(window.location.href)) {
   window.location.href = "https://pt.khanacademy.org/";
