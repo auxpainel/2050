@@ -8,6 +8,25 @@
     let OPENROUTER_API_KEYS = [];
     let currentAiProvider = 'gemini';
     const DEEPSEEK_MODEL_NAME = "deepseek/deepseek-chat";
+    let rgbEnabled = true; // Variável para controlar o estado do RGB
+
+    // Função para verificar quais provedores estão disponíveis
+    function getAvailableProviders() {
+        const providers = [];
+        if (GEMINI_API_KEYS.length > 0 && GEMINI_API_KEYS.some(key => key && key.length > 30)) {
+            providers.push('gemini');
+        }
+        if (OPENROUTER_API_KEYS.length > 0 && OPENROUTER_API_KEYS.some(key => key && key.length > 30)) {
+            providers.push('deepseek');
+        }
+        return providers;
+    }
+
+    // Função para determinar o provedor padrão
+    function getDefaultProvider(availableProviders) {
+        if (availableProviders.length === 0) return 'gemini';
+        return availableProviders[0];
+    }
 
     // Função para mostrar o modal de configuração
     function showApiKeyModal() {
@@ -90,7 +109,7 @@
 
             const storageToggleInput = document.createElement('input');
             storageToggleInput.type = 'checkbox';
-            storageToggleInput.checked = true; // Por padrão, salvar no storage
+            storageToggleInput.checked = true;
             Object.assign(storageToggleInput.style, {
                 opacity: '0',
                 width: '0',
@@ -123,7 +142,6 @@
                 borderRadius: '50%'
             });
 
-            // Estilo quando o toggle está ativo
             const updateToggleStyle = () => {
                 if (storageToggleInput.checked) {
                     storageToggleSlider.style.backgroundColor = '#8b5cf6';
@@ -135,7 +153,7 @@
             };
 
             storageToggleInput.addEventListener('change', updateToggleStyle);
-            updateToggleStyle(); // Aplicar estilo inicial
+            updateToggleStyle();
 
             storageToggle.appendChild(storageToggleInput);
             storageToggle.appendChild(storageToggleSlider);
@@ -143,7 +161,6 @@
             storageToggleContainer.appendChild(storageToggleLabel);
             storageToggleContainer.appendChild(storageToggle);
 
-            // Carregar preferência salva do storage
             try {
                 const savePreference = localStorage.getItem('mlk_mau_save_keys');
                 if (savePreference !== null) {
@@ -153,12 +170,10 @@
             } catch (e) {
                 console.warn('Não foi possível carregar preferência de salvamento:', e);
             }
-            // --- FIM DO TOGGLE SWITCH ---
 
             // Container para os campos Gemini
             const geminiSection = document.createElement('div');
             
-            // Título Gemini com link
             const geminiHeader = document.createElement('div');
             Object.assign(geminiHeader.style, {
                 display: 'flex',
@@ -213,7 +228,6 @@
                 marginBottom: '25px'
             });
 
-            // Criar 3 campos para Gemini
             for (let i = 1; i <= 3; i++) {
                 const inputGroup = document.createElement('div');
                 const input = document.createElement('input');
@@ -241,7 +255,6 @@
             // Container para os campos OpenRouter
             const openRouterSection = document.createElement('div');
             
-            // Título OpenRouter com link
             const openRouterHeader = document.createElement('div');
             Object.assign(openRouterHeader.style, {
                 display: 'flex',
@@ -251,7 +264,7 @@
             });
             
             const openRouterTitle = document.createElement('h3');
-            openRouterTitle.innerText = 'OpenRouter API Keys';
+            openRouterTitle.innerText = 'OpenRouter API Keys (DeepSeek)';
             Object.assign(openRouterTitle.style, {
                 color: '#a78bfa',
                 margin: '0',
@@ -296,7 +309,6 @@
                 marginBottom: '30px'
             });
 
-            // Criar 3 campos para OpenRouter
             for (let i = 1; i <= 3; i++) {
                 const inputGroup = document.createElement('div');
                 const input = document.createElement('input');
@@ -368,7 +380,6 @@
 
                 const shouldSaveToStorage = storageToggleInput.checked;
 
-                // Salvar preferência de storage
                 try {
                     localStorage.setItem('mlk_mau_save_keys', shouldSaveToStorage.toString());
                 } catch (e) {
@@ -379,7 +390,6 @@
                 GEMINI_API_KEYS = geminiKeys.length > 0 ? geminiKeys : [];
                 OPENROUTER_API_KEYS = openRouterKeys.length > 0 ? openRouterKeys : [];
 
-                // Salvar no localStorage apenas se o toggle estiver ativo
                 if (shouldSaveToStorage) {
                     try {
                         localStorage.setItem('mlk_mau_gemini_keys', JSON.stringify(GEMINI_API_KEYS));
@@ -389,7 +399,6 @@
                         console.warn('Não foi possível salvar chaves no localStorage:', e);
                     }
                 } else {
-                    // Remover chaves salvas anteriormente se o usuário desativou o salvamento
                     try {
                         localStorage.removeItem('mlk_mau_gemini_keys');
                         localStorage.removeItem('mlk_mau_openrouter_keys');
@@ -412,14 +421,14 @@
             // Montar modal
             modalContent.appendChild(title);
             modalContent.appendChild(description);
-            modalContent.appendChild(storageToggleContainer); // Adicionar o toggle antes dos campos
+            modalContent.appendChild(storageToggleContainer);
             modalContent.appendChild(geminiSection);
             modalContent.appendChild(openRouterSection);
             modalContent.appendChild(saveButton);
             modal.appendChild(modalContent);
             document.body.appendChild(modal);
 
-            // Tentar carregar chaves salvas apenas se a preferência de salvamento estiver ativa
+            // Tentar carregar chaves salvas
             try {
                 const savePreference = localStorage.getItem('mlk_mau_save_keys');
                 const shouldLoadKeys = savePreference === null || savePreference === 'true';
@@ -450,7 +459,7 @@
     // INICIALIZAÇÃO DA SCRIPT
     // -----------------------------------------------------------------------------------
     async function initializeScript() {
-        // Verificar se já existem chaves salvas (apenas se a preferência de salvamento estiver ativa)
+        // Verificar se já existem chaves salvas
         try {
             const savePreference = localStorage.getItem('mlk_mau_save_keys');
             const shouldLoadKeys = savePreference === null || savePreference === 'true';
@@ -475,10 +484,15 @@
             await showApiKeyModal();
         }
 
-        // Continuar com o restante da script...
+        // Determinar provedores disponíveis e configurar o provedor padrão
+        const availableProviders = getAvailableProviders();
+        currentAiProvider = getDefaultProvider(availableProviders);
+
         console.log('Script MLK MAU inicializado com sucesso!');
         console.log('Chaves Gemini configuradas:', GEMINI_API_KEYS.length);
         console.log('Chaves OpenRouter configuradas:', OPENROUTER_API_KEYS.length);
+        console.log('Provedores disponíveis:', availableProviders);
+        console.log('Provedor padrão:', currentAiProvider);
 
         // Resto das variáveis e funções...
         let currentApiKeyIndex = 0;
@@ -489,7 +503,6 @@
         const regexQuizId = /\/(?:quiz|quizzes|admin\/quiz|games|attempts|join)\/([a-f0-9]{24})/i;
         let quizIdDetected = null;
         let interceptorsStarted = false;
-        // -----------------------------------
 
         // --- FUNÇÕES UTILITÁRIAS ---
 
@@ -685,8 +698,6 @@
 
         async function obterRespostaDaIA(quizData) {
             lastAiResponse = '';
-            const viewResponseBtn = document.getElementById('view-raw-response-btn');
-            if (viewResponseBtn) viewResponseBtn.style.display = 'none';
 
             // --- 1. Lógica de Prompt ---
             let promptDeInstrucao = "", formattedOptions = "";
@@ -907,7 +918,7 @@
                 const match = bgImage.match(/rgb\(\d+, \d+, \d+\)/);
                 if (match) return match[0];
             }
-            return style.backgroundColor || 'rgba(255, 255, 255, 0.8)'; // Alterado para branco
+            return style.backgroundColor || 'rgba(255, 255, 255, 0.8)';
         };
 
         switch (quizData.questionType) {
@@ -1165,7 +1176,6 @@
             default:
                 const normalize = (str) => {
                     if (typeof str !== 'string') return '';
-                    // (v48) Mantém letras, números, espaços, e símbolos ² e ³
                     let cleaned = str.replace(/[^a-zA-Z\u00C0-\u017F0-9\s²³]/g, '').replace(/\s+/g, ' ');
                     return cleaned.trim().toLowerCase();
                 };
@@ -1182,7 +1192,7 @@
                     const aiAnswers = aiAnswerText.split('\n').map(normalize).filter(Boolean);
                     quizData.options.forEach(opt => {
                         if (aiAnswers.includes(normalize(opt.text))) {
-                            opt.element.style.border = '5px solid #FFFFFF'; // Alterado para branco
+                            opt.element.style.border = '5px solid #FFFFFF';
                             opt.element.click();
                         }
                     });
@@ -1195,7 +1205,7 @@
 
                     if (bestMatch) {
                         console.log("Correspondência encontrada!", bestMatch.element);
-                        bestMatch.element.style.border = '5px solid #FFFFFF'; // Alterado para branco
+                        bestMatch.element.style.border = '5px solid #FFFFFF';
                         bestMatch.element.click();
                     } else {
                         console.warn("Nenhuma correspondência exata encontrada após normalização.");
@@ -1262,7 +1272,7 @@
                         })();
                         const result = (() => { try { return new Function('return ' + computableExpr)(); } catch (e) { return null; } })();
                         if (result !== null && Math.abs(result - targetValue) < 0.001) {
-                            option.element.style.border = '5px solid #FFFFFF'; // Alterado para branco
+                            option.element.style.border = '5px solid #FFFFFF';
                             option.element.click();
                         }
                     });
@@ -1280,10 +1290,6 @@
                 alert("Ocorreu um erro: " + error.message);
             }
         } finally {
-            const viewResponseBtn = document.getElementById('view-raw-response-btn');
-            if (viewResponseBtn && lastAiResponse) {
-                viewResponseBtn.style.display = 'block';
-            }
             button.disabled = false;
             button.innerText = "Puxar Resposta";
             button.style.transform = 'scale(1)';
@@ -1389,22 +1395,15 @@
             });
         }
 
-        /**
-         * Torna o painel flutuante arrastável.
-         * @param {HTMLElement} panel - O elemento principal do painel.
-         * @param {HTMLElement} handle - O elemento que aciona o arraste (neste caso, o próprio painel).
-         */
         function makeDraggable(panel, handle) {
             let offsetX = 0, offsetY = 0, isDragging = false;
 
             handle.addEventListener('mousedown', (e) => {
-                // Previne o arraste se o clique foi em um botão ou link
                 if (e.target.tagName === 'BUTTON' || e.target.closest('a')) return;
 
                 isDragging = true;
                 const rect = panel.getBoundingClientRect();
 
-                // Converte a posição 'bottom'/'right' para 'top'/'left' na primeira vez
                 if (panel.style.bottom || panel.style.right) {
                     panel.style.right = 'auto';
                     panel.style.bottom = 'auto';
@@ -1415,7 +1414,7 @@
                 offsetX = e.clientX - panel.getBoundingClientRect().left;
                 offsetY = e.clientY - panel.getBoundingClientRect().top;
 
-                panel.style.transition = 'none'; // Desabilita transição suave durante o arraste
+                panel.style.transition = 'none';
                 handle.style.cursor = 'grabbing';
             });
 
@@ -1425,7 +1424,6 @@
                 let newX = e.clientX - offsetX;
                 let newY = e.clientY - offsetY;
 
-                // Mantém o painel dentro da tela
                 newX = Math.max(0, Math.min(newX, window.innerWidth - panel.offsetWidth));
                 newY = Math.max(0, Math.min(newY, window.innerHeight - panel.offsetHeight));
 
@@ -1436,11 +1434,10 @@
             document.addEventListener('mouseup', () => {
                 if (!isDragging) return;
                 isDragging = false;
-                panel.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out'; // Reabilita
+                panel.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
                 handle.style.cursor = 'grab';
             });
 
-            // Suporte para touch (mobile)
             handle.addEventListener('touchstart', (e) => {
                 if (e.target.tagName === 'BUTTON' || e.target.closest('a')) return;
 
@@ -1484,6 +1481,21 @@
             });
         }
 
+        function updateButtonStyle() {
+            const button = document.getElementById('ai-solver-button');
+            if (!button) return;
+
+            if (rgbEnabled) {
+                button.style.background = 'linear-gradient(90deg, #cc0000, #cc6600, #cccc00, #00cc00, #00cccc, #0000cc, #6600cc, #cc00cc, #cc0000)';
+                button.style.backgroundSize = '400% 400%';
+                button.style.animation = 'rgbFlow 3s linear infinite';
+            } else {
+                button.style.background = '#8b5cf6';
+                button.style.backgroundSize = 'auto';
+                button.style.animation = 'none';
+            }
+        }
+
         function criarFloatingPanel() {
             if (document.getElementById('mlk-mau-floating-panel')) return;
             
@@ -1499,69 +1511,19 @@
                 alignItems: 'stretch',
                 gap: '10px', 
                 padding: '12px', 
-                backgroundColor: 'rgba(0, 0, 0, 0.95)', // FUNDO PRETO
+                backgroundColor: 'rgba(0, 0, 0, 0.95)',
                 backdropFilter: 'blur(8px)', 
                 webkitBackdropFilter: 'blur(8px)', 
                 borderRadius: '16px',
                 boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)',
                 transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
-                transform: 'translateY(20px)', 
-                opacity: '0',
-                cursor: 'grab', // CURSOR DE ARRASTAR
+                transform: 'translateY(0)',
+                opacity: '1',
+                cursor: 'grab',
                 border: '1px solid rgba(255, 255, 255, 0.1)'
             });
 
-            const responseViewer = document.createElement('div');
-            responseViewer.id = 'ai-response-viewer';
-            Object.assign(responseViewer.style, {
-                display: 'none', 
-                position: 'absolute', 
-                bottom: 'calc(100% + 10px)', 
-                right: '0',
-                width: '300px', 
-                maxHeight: '200px', 
-                overflowY: 'auto',
-                background: 'rgba(10, 10, 15, 0.95)', 
-                backdropFilter: 'blur(5px)',
-                borderRadius: '8px', 
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                padding: '12px', 
-                color: '#f0f0f0', 
-                fontSize: '12px',
-                fontFamily: 'monospace', 
-                whiteSpace: 'pre-wrap', 
-                wordBreak: 'break-all',
-                boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)',
-                textAlign: 'left'
-            });
-            panel.appendChild(responseViewer);
-
-            const viewResponseBtn = document.createElement('button');
-            viewResponseBtn.id = 'view-raw-response-btn';
-            Object.assign(viewResponseBtn.style, {
-                background: 'none', 
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: 'rgba(255, 255, 255, 0.6)', 
-                cursor: 'pointer',
-                fontSize: '11px', 
-                padding: '4px 8px', 
-                borderRadius: '6px',
-                display: 'none', 
-                transition: 'all 0.2s ease',
-                marginBottom: '4px'
-            });
-            viewResponseBtn.innerText = 'Ultimada Resposta Obtida';
-            viewResponseBtn.addEventListener('click', () => {
-                if (responseViewer.style.display === 'block') {
-                    responseViewer.style.display = 'none';
-                } else {
-                    responseViewer.innerText = lastAiResponse || "Nenhuma resposta da IA foi recebida ainda.";
-                    responseViewer.style.display = 'block';
-                }
-            });
-            panel.appendChild(viewResponseBtn);
-
-            // --- NOVOS BOTÕES DE MINIMIZAR E FECHAR ---
+            // --- CONTROLES ---
             const controlsContainer = document.createElement('div');
             Object.assign(controlsContainer.style, {
                 display: 'flex',
@@ -1573,7 +1535,7 @@
             // Botão Minimizar
             const minimizeBtn = document.createElement('button');
             minimizeBtn.id = 'minimize-btn';
-            minimizeBtn.innerHTML = '−'; // Sinal de menos
+            minimizeBtn.innerHTML = '−';
             Object.assign(minimizeBtn.style, {
                 background: 'none',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -1602,7 +1564,7 @@
             // Botão Fechar
             const closeBtn = document.createElement('button');
             closeBtn.id = 'close-btn';
-            closeBtn.innerHTML = '×'; // Sinal de X
+            closeBtn.innerHTML = '×';
             Object.assign(closeBtn.style, {
                 background: 'none',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -1635,53 +1597,123 @@
             controlsContainer.appendChild(minimizeBtn);
             controlsContainer.appendChild(closeBtn);
             panel.appendChild(controlsContainer);
-            // --- FIM DOS NOVOS BOTÕES ---
 
-            // --- FRAME ACIMA DO BOTÃO DE IA ---
-            const aiInstruction = document.createElement('div');
-            aiInstruction.innerHTML = 'Escolha abaixo a IA que você escolheu a api.';
-            Object.assign(aiInstruction.style, {
+            // --- BOTÃO DE ALTERNÂNCIA DE IA (APENAS SE HOUVER MAIS DE UM PROVEDOR) ---
+            const availableProviders = getAvailableProviders();
+            
+            if (availableProviders.length > 1) {
+                // Frame acima do botão de IA
+                const aiInstruction = document.createElement('div');
+                aiInstruction.innerHTML = 'Escolha abaixo a IA que você configurou.';
+                Object.assign(aiInstruction.style, {
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontSize: '11px',
+                    textAlign: 'center',
+                    marginBottom: '4px',
+                    fontStyle: 'italic'
+                });
+                panel.appendChild(aiInstruction);
+
+                // Botão de alternância
+                const aiToggleBtn = document.createElement('button');
+                aiToggleBtn.id = 'ai-toggle-btn';
+                aiToggleBtn.innerText = `IA: ${currentAiProvider === 'gemini' ? 'Gemini' : 'DeepSeek'}`;
+                Object.assign(aiToggleBtn.style, {
+                    background: 'none', 
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    color: 'rgba(255, 255, 255, 0.6)', 
+                    cursor: 'pointer',
+                    fontSize: '11px', 
+                    padding: '4px 8px', 
+                    borderRadius: '6px',
+                    transition: 'all 0.2s ease',
+                    marginBottom: '4px'
+                });
+                
+                aiToggleBtn.addEventListener('click', () => {
+                    const availableProviders = getAvailableProviders();
+                    if (availableProviders.length > 1) {
+                        // Alternar entre os provedores disponíveis
+                        const currentIndex = availableProviders.indexOf(currentAiProvider);
+                        const nextIndex = (currentIndex + 1) % availableProviders.length;
+                        currentAiProvider = availableProviders[nextIndex];
+                        
+                        aiToggleBtn.innerText = `IA: ${currentAiProvider === 'gemini' ? 'Gemini' : 'DeepSeek'}`;
+                        aiToggleBtn.style.color = currentAiProvider === 'gemini' ? 'rgba(255, 255, 255, 0.6)' : '#a78bfa';
+                        
+                        console.log(`Provedor de IA alterado para: ${currentAiProvider}`);
+                    }
+                });
+                
+                // Definir cor inicial baseada no provedor atual
+                aiToggleBtn.style.color = currentAiProvider === 'gemini' ? 'rgba(255, 255, 255, 0.6)' : '#a78bfa';
+                panel.appendChild(aiToggleBtn);
+            } else if (availableProviders.length === 1) {
+                // Apenas um provedor disponível - mostrar indicador fixo
+                const aiIndicator = document.createElement('div');
+                aiIndicator.innerHTML = `IA: ${availableProviders[0] === 'gemini' ? 'Gemini' : 'DeepSeek'}`;
+                Object.assign(aiIndicator.style, {
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: '11px',
+                    textAlign: 'center',
+                    marginBottom: '4px',
+                    fontStyle: 'italic'
+                });
+                panel.appendChild(aiIndicator);
+            }
+
+            // --- BOTÃO TOGGLE RGB ---
+            const rgbToggleContainer = document.createElement('div');
+            Object.assign(rgbToggleContainer.style, {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '8px',
+                gap: '8px'
+            });
+
+            const rgbToggleLabel = document.createElement('span');
+            rgbToggleLabel.innerText = 'RGB:';
+            Object.assign(rgbToggleLabel.style, {
                 color: 'rgba(255, 255, 255, 0.7)',
                 fontSize: '11px',
-                textAlign: 'center',
-                marginBottom: '4px',
-                fontStyle: 'italic'
+                fontWeight: '500'
             });
-            panel.appendChild(aiInstruction);
 
-            const aiToggleBtn = document.createElement('button');
-            aiToggleBtn.id = 'ai-toggle-btn';
-            aiToggleBtn.innerText = 'IA: Gemini';
-            Object.assign(aiToggleBtn.style, {
-                background: 'none', 
+            const rgbToggle = document.createElement('button');
+            rgbToggle.id = 'rgb-toggle-btn';
+            rgbToggle.innerText = rgbEnabled ? 'ON' : 'OFF';
+            Object.assign(rgbToggle.style, {
+                background: rgbEnabled ? '#8b5cf6' : 'rgba(255, 255, 255, 0.1)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: 'rgba(255, 255, 255, 0.6)', 
+                color: rgbEnabled ? 'white' : 'rgba(255, 255, 255, 0.6)',
                 cursor: 'pointer',
-                fontSize: '11px', 
-                padding: '4px 8px', 
+                fontSize: '11px',
+                padding: '4px 8px',
                 borderRadius: '6px',
                 transition: 'all 0.2s ease',
-                marginBottom: '4px'
+                minWidth: '40px'
             });
-            aiToggleBtn.addEventListener('click', () => {
-                if (currentAiProvider === 'gemini') {
-                    currentAiProvider = 'deepseek';
-                    aiToggleBtn.innerText = 'IA: DeepSeek';
-                    aiToggleBtn.style.color = '#a78bfa';
-                } else {
-                    currentAiProvider = 'gemini';
-                    aiToggleBtn.innerText = 'IA: Gemini';
-                    aiToggleBtn.style.color = 'rgba(255, 255, 255, 0.6)';
-                }
-                console.log(`Provedor de IA alterado para: ${currentAiProvider}`);
-            });
-            panel.appendChild(aiToggleBtn);
 
+            rgbToggle.addEventListener('click', () => {
+                rgbEnabled = !rgbEnabled;
+                rgbToggle.innerText = rgbEnabled ? 'ON' : 'OFF';
+                rgbToggle.style.background = rgbEnabled ? '#8b5cf6' : 'rgba(255, 255, 255, 0.1)';
+                rgbToggle.style.color = rgbEnabled ? 'white' : 'rgba(255, 255, 255, 0.6)';
+                
+                updateButtonStyle();
+            });
+
+            rgbToggleContainer.appendChild(rgbToggleLabel);
+            rgbToggleContainer.appendChild(rgbToggle);
+            panel.appendChild(rgbToggleContainer);
+
+            // --- BOTÃO PRINCIPAL DE RESOLVER QUESTÃO ---
             const button = document.createElement('button');
             button.id = 'ai-solver-button';
             button.innerHTML = 'Puxar Resposta';
             Object.assign(button.style, {
-                background: 'linear-gradient(90deg, #cc0000, #cc6600, #cccc00, #00cc00, #00cccc, #0000cc, #6600cc, #cc00cc, #cc0000)', // Cores mais escuras
+                background: 'linear-gradient(90deg, #cc0000, #cc6600, #cccc00, #00cc00, #00cccc, #0000cc, #6600cc, #cc00cc, #cc0000)',
                 backgroundSize: '400% 400%',
                 border: 'none', 
                 borderRadius: '10px', 
@@ -1698,10 +1730,10 @@
                 alignItems: 'center', 
                 justifyContent: 'center', 
                 gap: '8px',
-                animation: 'rgbFlow 3s linear infinite' // ANIMAÇÃO RGB
+                animation: 'rgbFlow 3s linear infinite'
             });
 
-            // Adicionar a animação RGB ao documento
+            // Adicionar animação RGB
             const style = document.createElement('style');
             style.textContent = `
                 @keyframes rgbFlow {
@@ -1742,65 +1774,46 @@
 
             // --- LÓGICA DE MINIMIZAR ---
             const contentToToggle = [
-                'view-raw-response-btn',
                 'ai-toggle-btn',
+                'rgb-toggle-btn',
                 'ai-solver-button',
                 'mlk-mau-watermark'
             ];
 
-            // Adicionar a instrução da IA na lista de elementos para ocultar
-            contentToToggle.push(aiInstruction);
+            // Adicionar elementos específicos baseados nos provedores disponíveis
+            if (availableProviders.length > 1) {
+                contentToToggle.push('ai-toggle-btn');
+            }
 
             let isMinimized = false;
 
             minimizeBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Previne que o clique no botão inicie o arraste
+                e.stopPropagation();
                 
                 isMinimized = !isMinimized;
                 
                 if (isMinimized) {
-                    // Estado minimizado - oculta o conteúdo
-                    minimizeBtn.innerHTML = '+'; // Muda para sinal de mais
+                    minimizeBtn.innerHTML = '+';
                     contentToToggle.forEach(id => {
                         const el = document.getElementById(id);
-                        if (el) {
-                            el.style.display = 'none';
-                        }
+                        if (el) el.style.display = 'none';
                     });
-                    // Reduz o tamanho do painel
                     panel.style.padding = '8px';
                     panel.style.gap = '5px';
-                    
-                    // Esconde o response viewer se estiver visível
-                    responseViewer.style.display = 'none';
                 } else {
-                    // Estado normal - mostra o conteúdo
-                    minimizeBtn.innerHTML = '−'; // Volta para sinal de menos
+                    minimizeBtn.innerHTML = '−';
                     contentToToggle.forEach(id => {
                         const el = document.getElementById(id);
-                        if (el) {
-                            el.style.display = '';
-                        }
+                        if (el) el.style.display = '';
                     });
-                    // Restaura o tamanho original do painel
                     panel.style.padding = '12px';
                     panel.style.gap = '10px';
-                    
-                    // Re-aplica 'display: none' ao viewResponseBtn se não há resposta
-                    if (!lastAiResponse) {
-                        document.getElementById('view-raw-response-btn').style.display = 'none';
-                    }
                 }
             });
 
-            // --- LÓGICA DE ARRASTAR ---
-            // A alça é o painel inteiro (agora arrastável mesmo quando minimizado)
+            // --- LÓGICA DE ARRASTAR (CORREÇÃO: SEMPRE ARRASTÁVEL) ---
             makeDraggable(panel, panel);
 
-            setTimeout(() => {
-                panel.style.transform = 'translateY(0)';
-                panel.style.opacity = '1';
-            }, 100);
             console.log("Floating Panel MLK MAU criado com sucesso!");
         }
 
@@ -1875,7 +1888,6 @@
 
         // --- FIM DA LÓGICA DE DETECÇÃO DE QUIZ ID ---
 
-
         async function fetchWithTimeout(resource, options = {}, timeout = 15000) {
             const controller = new AbortController();
             const id = setTimeout(() => controller.abort(), timeout);
@@ -1913,8 +1925,8 @@
         }
 
         // --- Start ---
-        setTimeout(criarFloatingPanel, 2000); // Inicia a UI
-        initQuizIdDetector(); // Inicia o detector de ID
+        criarFloatingPanel();
+        initQuizIdDetector();
     }
 
     // -----------------------------------------------------------------------------------
