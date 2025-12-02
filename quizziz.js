@@ -861,7 +861,7 @@
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'Authorization': `Bearer ${currentKey}`,
-                                    'HTTP-Referer': 'https://github.com/mzzvxm',
+                                    'HTTP-Referer': 'kkk',
                                     'X-Title': 'Quizizz Bypass Script'
                                 },
                                 body: body
